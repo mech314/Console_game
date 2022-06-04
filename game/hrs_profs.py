@@ -1,14 +1,42 @@
 from abc import ABC
 import random
-from game import constants, armor, items, weapon
+import weapon
+import armor
+import items
 
 
 class Creature(ABC):
-    def __init__(self, name, gender, clan, lvl=1, exp=0, chr_points=0, hp=100, luck=1, strength=3, agility=3,
-                 movement=2, intelligence=1, critical_chance=0, bag=[], sword_skill=0, knife_skill=0, axe_skill=0,
-                 bow_skill=0, fist_skill=0, head=items.naked, torso=items.naked, left_arm=items.naked,
-                 right_arm=items.naked, legs=items.naked, feet=items.naked, active_weapon=None, active_skill=None,
-                 chr_type='npc'):
+    def __init__(self,
+                 name,
+                 gender,
+                 clan,
+                 lvl,
+                 exp,
+                 chr_points,
+                 hp,
+                 luck,
+                 strength,
+                 agility,
+                 movement,
+                 intelligence,
+                 critical_chance,
+                 bag,
+                 what_is_on,
+                 sword_skill,
+                 knife_skill,
+                 axe_skill,
+                 bow_skill,
+                 fist_skill,
+                 head,
+                 torso,
+                 left_arm,
+                 right_arm,
+                 legs,
+                 feet,
+                 active_weapon,
+                 active_skill,
+                 chr_type,
+                 spec):
         self.name = name  # Name of the character
         self.gender = gender  # Gender
         self.clan = clan  # Clan
@@ -23,6 +51,7 @@ class Creature(ABC):
         self.intelligence = intelligence  # How smart
         self.critical_chance = critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
         self._bag = bag  # A storage for all the shit that Hero has
+        self._what_is_on = what_is_on  # List that contains all clothes on a hero. Pop them from _bag when you put them
         self.sword_skill = sword_skill
         self.knife_skill = knife_skill
         self.axe_skill = axe_skill
@@ -34,7 +63,7 @@ class Creature(ABC):
         self.right_arm = right_arm  # What is on your RIGHT ARM
         self.legs = legs  # What is on your legs
         self.feet = feet  # What is on your feet
-        self.active_weapon = active_weapon  # Weapon in hand, if None that use the fist
+        self.active_weapon = active_weapon  # Weapon in hand, if None than use the fist
         self.active_skill = active_skill  # Skill for the weapon in hand
         self.head_armor = self.head.armor
         self.torso_armor = self.torso.armor
@@ -42,7 +71,8 @@ class Creature(ABC):
         self.right_arm_armor = self.right_arm.armor
         self.legs_armor = self.legs.armor
         self.feet_armor = self.feet.armor
-        self.chr_type = chr_type
+        self.chr_type = chr_type  # NPC of Player
+        self.spec = spec  # specialization
 
 
 class Hero(Creature):
@@ -65,6 +95,7 @@ class Hero(Creature):
                  intelligence=1,
                  critical_chance=0,
                  bag=[],
+                 what_is_on=[],
                  sword_skill=0,
                  knife_skill=0,
                  axe_skill=0,
@@ -76,9 +107,10 @@ class Hero(Creature):
                  right_arm=items.naked,
                  legs=items.naked,
                  feet=items.naked,
-                 active_weapon=weapon.Fist,
-                 active_skill=None,
-                 cht_type='npc'):
+                 active_weapon='fist',
+                 active_skill=0,
+                 cht_type='npc',
+                 spec=None):
 
         super().__init__(name,
                          gender,
@@ -94,6 +126,7 @@ class Hero(Creature):
                          intelligence,
                          critical_chance,
                          bag,
+                         what_is_on,
                          sword_skill,
                          knife_skill,
                          axe_skill,
@@ -107,7 +140,8 @@ class Hero(Creature):
                          feet,
                          active_weapon,
                          active_skill,
-                         cht_type)
+                         cht_type,
+                         spec)
 
     @property
     def skills(self):
@@ -122,7 +156,8 @@ class Hero(Creature):
                     movement=self.movement, intelligence=self.intelligence, critical_chance=self.critical_chance)
 
     def print_chr(self):
-        """Prints all character characteristics"""
+        """Prints name and all character characteristics"""
+        print("{}'s characteristics are: ".format(self.name))
         for k, v in self.characteristics.items():
             print(k.capitalize(), ':', v)
 
@@ -209,19 +244,26 @@ class Hero(Creature):
         else:
             print(f'You are trying to fight with {item.name.lower()}, are you too smart?')
 
-    def put_on_armor(self, choice):
-        """Puts your helmet on your head"""
-        item = self.bag_content[choice]
+    def put_on_armor(self, choice=None):
+        """Puts a piece of armor on you"""
+        print(choice)
+        if choice is None:
+            print("This is what you have in your bag: ")
+            self.print_bag_cnt()
+            choice = input('What do you want to put on:')
+            if choice == "no":
+                return None
+        item = self.bag_content[int(choice)]
         if isinstance(item, armor.Armor):
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You put {item.name} on your body')
-                self.torso = self.bag_content[choice]
+                self.torso = self.bag_content[int(choice)]
                 self.torso_armor = item.armor
                 self.left_arm_armor = item.armor
                 self.right_arm_armor = item.armor
             elif item.armor_type == 'vest':  # Put vest, naked arms but can put armlets now
                 print(f'You put {item.name} on your body, you can put armlets as well')
-                self.torso = self.bag_content[choice]
+                self.torso = self.bag_content[int(choice)]
                 self.torso_armor = item.armor
             elif item.armor_type == 'armlet':
                 flag = True
@@ -230,12 +272,12 @@ class Hero(Creature):
                         hand = input('Put on left or right hand?')
                         if hand.lower() == 'left':
                             print(f'You put {item.name} on your left hand')
-                            self.left_arm = self.bag_content[choice]
+                            self.left_arm = self.bag_content[int(choice)]
                             self.left_arm_armor = item.armor
                             flag = False
                         elif hand.lower() == 'right':
                             print(f'You put {item.name} on your right hand')
-                            self.right_arm = self.bag_content[choice]
+                            self.right_arm = self.bag_content[int(choice)]
                             self.right_arm_armor = item.armor
                             flag = False
                         else:
@@ -244,15 +286,15 @@ class Hero(Creature):
                         print(f'You cannot put armlets on because you are wearing {self.torso.name}')
             elif item.armor_type == 'trousers':  # Same story with pants
                 print(f'You put {item.name} on legs')
-                self.legs = self.bag_content[choice]
+                self.legs = self.bag_content[int(choice)]
                 self.legs_armor = item.armor
             elif item.armor_type == 'boots':  # Same story with boots
                 print(f'You put {item.name} on your feet')
-                self.feet = self.bag_content[choice]
+                self.feet = self.bag_content[int(choice)]
                 self.feet_armor = item.armor
             elif item.armor_type == 'helmet':  # Same story with helmet
                 print(f'You put {item.name} on your head')
-                self.head = self.bag_content[choice]
+                self.head = self.bag_content[int(choice)]
                 self.head_armor = item.armor
             self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
             self.luck += item.luck
@@ -261,13 +303,24 @@ class Hero(Creature):
             self.movement += item.movement
             self.intelligence += item.intelligence
             self.critical_chance += item.critical_chance
+            self._what_is_on.append(self._bag.pop(int(choice)))
 
         else:
             print(f'You are trying to put {item.name.lower()} on your head, think one more time.')
+        print("Bag contents: ")
+        self.print_bag_cnt()
+        more_clothes = input('Do you want to put something else? ')
+        if str(more_clothes).lower() == "no":
+            print('Alright')
+        else:
+            self.put_on_armor(choice=int(more_clothes))
+
+    # def put_off_armor(self, choice):
 
     def calc_dmg(self):
-        if not self.active_weapon:
-            self.active_weapon = weapon.Fist()
+        """Calculates damage by the player based on strenght, agility and skill. Takes weapon min and max values
+        and multiplies them with the damage modifier."""
+        if self.active_weapon.weapon_type == 'fist':
             self.active_skill = self.skills['fist']
         modifier = 1 + (self.strength / 100) + (self.agility / 150) + (self.active_skill / 10)
         return int(modifier * random.randint(self.active_weapon.damage[0], self.active_weapon.damage[1]))
@@ -277,37 +330,36 @@ class Hero(Creature):
         returns True if chance is within default 5%, players self.critical_chance increases the probability by
         lowering the random range"""
         chance = random.randint(self.critical_chance, 100)
-        print(self.name, self.critical_chance)
         return True if chance in range(95, 100) else False
 
     @staticmethod
     def player_hit(target):
-        active_armor = ()
-        hit_choice = ''
+        """Gives a choice to a player to hit an enemy."""
+        """To fix later. Wanted to code 'a or head' kind of response but face a bug where uses only first if"""
         flag = True
         while flag:
             where_to_hit = input(
-                'Where you want to hit your enemy? a)Head, b)Torso, c)Left hand, d)Right hand, f) legs')
-            if where_to_hit.lower() == "a" and 'head':
+                'Where you want to hit your enemy? a) Head, b) Torso, c) Left hand, d) Right hand, f) Legs ')
+            if where_to_hit.lower() == "a":
                 hit_choice = 'head'
                 active_armor = target.head_armor
                 flag = False
-            elif where_to_hit.lower() == 'b' and 'torso':
+            elif where_to_hit.lower() == 'b':
                 hit_choice = 'torso'
                 active_armor = target.torso_armor
                 flag = False
-            elif where_to_hit.lower() == 'c' and 'left hand':
+            elif where_to_hit.lower() == 'c':
                 hit_choice = 'left arm'
                 active_armor = target.left_arm_armor
                 flag = False
-            elif where_to_hit.lower() == 'd' and 'right hand':
+            elif where_to_hit.lower() == 'd':
                 hit_choice = 'right arm'
                 active_armor = target.right_arm_armor
                 flag = False
-            elif where_to_hit.lower() == 'f' and 'legs':
+            elif where_to_hit.lower() == 'f':
                 hit_choice = 'legs'
-                active_armor = int(target.legs_armor[0] + (target.feet_armor[0] / 7)), int(
-                    target.legs_armor[1] + (target.feet_armor[1] / 7))
+                active_armor = (int(target.legs_armor[0] + (target.feet_armor[0] / 1)), int(
+                    target.legs_armor[1] + (target.feet_armor[1] / 7)))
                 flag = False
             else:
                 print(
@@ -316,8 +368,9 @@ class Hero(Creature):
 
     @staticmethod
     def npc_hit(target):
+        """Uses random to choose where to hit a plyaer."""
         hit_choice = ''
-        active_armor = ()
+        active_armor = None
         random_where_to_hit = random.randint(1, 5)
         if random_where_to_hit == 1:
             hit_choice = 'head'
@@ -361,7 +414,7 @@ class Hero(Creature):
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
 
 
-class Fighter(Hero):
+class Swordsman(Hero):
     """
     A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
     """
@@ -381,6 +434,7 @@ class Fighter(Hero):
                  intelligence=1,
                  critical_chance=0,
                  bag=[],
+                 what_is_on=[],
                  sword_skill=0,
                  knife_skill=0,
                  axe_skill=0,
@@ -408,7 +462,9 @@ class Fighter(Hero):
                          movement,
                          intelligence,
                          critical_chance,
-                         bag, sword_skill,
+                         bag,
+                         what_is_on,
+                         sword_skill,
                          knife_skill,
                          axe_skill,
                          bow_skill,
@@ -423,15 +479,10 @@ class Fighter(Hero):
                          spec,
                          chr_type)
         self.spec = spec
-        if self.spec == constants.SWORDSMAN:  # if a swordsman gets more HP and sword skill
-            self.sword_skill = 3
-            self.hp += 30 * self.lvl
-        elif self.spec == constants.AXEMAN:  # if an axeman gets more strength and axe skill
-            self.axe_skill = 3
-            self.strength += 2
-            self.critical_chance += 10
+        self.swordsman_bonuses()
         if self.chr_type == 'npc':
             self.npc_weapon()
+            self.npc_clothes()
 
     def npc_weapon(self):
         self.active_skill = self.skills[self.active_weapon.weapon_type]
@@ -443,6 +494,126 @@ class Fighter(Hero):
         self.intelligence += self.active_weapon.intelligence
         self.critical_chance += self.active_weapon.critical_chance
         return self.active_skill
+
+    def npc_clothes(self):
+        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
+        self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+                      self.feet.luck)
+        self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+                          self.legs.strength + self.feet.strength)
+        self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+                         self.legs.agility + self.feet.agility)
+        self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+                          self.legs.movement + self.feet.movement)
+        self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+                              self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
+        self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
+                                 + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
+
+    def swordsman_bonuses(self):
+        self.hp += 30 * self.lvl
+        self.sword_skill = 3
+
+
+class Axeman(Hero):
+    """
+    A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
+    """
+
+    def __init__(self,
+                 name,
+                 gender,
+                 clan,
+                 lvl=1,
+                 exp=0,
+                 chr_points=0,
+                 hp=100,
+                 luck=1,
+                 strength=5,
+                 agility=3,
+                 movement=2,
+                 intelligence=1,
+                 critical_chance=0,
+                 bag=[],
+                 what_is_on=[],
+                 sword_skill=0,
+                 knife_skill=0,
+                 axe_skill=0,
+                 bow_skill=0,
+                 fist_skill=0,
+                 head=items.naked,
+                 torso=items.naked,
+                 left_arm=items.naked,
+                 right_arm=items.naked,
+                 legs=items.naked,
+                 feet=items.naked,
+                 active_weapon=items.fist,
+                 spec=None,
+                 chr_type='npc'):
+        super().__init__(name,
+                         gender,
+                         clan,
+                         lvl,
+                         exp,
+                         chr_points,
+                         hp,
+                         luck,
+                         strength,
+                         agility,
+                         movement,
+                         intelligence,
+                         critical_chance,
+                         bag,
+                         what_is_on,
+                         sword_skill,
+                         knife_skill,
+                         axe_skill,
+                         bow_skill,
+                         fist_skill,
+                         head,
+                         torso,
+                         left_arm,
+                         right_arm,
+                         legs,
+                         feet,
+                         active_weapon,
+                         spec,
+                         chr_type)
+        self.spec = spec
+        self.axeman_bonuses()
+        if self.chr_type == 'npc':
+            self.npc_weapon()
+            self.npc_clothes()
+
+    def npc_weapon(self):
+        self.active_skill = self.skills[self.active_weapon.weapon_type]
+        self.hp += self.active_weapon.hp
+        self.luck += self.active_weapon.luck
+        self.strength += self.active_weapon.strength
+        self.agility += self.active_weapon.agility
+        self.movement += self.active_weapon.movement
+        self.intelligence += self.active_weapon.intelligence
+        self.critical_chance += self.active_weapon.critical_chance
+        return self.active_skill
+
+    def npc_clothes(self):
+        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
+        self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+                      self.feet.luck)
+        self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+                          self.legs.strength + self.feet.strength)
+        self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+                         self.legs.agility + self.feet.agility)
+        self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+                          self.legs.movement + self.feet.movement)
+        self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+                              self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
+        self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
+                                 + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
+
+    def axeman_bonuses(self):
+        self.critical_chance += 10
+        self.axe_skill = 3
 
 
 class Thief(Hero):

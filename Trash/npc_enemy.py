@@ -1,12 +1,8 @@
 import random
-import weapon
-import constants
-import items
-import hrs_profs
+from game import constants, items, hrs_profs
 
 
 class Enemy(hrs_profs.Creature):
-
 
     def __init__(self,
                  name,
@@ -121,7 +117,8 @@ class Enemy(hrs_profs.Creature):
             active_armor = player.right_arm_armor
         elif random_where_to_hit == 5:
             hit_choice = 'legs'
-            active_armor = int(player.legs_armor[0] + (player.feet_armor[0]) / 7), int(player.legs_armor[1] + (player.feet_armor[1] / 7))
+            active_armor = int(player.legs_armor[0] + (player.feet_armor[0]) / 7), int(
+                player.legs_armor[1] + (player.feet_armor[1] / 7))
         armor_value = int(random.randint(active_armor[0], active_armor[1]))
         if self.chance_of_critical_strike():
             damage = int(self.calc_dmg() * 1.5)
@@ -139,7 +136,8 @@ class Enemy_Fighter(Enemy):
     def __init__(self, name, gender, clan, spec, lvl=1, exp=0, chr_points=0, hp=100, luck=1, strength=3, agility=3,
                  movement=2, intelligence=1, critical_chance=10, bag=[], sword_skill=0, knife_skill=0, axe_skill=0,
                  bow_skill=0, fist_skill=0, head=items.naked, torso=items.naked, left_arm=items.naked,
-                 right_arm=items.naked, legs=items.naked, feet=items.naked, active_weapon=items.fist, active_skill=None):
+                 right_arm=items.naked, legs=items.naked, feet=items.naked, active_weapon=items.fist,
+                 active_skill=None):
         super().__init__(name, gender, clan, lvl, exp, chr_points, hp, luck, strength, agility, movement, intelligence,
                          critical_chance, bag, sword_skill, knife_skill, axe_skill, bow_skill, fist_skill,
                          head, torso, left_arm, right_arm, legs, feet, active_weapon, active_skill)

@@ -1,5 +1,4 @@
 import random
-from hrs_profs import Hero
 
 base_strenght = 5
 base_agility = 3

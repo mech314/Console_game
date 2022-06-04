@@ -1,9 +1,4 @@
-from abc import ABC, abstractmethod
-import random
-import constants
-import weapon
-import armor
-import items
+from game import constants, armor, items, weapon
 
 
 # class Creature(ABC):
@@ -406,10 +401,6 @@ class Thief(Hero):
 
 
 import random
-import weapon
-import constants
-import items
-import hrs_profs
 
 
 class Enemy():

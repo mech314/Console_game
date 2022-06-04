@@ -37,7 +37,7 @@ class Fighter:
         pass
 
 
-class Thief():
+class Thief:
     """
     A knifesman, inherits from Hero, takes specialization. Sneaky - high agility, smart - high intelect
     """

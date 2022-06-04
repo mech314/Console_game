@@ -6,7 +6,11 @@ class Hero:
     Class for a player's hero. Take name, gender, clan, specialization.
     """
     def __init__(self, name, gender, clan, hp=100, luck=1, strength=3, agility=3, movement=2, intelligence=1,
-                 bag={"sword": (10, 20)}, skills={'sword_skill': 0, 'knife_skill': 0, 'axe_skill': 0, 'bow_skill': 0}):
+                 bag=None, skills=None):
+        if skills is None:
+            skills = {'sword_skill': 0, 'knife_skill': 0, 'axe_skill': 0, 'bow_skill': 0}
+        if bag is None:
+            bag = {"sword": (10, 20)}
         self.name = name
         self.gender = gender
         self.clan = clan
