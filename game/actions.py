@@ -1,13 +1,13 @@
 import random
 from colorama import Fore, Style, Back
-
-base_strenght = 5
-base_agility = 3
-base_intelect = 6
-base_luck = 2
-skill = 3
-wpn_dmg = (4, 14)
-hit_points = 130
+#
+# base_strenght = 5
+# base_agility = 3
+# base_intelect = 6
+# base_luck = 2
+# skill = 3
+# wpn_dmg = (4, 14)
+# hit_points = 130
 
 potions = {"small": (0, 7), 'medium': (5, 12), 'large': (25, 70)}
 potions_in_pocket = ['small', 'small', 'large', 'medium']

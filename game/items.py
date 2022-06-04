@@ -1,8 +1,10 @@
+import random
 import weapon
 import armor
 
 weapon_dict = {}
-armor_dict = {}
+armor_name_list = ['Rusty', 'Normal', 'Broken', 'Excellent', "Heroic", "Simple"]
+armor_list = []
 
 """All weapon is here"""
 fist = weapon.Fist('Fist', (1, 3))
@@ -24,3 +26,73 @@ simple_trousers = armor.Trousers('Simple trousers', (5, 9), durability=35, hp=5,
 simple_boots = armor.Boots('Simple boots', (3, 5), durability=50, movement=1, luck=1, agility=3)
 simple_vest = armor.Vest('Simple vest', (5, 7), durability=50, movement=1, hp=10, luck=1, agility=3)
 simple_armlet = armor.Armlet('Simple armlet', (3, 7), durability=25, movement=3, hp=5, luck=1, agility=3, strength=2)
+
+
+def random_armor(type, level):
+    """This function will make a random armor based on some input"""
+
+    condition = random.choice(armor_name_list)
+    name = condition + " " + type
+    if condition.lower() == "rusty":
+        base_armor = [1, 3]
+        durability = 25
+        hp = -5
+        luck = 0
+        strength = 0
+        agility = -1
+        movement = -1
+        intelligence = 0
+        critical_chance = -1
+    elif condition.lower() == "normal":
+        base_armor = [2, 5]
+        durability = 45
+        hp = 0
+        luck = 0
+        strength = 0
+        agility = 0
+        movement = 0
+        intelligence = 0
+        critical_chance = 0
+    elif condition.lower() == "broken":
+        base_armor = [1, 2]
+        durability = 15
+        hp = -7
+        luck = -1
+        strength = 0
+        agility = 0
+        movement = -1
+        intelligence = 0
+        critical_chance = -1
+    elif condition.lower() == "excellent":
+        base_armor = [3, 7]
+        durability = 55
+        hp = 5
+        luck = 0
+        strength = 1
+        agility = 1
+        movement = 1
+        intelligence = 1
+        critical_chance = 5
+    elif condition.lower() == "heroic":
+        base_armor = [4, 8]
+        durability = 70
+        hp = 7
+        luck = 1
+        strength = 2
+        agility = 2
+        movement = 2
+        intelligence = 2
+        critical_chance = 10
+    elif condition.lower() == "simple":
+        base_armor = [2, 3]
+        durability = 40
+        hp = 0
+        luck = 0
+        strength = 0
+        agility = 0
+        movement = 0
+        intelligence = 0
+        critical_chance = 2
+
+    if type.lower() = 'Helmet':
+

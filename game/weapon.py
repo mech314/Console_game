@@ -6,12 +6,13 @@ class Weapon:
         Other parameters will indicate bonus to a player who is holding this weapon
     """
 
-    def __init__(self, name, damage, durability=None, hp=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, damage, level=1, durability=None, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, _weapon_type=None):
         Weapon._id += 1
         self._id = Weapon._id
         self.name = name
         self.damage = damage
+        self.level = level
         self.durability = durability
         self.hp = hp
         self.luck = luck
@@ -55,36 +56,36 @@ class Fist(Weapon):
 
 class Sword(Weapon):
 
-    def __init__(self, name, damage, durability, hp=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, damage, durability, level=1, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, weapon_type=None):
-        super().__init__(name, damage, durability, hp, luck, strength, agility,
+        super().__init__(name, damage, durability, level, hp, luck, strength, agility,
                          movement, intelligence, critical_chance, weapon_type)
         self.weapon_type = 'sword'
 
 
 class Axe(Weapon):
 
-    def __init__(self, name, damage, durability, hp=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, damage, durability, level=1, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, weapon_type=None):
-        super().__init__(name, damage, durability, hp, luck, strength, agility,
+        super().__init__(name, damage, durability, level, hp, luck, strength, agility,
                          movement, intelligence, critical_chance, weapon_type)
         self.weapon_type = 'axe'
 
 
 class Knife(Weapon):
 
-    def __init__(self, name, damage, durability, hp=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, damage, durability, level=1, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, weapon_type=None):
-        super().__init__(name, damage, durability, hp, luck, strength, agility,
+        super().__init__(name, damage, durability, level, hp, luck, strength, agility,
                          movement, intelligence, critical_chance, weapon_type)
         self.weapon_type = "knife"
 
 
 class Bow(Weapon):
 
-    def __init__(self, name, damage, durability, hp=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, damage, durability, level=1, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, weapon_type=None):
-        super().__init__(name, damage, durability, hp, luck, strength, agility,
+        super().__init__(name, damage, durability, level, hp, luck, strength, agility,
                          movement, intelligence, critical_chance, weapon_type)
         self.weapon_type = "bow"
 

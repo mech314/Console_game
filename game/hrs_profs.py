@@ -79,7 +79,6 @@ class Hero(Creature):
     """
     Class for a player's hero. Take name, gender, clan, specialization.
     """
-
     def __init__(self,
                  name,
                  gender,
