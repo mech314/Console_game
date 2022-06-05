@@ -1,10 +1,10 @@
 import hrs_profs
 import items
-import Random_NPC
+import Functions
 
 mech = hrs_profs.Swordsman('Mech', "Male", 'Boyz', chr_type='player')
 
-badboy = Random_NPC.npc_creator("Bob", "male", "BoyZ", "Swordsman", level=4)
+badboy = Functions.npc_creator("Bob", "male", "BoyZ", "Axeman", level=1)
 
 # badboy = hrs_profs.Axeman('BadBoy', 'Male', 'Enemy', hp=10, head=items.simple_helmet,
 #                           torso=items.simple_jacket, legs=items.simple_trousers, feet=items.simple_boots,

@@ -1,6 +1,6 @@
+"""This file contains various functions for the game to work such as creating the NPCs, items etc"""
 import random
 import hrs_profs
-import items
 
 
 def npc_creator(name, gender, clan, specialization, level):
@@ -16,7 +16,6 @@ def npc_creator(name, gender, clan, specialization, level):
     ref_agility = [1, 3]
     ref_movement = [1, 4]
     ref_intelligence = [1, 3]
-    ref_critical_chance = 0
 
     """Dictionary containing the multipliers for each level"""
 
@@ -36,9 +35,12 @@ def npc_creator(name, gender, clan, specialization, level):
     critical_chance = int(1.21 * level_multipliers[str(level)])
 
     if specialization.lower() == "axeman":
-        Enemy = hrs_profs.Axeman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength, agility=agility,
-                                movement=movement, intelligence=intelligence, critical_chance=critical_chance)
+        Enemy = hrs_profs.Axeman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
+                                 agility=agility,
+                                 movement=movement, intelligence=intelligence, critical_chance=critical_chance,
+                                 chr_type='npc')
     elif specialization.lower() == "swordsman":
         Enemy = hrs_profs.Swordsman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
-                                 agility=agility, movement=movement, intelligence=intelligence, critical_chance=critical_chance)
+                                    agility=agility, movement=movement, intelligence=intelligence,
+                                    critical_chance=critical_chance, chr_type='npc')
     return Enemy
