@@ -1,4 +1,4 @@
-import math
+import random
 
 
 class Armor:
@@ -6,8 +6,9 @@ class Armor:
     _id = 0
 
     def __init__(self, name, condition=None, armor=None, durability=0, hp=0, luck=0, strength=0, agility=0,
-                 movement=0, intelligence=0, critical_chance=0, level=1, armor_type=None):
-        item_modifier = {'broken': 0.5, 'rusty': 0.6, 'simple': 0.8, 'normal': 1, 'excellent': 1.2, 'heroic': 1.3}
+                 movement=0, intelligence=0, critical_chance=0, level=1, armor_type=None, isItCustom=True):
+        self.item_modifier = {'broken': 0.5, 'rusty': 0.6, 'simple': 0.8, 'normal': 1, 'excellent': 1.2,
+                                   'heroic': 1.3}
         if armor is None:
             armor = [0, 0]
         Armor._id += 1
@@ -25,78 +26,83 @@ class Armor:
         self.critical_chance = critical_chance
         self.level = level
         self.armor_type = armor_type  # Important for putting armor on the character body parts
+        self.isItCustom = isItCustom
 
-        if condition is None:
+        if self.condition is None:  # If condition is 'naked' armor will be just naked.
+            self.armor = [0, 1]
             self.armor_type = 'naked'
-        else:
-            if self.armor_type.lower() == 'helmet':
-                self.armor = [(int(1 * (self.level * item_modifier[self.condition]))),
-                              (int(3 * (self.level * item_modifier[self.condition])))]
-                """you have stopped here, armor modification happen based on level and codition, just using the 
-                dictionary, need to think how to make initial values a little bit more flexible, not just rigid 1-3
-                Need to finish all clothes, think about how different clothes will add up diff values. Then right a 
-                function that will create a bunch of various clothes into a list. 
-            
-                """
-                self.durability = int(25 * (self.level * item_modifier[self.condition]))
-                self.hp = -5
-                self.luck = -1
-                self.strength = 0
-                self.agility = -1
-                self.movement = -1
-                self.intelligence = -1
-                self.critical_chance = 0
-            elif self.armor_type.lower() == 'Jacket':
-                self.armor = [5 * self.level, 7 * self.level]
-                self.durability = int(45 * (self.level * 0.8))
-                self.hp = 0
-                self.luck = 0
-                self.strength = 0
-                self.agility = 0
-                self.movement = 0
-                self.intelligence = 0
-                self.critical_chance = 0
-            elif self.armor_type.lower() == 'Vest':
-                self.armor = [3 * self.level, 7 * self.level]
-                self.durability = int(45 * (self.level * 0.8))
-                self.hp = int(3 * (self.level * 0.8))
-                self.luck = 0
-                self.strength = 0
-                self.agility = 0
-                self.movement = 0
-                self.intelligence = 0
-                self.critical_chance = 0
-            elif self.armor_type.lower() == 'Armlet':
-                self.armor = [1 * self.level, 3 * self.level]
-                self.durability = int(45 * (self.level * 0.8))
-                self.hp = int(3 * (self.level * 0.8))
-                self.luck = 0
-                self.strength = 0
-                self.agility = 0
-                self.movement = 0
-                self.intelligence = 0
-                self.critical_chance = 0
-            elif self.armor_type.lower() == 'Trousers':
-                self.armor = [3 * self.level, 9 * self.level]
-                self.durability = int(45 * (self.level * 0.8))
-                self.hp = int(3 * (self.level * 0.8))
-                self.luck = 0
-                self.strength = 0
-                self.agility = 0
-                self.movement = 0
-                self.intelligence = 0
-                self.critical_chance = 0
-            elif self.armor_type.lower() == 'Boots':
-                self.armor = [1 * self.level, 2 * self.level]
-                self.durability = int(45 * (self.level * 0.8))
-                self.hp = int(3 * (self.level * 0.8))
-                self.luck = 0
-                self.strength = 0
-                self.agility = 0
-                self.movement = 0
-                self.intelligence = 0
-                self.critical_chance = 0
+        elif condition:
+            self.armor_maker()
 
+    def armor_maker(self):
+        """This functions only for automatically generated items, Custom items will made by hand."""
+        if self.isItCustom and self.armor_type.lower() != 'naked':
+            if self.armor_type.lower() == 'helmet':
+                self.armor = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randrange(-3, -1) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randrange(-3, -1) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(1, 5) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
+            elif self.armor_type.lower() == 'jacket':
+                self.armor = [(int(random.randint(3, 7) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(7, 9) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(25, 45) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(5, 15) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(1, 4) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
+            elif self.armor_type.lower() == 'vest':
+                self.armor = [(int(random.randint(2, 5) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(6, 8) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(5, 10) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(2, 5) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randrange(-1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
+            elif self.armor_type.lower() == 'armlet':
+                self.armor = [(int(random.randint(1, 3) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(4, 5) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(1, 5) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randrange(-3, -1) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randrange(-2, -1) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
+            elif self.armor_type.lower() == 'trousers':
+                self.armor = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(1, 5) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(5, 7) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randint(1, 7) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randint(3, 9) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
+            elif self.armor_type.lower() == 'boots':
+                self.armor = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
+                              (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
+                self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.strength = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
+                self.agility = int((random.randint(1, 6) * (self.level * self.item_modifier[self.condition])))
+                self.movement = int((random.randint(5, 10) * (self.level * self.item_modifier[self.condition])))
+                self.intelligence = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
+                self.critical_chance = int((random.randint(0, 5) * (self.level * self.item_modifier[self.condition])))
 
     @property
     def armor_chr(self):
@@ -115,74 +121,3 @@ class Armor:
         arm_chr = {key: value for (key, value) in self.armor_chr.items() if value}
         for k, v in arm_chr.items():
             print(k.capitalize(), ':', v)
-
-# class Helmet(Armor):
-#     """Everything that will be on your head"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'helmet'
-#
-#
-# class Jacket(Armor):
-#     """Jacket has sleeves so it protect torso and both hands"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'jacket'
-#
-#
-# class Vest(Armor):
-#     """Vest has not sleeves, so it will protect only torso"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'vest'
-#
-#
-# class Armlet(Armor):
-#     """Will be on your arms, can be used only with Vest or without anything on torso, could be used on both hands"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'armlet'
-#
-#
-# class Trousers(Armor):
-#     """Everything that will be on your legs"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'trousers'
-#
-#
-# class Boots(Armor):
-#     """Everything that will be on your feet"""
-#
-#     def __init__(self, name, armor, durability, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         self.armor_type = 'boots'
-#
-#
-# class Naked(Armor):
-#     """Just naked"""
-#
-#     def __init__(self, name, condition, armor=None, durability=math.inf, hp=0, luck=0, strength=0, agility=0,
-#                  movement=0, intelligence=0, critical_chance=0, armor_type=None):
-#         super().__init__(name, condition, armor, durability, hp, luck, strength, agility,
-#                          movement, intelligence, critical_chance, armor_type)
-#         if armor is None:
-#             armor = [0, 0]
-#         self.armor_type = 'naked'

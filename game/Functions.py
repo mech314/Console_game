@@ -1,6 +1,7 @@
 """This file contains various functions for the game to work such as creating the NPCs, items etc"""
 import random
 import hrs_profs
+import armor
 
 
 def npc_creator(name, gender, clan, specialization, level):
@@ -35,12 +36,40 @@ def npc_creator(name, gender, clan, specialization, level):
     critical_chance = int(1.21 * level_multipliers[str(level)])
 
     if specialization.lower() == "axeman":
-        Enemy = hrs_profs.Axeman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
-                                 agility=agility,
-                                 movement=movement, intelligence=intelligence, critical_chance=critical_chance,
-                                 chr_type='npc')
+        return hrs_profs.Axeman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
+                                agility=agility,
+                                movement=movement, intelligence=intelligence, critical_chance=critical_chance,
+                                chr_type='npc')
     elif specialization.lower() == "swordsman":
-        Enemy = hrs_profs.Swordsman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
-                                    agility=agility, movement=movement, intelligence=intelligence,
-                                    critical_chance=critical_chance, chr_type='npc')
-    return Enemy
+        return hrs_profs.Swordsman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
+                                   agility=agility, movement=movement, intelligence=intelligence,
+                                   critical_chance=critical_chance, chr_type='npc')
+
+
+def armor_creator(requestedArmor_type=None, requestedCondition=None, requestedLevel=None):
+    """This function will create a list of random armor objects based on requested armor type and level
+    if armor type is not specified it will make random items. If the level is not specified it will make random levels"""
+
+    if requestedLevel is None:
+        requestedLevel = [1, 10]
+    armor_types = ['helmet', 'vest', 'jacket', 'armlet', 'trousers', 'boots']  # All types of armor
+    """Determining items type here"""
+    if requestedArmor_type is None:
+        armor_type = random.choice(armor_types)
+
+    """Determining items level here"""
+    if type(requestedLevel) == list:
+        level = random.randint(requestedLevel[0], requestedLevel[1])  # Randomly chooses the item level
+    else:
+        level = requestedLevel
+
+    condition_list = ['broken', 'rusty', 'simple', 'normal', 'excellent', 'heroic']  # choosing the condition
+    """Determining items condition here"""
+    if requestedCondition is None:
+        condition = random.choice(condition_list)
+    else:
+        condition = requestedCondition
+
+    name = str(condition) + " " + str(armor_type)
+
+    return armor.Armor(name=name, condition=condition, level=level, armor_type=armor_type)

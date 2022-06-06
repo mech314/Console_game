@@ -1,6 +1,7 @@
 import actions
 import items
 import chr_npc
+import Functions
 
 # TODO: write correct unittests
 
@@ -15,7 +16,7 @@ def test():
     # chr_npc.mech.put_on_armor()
     # chr_npc.mech.print_chr()
     # chr_npc.badboy.print_chr()
-    actions.battle(chr_npc.mech, chr_npc.badboy)
+    #actions.battle(chr_npc.mech, chr_npc.badboy)
     # actions.battle(chr_npc.mech, chr_npc.badboy1)
     # actions.battle(chr_npc.mech, chr_npc.badboy2)
     # actions.battle(chr_npc.mech, chr_npc.badboy3)

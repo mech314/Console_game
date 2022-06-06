@@ -1,4 +1,5 @@
-# import items
+import items
+import random
+import armor
 
 
-# print(items.naked.armor)
