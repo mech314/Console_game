@@ -1,7 +1,7 @@
 """This file contains various functions for the game to work such as creating the NPCs, items etc"""
 import random
-import hrs_profs
-import armor
+from console_game.game import hrs_profs
+from console_game.game import armor
 
 
 def npc_creator(name, gender, clan, specialization, level):
@@ -46,30 +46,32 @@ def npc_creator(name, gender, clan, specialization, level):
                                    critical_chance=critical_chance, chr_type='npc')
 
 
-def armor_creator(requestedArmor_type=None, requestedCondition=None, requestedLevel=None):
+def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level: int = None):
     """This function will create a list of random armor objects based on requested armor type and level
     if armor type is not specified it will make random items. If the level is not specified it will make random levels"""
 
-    if requestedLevel is None:
-        requestedLevel = [1, 10]
+    if requested_level is None:
+        requested_level = [1, 10]
     armor_types = ['helmet', 'vest', 'jacket', 'armlet', 'trousers', 'boots']  # All types of armor
     """Determining items type here"""
-    if requestedArmor_type is None:
+    if requested_armor_type is None:
         armor_type = random.choice(armor_types)
 
     """Determining items level here"""
-    if type(requestedLevel) == list:
-        level = random.randint(requestedLevel[0], requestedLevel[1])  # Randomly chooses the item level
+    if isinstance(requested_level, list):
+        level = random.randint(requested_level[0], requested_level[1])  # Randomly chooses the item level
     else:
-        level = requestedLevel
+        level = requested_level
 
     condition_list = ['broken', 'rusty', 'simple', 'normal', 'excellent', 'heroic']  # choosing the condition
     """Determining items condition here"""
-    if requestedCondition is None:
+    if requested_condition is None:
         condition = random.choice(condition_list)
     else:
-        condition = requestedCondition
+        condition = requested_condition
 
     name = str(condition) + " " + str(armor_type)
-
     return armor.Armor(name=name, condition=condition, level=level, armor_type=armor_type)
+
+# if __name__ == '__main__':
+#     x = armor_creator()

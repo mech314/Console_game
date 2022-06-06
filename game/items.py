@@ -1,12 +1,12 @@
 import random
-import weapon
-import armor
-import Functions
+from console_game.game import weapon
+from console_game.game import armor
+
 
 weapon_dict = {}
 
 armor_list = []
-def bunch_of_armor(numberOfItems):
+# def bunch_of_armor(numberOfItems):
 
 
 """All weapon is here"""

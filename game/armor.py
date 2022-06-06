@@ -8,7 +8,7 @@ class Armor:
     def __init__(self, name, condition=None, armor=None, durability=0, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, level=1, armor_type=None, isItCustom=True):
         self.item_modifier = {'broken': 0.5, 'rusty': 0.6, 'simple': 0.8, 'normal': 1, 'excellent': 1.2,
-                                   'heroic': 1.3}
+                              'heroic': 1.3}
         if armor is None:
             armor = [0, 0]
         Armor._id += 1
@@ -111,13 +111,10 @@ class Armor:
                    condition=self.condition, hp=self.hp, luck=self.luck, strength=self.strength, agility=self.agility,
                    movement=self.movement, intelligence=self.intelligence, critical_chance=self.critical_chance,
                    armor_type=self.armor_type)
-        for k, v in arm.items():
-            print(k.capitalize(), ':', v)
-        return None
+        return {k.capitalize(): v for k, v in arm.items()}
 
     @property
     def print_arm_chr(self):
         """Creates a dict that has only weapon values NOT equal to Zero, even if they are negative"""
         arm_chr = {key: value for (key, value) in self.armor_chr.items() if value}
-        for k, v in arm_chr.items():
-            print(k.capitalize(), ':', v)
+        return {k.capitalize(): v for k, v in arm_chr.items()}

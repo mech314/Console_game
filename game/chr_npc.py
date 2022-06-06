@@ -1,10 +1,10 @@
-import hrs_profs
-import items
-import Functions
+from console_game.game import hrs_profs
+from console_game.game import items
+from console_game.game import functions
 
-mech = hrs_profs.Swordsman('Mech', "Male", 'Boyz', chr_type='player')
+# mech = hrs_profs.Swordsman('Mech', "Male", 'Boyz', chr_type='player')
 
-badboy = Functions.npc_creator("Bob", "male", "BoyZ", "Axeman", level=1)
+# badboy = Functions.npc_creator("Bob", "male", "BoyZ", "Axeman", level=1)
 
 # badboy = hrs_profs.Axeman('BadBoy', 'Male', 'Enemy', hp=10, head=items.simple_helmet,
 #                           torso=items.simple_jacket, legs=items.simple_trousers, feet=items.simple_boots,

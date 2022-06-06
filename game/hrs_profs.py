@@ -1,8 +1,8 @@
 from abc import ABC
 import random
-import weapon
-import armor
-import items
+from console_game.game import weapon
+from console_game.game import armor
+from console_game.game import items
 
 
 class Creature(ABC):
