@@ -10,7 +10,7 @@ class Creature(ABC):
                  name,
                  gender,
                  clan,
-                 lvl,
+                 level,
                  exp,
                  chr_points,
                  hp,
@@ -40,7 +40,7 @@ class Creature(ABC):
         self.name = name  # Name of the character
         self.gender = gender  # Gender
         self.clan = clan  # Clan
-        self.lvl = lvl  # Level
+        self.level = level  # Level
         self.exp = exp  # Experience, will be added after battles etc
         self.chr_points = chr_points  # Amount of points received with the level_UP.
         self.hp = hp  # Amount of hit-points
@@ -84,7 +84,7 @@ class Hero(Creature):
                  name,
                  gender,
                  clan,
-                 lvl=1,
+                 level=1,
                  exp=0,
                  chr_points=0,
                  hp=100,
@@ -109,13 +109,13 @@ class Hero(Creature):
                  feet=items.naked,
                  active_weapon='fist',
                  active_skill=0,
-                 cht_type='npc',
+                 chr_type='npc',
                  spec=None):
 
         super().__init__(name,
                          gender,
                          clan,
-                         lvl,
+                         level,
                          exp,
                          chr_points,
                          hp,
@@ -140,7 +140,7 @@ class Hero(Creature):
                          feet,
                          active_weapon,
                          active_skill,
-                         cht_type,
+                         chr_type,
                          spec)
 
     @property
@@ -152,7 +152,8 @@ class Hero(Creature):
     @property
     def characteristics(self):
         """Return all Hero's characteristics as a dict"""
-        return dict(hp=self.hp, strength=self.strength, agility=self.agility, luck=self.luck,
+        return dict(name=self.name, level=self.level, specialization=self.spec, hp=self.hp, strength=self.strength,
+                    agility=self.agility, luck=self.luck,
                     movement=self.movement, intelligence=self.intelligence, critical_chance=self.critical_chance)
 
     def print_chr(self):
@@ -218,11 +219,16 @@ class Hero(Creature):
         """Adds item to the bag"""
         self._bag.append(item)
 
+    def remove_item_from_the_bag(self, item):
+        """Removes item to the bag DOESN't WORK"""
+        self._bag.pop(item)
+
     @property
     def bag_content(self):
         return self._bag
 
     def print_bag_cnt(self):
+        print("You have following items in the bag:")
         for count, item in enumerate(self._bag):
             print(count, item.name)
 
@@ -232,7 +238,6 @@ class Hero(Creature):
         if isinstance(item, weapon.Weapon):
             self.active_weapon = self.bag_content[choice]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
-            self.hp += self.active_weapon.hp
             self.luck += self.active_weapon.luck
             self.strength += self.active_weapon.strength
             self.agility += self.active_weapon.agility
@@ -268,7 +273,7 @@ class Hero(Creature):
             elif item.armor_type == 'armlet':
                 flag = True
                 while flag:
-                    if self.torso.armor_type != 'jacket':  # Can put armlets only with vest or naked
+                    if self.torso.weapon_type != 'jacket':  # Can put armlets only with vest or naked
                         hand = input('Put on left or right hand?')
                         if hand.lower() == 'left':
                             print(f'You put {item.name} on your left hand')
@@ -423,7 +428,7 @@ class Swordsman(Hero):
                  name,
                  gender,
                  clan,
-                 lvl=1,
+                 level=1,
                  exp=0,
                  chr_points=0,
                  hp=100,
@@ -452,7 +457,7 @@ class Swordsman(Hero):
         super().__init__(name,
                          gender,
                          clan,
-                         lvl,
+                         level,
                          exp,
                          chr_points,
                          hp,
@@ -486,7 +491,6 @@ class Swordsman(Hero):
 
     def npc_weapon(self):
         self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self.hp += self.active_weapon.hp
         self.luck += self.active_weapon.luck
         self.strength += self.active_weapon.strength
         self.agility += self.active_weapon.agility
@@ -511,7 +515,7 @@ class Swordsman(Hero):
                                  + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
 
     def swordsman_bonuses(self):
-        self.hp += 30 * self.lvl
+        self.hp += 30 * self.level
         self.sword_skill = 3
 
 
@@ -524,7 +528,7 @@ class Axeman(Hero):
                  name,
                  gender,
                  clan,
-                 lvl=1,
+                 level=1,
                  exp=0,
                  chr_points=0,
                  hp=100,
@@ -553,7 +557,7 @@ class Axeman(Hero):
         super().__init__(name,
                          gender,
                          clan,
-                         lvl,
+                         level,
                          exp,
                          chr_points,
                          hp,
@@ -587,7 +591,6 @@ class Axeman(Hero):
 
     def npc_weapon(self):
         self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self.hp += self.active_weapon.hp
         self.luck += self.active_weapon.luck
         self.strength += self.active_weapon.strength
         self.agility += self.active_weapon.agility

@@ -69,15 +69,15 @@ class Enemy(hrs_profs.Creature):
         self.apply_default_chr()
 
     def apply_default_chr(self):
-        self.head_armor = self.head.armor
-        if self.torso.armor_type == 'jacket':
-            self.torso_armor = self.torso.armor
-            self.left_arm_armor = self.torso.armor
-            self.right_arm_armor = self.torso.armor
-        elif self.torso.armor_type == 'vest' or 'naked':
-            self.torso_armor = self.torso.armor
-        self.feet_armor = self.feet.armor
-        self.legs_armor = self.legs.armor
+        self.head_armor = self.head.damage
+        if self.torso.weapon_type == 'jacket':
+            self.torso_armor = self.torso.damage
+            self.left_arm_armor = self.torso.damage
+            self.right_arm_armor = self.torso.damage
+        elif self.torso.weapon_type == 'vest' or 'naked':
+            self.torso_armor = self.torso.damage
+        self.feet_armor = self.feet.damage
+        self.legs_armor = self.legs.damage
 
     @property
     def skills(self):

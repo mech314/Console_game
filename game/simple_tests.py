@@ -1,5 +1,4 @@
 from console_game.game import items
-from console_game.game import random
-from console_game.game import armor
 
-
+for k in items.armor_list:
+    print(k.capitilize, ":", items.armor_list[k])

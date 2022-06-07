@@ -1,10 +1,12 @@
 from console_game.game import hrs_profs
 from console_game.game import items
-from console_game.game import functions
 
-mech = hrs_profs.Swordsman('Mech', "Male", 'Boyz', chr_type='player')
 
-badboy = functions.npc_creator("Bob", "male", "BoyZ", "Axeman", level=1)
+npc_list = []
+
+mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="Swordsman", chr_type='player', bag=[])
+
+badboy = hrs_profs.Axeman(name="Bob", gender="male", clan="BoyZ", spec="Axeman", level=1)
 
 # badboy = hrs_profs.Axeman('BadBoy', 'Male', 'Enemy', hp=10, head=items.simple_helmet,
 #                           torso=items.simple_jacket, legs=items.simple_trousers, feet=items.simple_boots,

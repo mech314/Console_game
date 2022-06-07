@@ -36,12 +36,12 @@ class Creature(ABC):
         self.feet = feet  # What is on your feet
         self.active_weapon = active_weapon  # Weapon in hand, if None that use the fist
         self.active_skill = active_skill  # Skill for the weapon in hand
-        self.head_armor = self.head.armor
-        self.torso_armor = self.torso.armor
-        self.left_arm_armor = self.left_arm.armor
-        self.right_arm_armor = self.right_arm.armor
-        self.legs_armor = self.legs.armor
-        self.feet_armor = self.feet.armor
+        self.head_armor = self.head.damage
+        self.torso_armor = self.torso.damage
+        self.left_arm_armor = self.left_arm.damage
+        self.right_arm_armor = self.right_arm.damage
+        self.legs_armor = self.legs.damage
+        self.feet_armor = self.feet.damage
         self.chr_type = chr_type
 
 
@@ -213,47 +213,47 @@ class Hero(Creature):
         """Puts your helmet on your head"""
         item = self.bag_content[choice]
         if isinstance(item, armor.Armor):
-            if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
+            if item.weapon_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You put {item.name} on your body')
                 self.torso = self.bag_content[choice]
-                self.torso_armor = item.armor
-                self.left_arm_armor = item.armor
-                self.right_arm_armor = item.armor
-            elif item.armor_type == 'vest':  # Put vest, naked arms but can put armlets now
+                self.torso_armor = item.damage
+                self.left_arm_armor = item.damage
+                self.right_arm_armor = item.damage
+            elif item.weapon_type == 'vest':  # Put vest, naked arms but can put armlets now
                 print(f'You put {item.name} on your body, you can put armlets as well')
                 self.torso = self.bag_content[choice]
-                self.torso_armor = item.armor
-            elif item.armor_type == 'armlet':
+                self.torso_armor = item.damage
+            elif item.weapon_type == 'armlet':
                 flag = True
                 while flag:
-                    if self.torso.armor_type != 'jacket':  # Can put armlets only with vest or naked
+                    if self.torso.weapon_type != 'jacket':  # Can put armlets only with vest or naked
                         hand = input('Put on left or right hand?')
                         if hand.lower() == 'left':
                             print(f'You put {item.name} on your left hand')
                             self.left_arm = self.bag_content[choice]
-                            self.left_arm_armor = item.armor
+                            self.left_arm_armor = item.damage
                             flag = False
                         elif hand.lower() == 'right':
                             print(f'You put {item.name} on your right hand')
                             self.right_arm = self.bag_content[choice]
-                            self.right_arm_armor = item.armor
+                            self.right_arm_armor = item.damage
                             flag = False
                         else:
                             print(f'Choose the hand on which you wanna put {item.name}')
                     else:
                         print(f'You cannot put armlets on because you are wearing {self.torso.name}')
-            elif item.armor_type == 'trousers':  # Same story with pants
+            elif item.weapon_type == 'trousers':  # Same story with pants
                 print(f'You put {item.name} on legs')
                 self.legs = self.bag_content[choice]
-                self.legs_armor = item.armor
-            elif item.armor_type == 'boots':  # Same story with boots
+                self.legs_armor = item.damage
+            elif item.weapon_type == 'boots':  # Same story with boots
                 print(f'You put {item.name} on your feet')
                 self.feet = self.bag_content[choice]
-                self.feet_armor = item.armor
-            elif item.armor_type == 'helmet':  # Same story with helmet
+                self.feet_armor = item.damage
+            elif item.weapon_type == 'helmet':  # Same story with helmet
                 print(f'You put {item.name} on your head')
                 self.head = self.bag_content[choice]
-                self.head_armor = item.armor
+                self.head_armor = item.damage
             self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
             self.luck += item.luck
             self.strength += item.strength
