@@ -7,7 +7,7 @@ from console_game.game import items
 from console_game.game import weapon
 
 
-def npc_creator(name: str, gender: str, clan: str, specialization: str, level: int,
+def npc_creator(name: str, gender: str, clan: str, specialization: str, level: int, armored: bool = True,
                 list_to_append: list = chr_npc.npc_list):
     """This function will take some arguments and create an NPC the characteristics will depend on the level of the
     NPC you wanna create. Indicate the list where these NPC will be added
@@ -43,14 +43,24 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
     intelligence = int(level_multipliers[str(level)] * random.randint(ref_intelligence[0], ref_intelligence[1]))
     critical_chance = int(1.21 * level_multipliers[str(level)])
 
-    if specialization.lower() == "axeman":
-        npc = hrs_profs.Axeman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
-                               agility=agility, level=level, spec=specialization, movement=movement,
-                               intelligence=intelligence, critical_chance=critical_chance, chr_type='npc')
-    elif specialization.lower() == "swordsman":
-        npc = hrs_profs.Swordsman(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
-                                  agility=agility, movement=movement, intelligence=intelligence, level=level,
-                                  spec=specialization, critical_chance=critical_chance, chr_type='npc')
+    if specialization.lower() == 'swordsman':
+        weapon_type = ['sword', 'small sword', 'heavy sword']
+    elif specialization.lower() == 'axeman':
+        weapon_type = ['axe', 'heavy axe', 'small axe']
+
+    if armored:
+        "IF Armored functions creates and puts random armor on NPC based on NPC level+1"
+        npc = hrs_profs.Hero(str(name), str(gender), str(clan), hp=hp, luck=luck, strength=strength,
+                             agility=agility, movement=movement, intelligence=intelligence, level=level,
+                             spec=specialization, critical_chance=critical_chance, chr_type='npc',
+                             head=armor_creator(requested_armor_type='helmet', requested_level=[1, level]),
+                             torso=armor_creator(requested_armor_type='vest', requested_level=[1, level]),
+                             left_arm=armor_creator(requested_armor_type='armlet', requested_level=[1, level]),
+                             right_arm=armor_creator(requested_armor_type='armlet', requested_level=[1, level]),
+                             legs=armor_creator(requested_armor_type='trousers', requested_level=[1, level]),
+                             feet=armor_creator(requested_armor_type='boots', requested_level=[1, level]),
+                             active_weapon=weapon_creator(requested_weapon_type=weapon_type, requested_level=[1, level]))
+
     list_to_append.append(npc)
     return None
 
@@ -115,7 +125,7 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
     return None
 
 
-def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level: int = None,
+def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level=None,
                   number_of_armor: int = None, list_to_append=items.armor_list):
     """This function will create a list of random armor objects based on requested armor type and level
     if armor type is not specified it will make random items. If the level is not specified it will make random levels.
@@ -136,8 +146,8 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
             level = requested_level
         """Determining items type here"""
         if requested_armor_type is None:
-            armor_type_choise = random.choice(armor_types)
-            armor_type = armor_type_choise
+            armor_type_choice = random.choice(armor_types)
+            armor_type = armor_type_choice
         else:
             armor_type = requested_armor_type
         """Determining items condition here"""
@@ -153,19 +163,19 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
         level = None
         armor_type = None
         condition = None
-    return None
+    return armor_item
 
 
-def weapon_creator(requested_weapon_type: str = None, requested_condition: str = None, requested_level: int = None,
-                  number_of_weapon: int = None, list_to_append=items.weapon_list):
+def weapon_creator(requested_weapon_type=None, requested_condition: str = None, requested_level=None,
+                   number_of_weapon: int = None, list_to_append=items.weapon_list):
     """This function will create a list of random weapons objects based on requested weapon type and level
         if weapon type is not specified it will make random items. If the level is not specified it will
         make random levels. Indicate the list where these NPC will be added"""
     weapon_types = ['sword', 'small sword', 'heavy sword', 'axe', 'heavy axe', 'small axe']  # All types of armor
     condition_list = ['broken', 'rusty', 'simple', 'normal', 'excellent', 'heroic']  # choosing the condition
     if number_of_weapon is None:
-        number_of_armor = 1
-    for armor_iter in range(1, number_of_weapon + 1):
+        number_of_weapon = 1
+    for weapon_iter in range(0, number_of_weapon + 1):
         """Determining items level here"""
         if requested_level is None:  # If nothing passed to the level it will use a range from 1 to 10, if list passed
             # use this list to randomly choose level. If int is passed-that will be the level
@@ -179,6 +189,8 @@ def weapon_creator(requested_weapon_type: str = None, requested_condition: str =
         if requested_weapon_type is None:
             weapon_type_choice = random.choice(weapon_types)
             weapon_type = weapon_type_choice
+        elif isinstance(requested_weapon_type, list):
+            weapon_type = random.choice(requested_weapon_type)
         else:
             weapon_type = requested_weapon_type
         """Determining items condition here"""
@@ -188,13 +200,13 @@ def weapon_creator(requested_weapon_type: str = None, requested_condition: str =
         else:
             condition = requested_condition
         name = str(condition) + " " + str(weapon_type)
-        armor_item = weapon.Weapon(name=name, condition=condition, level=level, weapon_type=weapon_type)
-        list_to_append.append(armor_item)
+        weapon_item = weapon.Weapon(name=name, condition=condition, level=level, weapon_type=weapon_type)
+        list_to_append.append(weapon_item)
         """Erase all previous selections"""
         level = None
         weapon_type = None
         condition = None
-    return None
+    return weapon_item
 
 
 def npc_list_print(npc_list: list):

@@ -4,7 +4,7 @@ import random
 class Weapon:
     _id = 0
 
-    def __init__(self, name, condition=None, damage=None, durability=0, luck=0, strength=0, agility=0,
+    def __init__(self, name, condition=None, damage=None, durability=0, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, level=1, weapon_type=None, Not_Custom=True):
         self.item_modifier = {'broken': 0.5, 'rusty': 0.6, 'simple': 0.8, 'normal': 1, 'excellent': 1.2,
                               'heroic': 1.3}
@@ -16,6 +16,7 @@ class Weapon:
         self.condition = condition
         self.damage = damage  # Amount of protection
         self.durability = durability
+        self.hp = hp
         self.luck = luck
         self.strength = strength
         self.agility = agility
@@ -39,6 +40,7 @@ class Weapon:
                 self.damage = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randrange(-3, -1) * (self.level * self.item_modifier[self.condition])))
@@ -50,6 +52,7 @@ class Weapon:
                 self.damage = [(int(random.randint(3, 7) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(7, 9) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(25, 45) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(1, 4) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
@@ -61,6 +64,7 @@ class Weapon:
                 self.damage = [(int(random.randint(2, 5) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(6, 8) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(0, 0) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(2, 5) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randrange(-1, 3) * (self.level * self.item_modifier[self.condition])))
@@ -72,6 +76,7 @@ class Weapon:
                 self.damage = [(int(random.randint(1, 3) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(4, 5) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randrange(-3, -1) * (self.level * self.item_modifier[self.condition])))
@@ -83,6 +88,7 @@ class Weapon:
                 self.damage = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(5, 7) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randint(1, 7) * (self.level * self.item_modifier[self.condition])))
@@ -94,6 +100,7 @@ class Weapon:
                 self.damage = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
                               (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]
                 self.durability = int((random.randint(15, 30) * (self.level * self.item_modifier[self.condition])))
+                self.hp = int((random.randint(0, 1) * (self.level * self.item_modifier[self.condition])))
                 self.luck = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.strength = int((random.randint(1, 3) * (self.level * self.item_modifier[self.condition])))
                 self.agility = int((random.randint(1, 6) * (self.level * self.item_modifier[self.condition])))

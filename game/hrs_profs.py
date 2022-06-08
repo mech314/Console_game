@@ -50,7 +50,7 @@ class Creature(ABC):
         self.movement = movement  # will be helping to calculate how far hero can go or how many action can perform
         self.intelligence = intelligence  # How smart
         self.critical_chance = critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
-        self._bag = bag  # A storage for all the shit that Hero has
+        self.bag = bag  # A storage for all the shit that Hero has
         self._what_is_on = what_is_on  # List that contains all clothes on a hero. Pop them from _bag when you put them
         self.sword_skill = sword_skill
         self.knife_skill = knife_skill
@@ -107,7 +107,7 @@ class Hero(Creature):
                  right_arm=items.naked,
                  legs=items.naked,
                  feet=items.naked,
-                 active_weapon='fist',
+                 active_weapon=items.fist,
                  active_skill=0,
                  chr_type='npc',
                  spec=None):
@@ -142,19 +142,79 @@ class Hero(Creature):
                          active_skill,
                          chr_type,
                          spec)
+        if self.spec.lower() == 'swordsman':
+            self.swordsman_bonuses()
+        elif self.spec.lower() == 'axeman':
+            self.axeman_bonuses()
+
+        if self.chr_type == 'npc':
+            self.npc_weapon()
+            self.npc_clothes()
+
+    def swordsman_bonuses(self):
+        self.hp += 30 * self.level
+        self.sword_skill += 3
+
+    def axeman_bonuses(self):
+        self.critical_chance += 10
+        self.axe_skill += 3
 
     @property
     def skills(self):
         """Returns all skills as a dict"""
-        return dict(sword=self.sword_skill, knife=self.knife_skill, axe=self.axe_skill, bow=self.bow_skill,
-                    fist=self.fist_skill)
+        return {'sword': self.sword_skill, 'knife': self.knife_skill, 'axe': self.axe_skill, 'bow': self.bow_skill,
+                'fist': self.fist_skill}
 
     @property
     def characteristics(self):
         """Return all Hero's characteristics as a dict"""
-        return dict(name=self.name, level=self.level, specialization=self.spec, hp=self.hp, strength=self.strength,
-                    agility=self.agility, luck=self.luck,
-                    movement=self.movement, intelligence=self.intelligence, critical_chance=self.critical_chance)
+        return {'name': self.name, 'chr_type': self.chr_type, 'specialization': self.spec, 'level': self.level,
+                'hp': self.hp, 'strength': self.strength, 'agility': self.agility, 'luck': self.luck,
+                'movement': self.movement, 'intelligence': self.intelligence, 'critical_chance': self.critical_chance,
+                'active_skill': self.active_skill, 'Axe skill': self.axe_skill, 'Sword skill': self.sword_skill,
+                'Head armor': self.head_armor, 'Body armor': self.torso_armor, 'Left arm armor': self.left_arm_armor,
+                'Right arm armor': self.right_arm_armor, 'Legs armor': self.legs_armor, 'Feet armor': self.feet_armor,
+                'Weapon damage': self.whats_on['Active weapon'].damage}
+
+    @property
+    def whats_on(self):
+        """Return all Hero's clothes as a dict"""
+        return {'Head': self.head, 'Torso': self.torso, 'Left arm': self.left_arm, 'Right arm': self.right_arm,
+                "Legs": self.legs, 'Feet': self.feet, 'Active weapon': self.active_weapon}
+
+    def print_whats_on(self):
+        """Prints clothes and weapon on the character """
+        for k, v in self.whats_on.items():
+            print('\n')
+            if k == 'Active weapon':
+                print(k.capitalize(), ':', v.name.capitalize(),
+                      '\nCondition', v.condition,
+                      '\nHp: ', v.hp,
+                      '\nDamage: ', v.damage,
+                      '\nDurability:', v.durability,
+                      '\nLuck: ', v.luck,
+                      '\nStrength: ', v.strength,
+                      '\nAgility: ', v.agility,
+                      '\nMovement: ', v.movement,
+                      '\nIntelligence: ', v.intelligence,
+                      '\nCritical chance: ', v.critical_chance,
+                      '\nLevel: ', v.level)
+            else:
+                print(k.capitalize(), ':', v.name.capitalize(),
+                      '\nCondition', v.condition,
+                      '\nHp: ', v.hp,
+                      '\nArmor: ', v.armor,
+                      '\nDurability:', v.durability,
+                      '\nLuck: ', v.luck,
+                      '\nStrength: ', v.strength,
+                      '\nAgility: ', v.agility,
+                      '\nMovement: ', v.movement,
+                      '\nIntelligence: ', v.intelligence,
+                      '\nCritical chance: ', v.critical_chance,
+                      '\nLevel: ', v.level)
+
+        on_chr = {key: value for (key, value) in self.whats_on.items() if value}
+        return {k.capitalize(): v for k, v in on_chr.items()}
 
     def print_chr(self):
         """Prints name and all character characteristics"""
@@ -239,6 +299,7 @@ class Hero(Creature):
             self.active_weapon = self.bag_content[choice]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
             self.luck += self.active_weapon.luck
+            self.hp += self.active_weapon.hp
             self.strength += self.active_weapon.strength
             self.agility += self.active_weapon.agility
             self.movement += self.active_weapon.movement
@@ -418,88 +479,19 @@ class Hero(Creature):
                 damage = self.calc_dmg() - armor_value
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
 
-
-class Swordsman(Hero):
-    """
-    A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
-    """
-
-    def __init__(self,
-                 name,
-                 gender,
-                 clan,
-                 level=1,
-                 exp=0,
-                 chr_points=0,
-                 hp=100,
-                 luck=1,
-                 strength=3,
-                 agility=3,
-                 movement=2,
-                 intelligence=1,
-                 critical_chance=0,
-                 bag=[],
-                 what_is_on=[],
-                 sword_skill=0,
-                 knife_skill=0,
-                 axe_skill=0,
-                 bow_skill=0,
-                 fist_skill=0,
-                 head=items.naked,
-                 torso=items.naked,
-                 left_arm=items.naked,
-                 right_arm=items.naked,
-                 legs=items.naked,
-                 feet=items.naked,
-                 active_weapon=items.fist,
-                 spec=None,
-                 chr_type='npc'):
-        super().__init__(name,
-                         gender,
-                         clan,
-                         level,
-                         exp,
-                         chr_points,
-                         hp,
-                         luck,
-                         strength,
-                         agility,
-                         movement,
-                         intelligence,
-                         critical_chance,
-                         bag,
-                         what_is_on,
-                         sword_skill,
-                         knife_skill,
-                         axe_skill,
-                         bow_skill,
-                         fist_skill,
-                         head,
-                         torso,
-                         left_arm,
-                         right_arm,
-                         legs,
-                         feet,
-                         active_weapon,
-                         spec,
-                         chr_type)
-        self.spec = spec
-        self.swordsman_bonuses()
-        if self.chr_type == 'npc':
-            self.npc_weapon()
-            self.npc_clothes()
-
     def npc_weapon(self):
-        self.active_skill = self.skills[self.active_weapon.weapon_type]
+        """Adds weapon bonuses to NPC"""
+        self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
         self.luck += self.active_weapon.luck
+        self.hp += self.active_weapon.hp
         self.strength += self.active_weapon.strength
         self.agility += self.active_weapon.agility
         self.movement += self.active_weapon.movement
         self.intelligence += self.active_weapon.intelligence
         self.critical_chance += self.active_weapon.critical_chance
-        return self.active_skill
 
     def npc_clothes(self):
+        """Adds clothes bonuses to NPC"""
         self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
         self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
                       self.feet.luck)
@@ -514,121 +506,216 @@ class Swordsman(Hero):
         self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
                                  + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
 
-    def swordsman_bonuses(self):
-        self.hp += 30 * self.level
-        self.sword_skill = 3
-
-
-class Axeman(Hero):
-    """
-    A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
-    """
-
-    def __init__(self,
-                 name,
-                 gender,
-                 clan,
-                 level=1,
-                 exp=0,
-                 chr_points=0,
-                 hp=100,
-                 luck=1,
-                 strength=5,
-                 agility=3,
-                 movement=2,
-                 intelligence=1,
-                 critical_chance=0,
-                 bag=[],
-                 what_is_on=[],
-                 sword_skill=0,
-                 knife_skill=0,
-                 axe_skill=0,
-                 bow_skill=0,
-                 fist_skill=0,
-                 head=items.naked,
-                 torso=items.naked,
-                 left_arm=items.naked,
-                 right_arm=items.naked,
-                 legs=items.naked,
-                 feet=items.naked,
-                 active_weapon=items.fist,
-                 spec=None,
-                 chr_type='npc'):
-        super().__init__(name,
-                         gender,
-                         clan,
-                         level,
-                         exp,
-                         chr_points,
-                         hp,
-                         luck,
-                         strength,
-                         agility,
-                         movement,
-                         intelligence,
-                         critical_chance,
-                         bag,
-                         what_is_on,
-                         sword_skill,
-                         knife_skill,
-                         axe_skill,
-                         bow_skill,
-                         fist_skill,
-                         head,
-                         torso,
-                         left_arm,
-                         right_arm,
-                         legs,
-                         feet,
-                         active_weapon,
-                         spec,
-                         chr_type)
-        self.spec = spec
-        self.axeman_bonuses()
-        if self.chr_type == 'npc':
-            self.npc_weapon()
-            self.npc_clothes()
-
-    def npc_weapon(self):
-        self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self.luck += self.active_weapon.luck
-        self.strength += self.active_weapon.strength
-        self.agility += self.active_weapon.agility
-        self.movement += self.active_weapon.movement
-        self.intelligence += self.active_weapon.intelligence
-        self.critical_chance += self.active_weapon.critical_chance
-        return self.active_skill
-
-    def npc_clothes(self):
-        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
-        self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
-                      self.feet.luck)
-        self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
-                          self.legs.strength + self.feet.strength)
-        self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
-                         self.legs.agility + self.feet.agility)
-        self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
-                          self.legs.movement + self.feet.movement)
-        self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
-                              self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
-        self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
-                                 + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
-
-    def axeman_bonuses(self):
-        self.critical_chance += 10
-        self.axe_skill = 3
-
-
-class Thief(Hero):
-    """
-    A knifesman, inherits from Hero, takes specialization. Sneaky - high agility, smart - high intelect
-    """
-
-    def __init__(self, name, gender, clan, spec):
-        super().__init__(name, gender, clan)
-        self.spec = spec
-
-        if self.spec == "sneaky":  # if sneaky is agile
-            self.agility = 5
-        else:  # if smart is smart
-            self.intelligence = 5
+# class Swordsman(Hero):
+#     """
+#     A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
+#     """
+#
+#     def __init__(self,
+#                  name,
+#                  gender,
+#                  clan,
+#                  level=1,
+#                  exp=0,
+#                  chr_points=0,
+#                  hp=100,
+#                  luck=1,
+#                  strength=3,
+#                  agility=3,
+#                  movement=2,
+#                  intelligence=1,
+#                  critical_chance=0,
+#                  bag=[],
+#                  what_is_on=[],
+#                  sword_skill=0,
+#                  knife_skill=0,
+#                  axe_skill=0,
+#                  bow_skill=0,
+#                  fist_skill=0,
+#                  head=items.naked,
+#                  torso=items.naked,
+#                  left_arm=items.naked,
+#                  right_arm=items.naked,
+#                  legs=items.naked,
+#                  feet=items.naked,
+#                  active_weapon=items.fist,
+#                  spec=None,
+#                  chr_type='npc'):
+#         super().__init__(name,
+#                          gender,
+#                          clan,
+#                          level,
+#                          exp,
+#                          chr_points,
+#                          hp,
+#                          luck,
+#                          strength,
+#                          agility,
+#                          movement,
+#                          intelligence,
+#                          critical_chance,
+#                          bag,
+#                          what_is_on,
+#                          sword_skill,
+#                          knife_skill,
+#                          axe_skill,
+#                          bow_skill,
+#                          fist_skill,
+#                          head,
+#                          torso,
+#                          left_arm,
+#                          right_arm,
+#                          legs,
+#                          feet,
+#                          active_weapon,
+#                          spec,
+#                          chr_type)
+#         self.spec = spec
+#         self.swordsman_bonuses()
+#         if self.chr_type == 'npc':
+#             self.npc_weapon()
+#             self.npc_clothes()
+#
+#     def npc_weapon(self):
+#         self.active_skill = self.skills[self.active_weapon.weapon_type]
+#         self.luck += self.active_weapon.luck
+#         self.strength += self.active_weapon.strength
+#         self.agility += self.active_weapon.agility
+#         self.movement += self.active_weapon.movement
+#         self.intelligence += self.active_weapon.intelligence
+#         self.critical_chance += self.active_weapon.critical_chance
+#         return self.active_skill
+#
+#     def npc_clothes(self):
+#         self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
+#         self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+#                       self.feet.luck)
+#         self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+#                           self.legs.strength + self.feet.strength)
+#         self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+#                          self.legs.agility + self.feet.agility)
+#         self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+#                           self.legs.movement + self.feet.movement)
+#         self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+#                               self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
+#         self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
+#                                  + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
+#
+#     def swordsman_bonuses(self):
+#         self.hp += 30 * self.level
+#         self.sword_skill = 3
+#
+#
+# class Axeman(Hero):
+#     """
+#     A swordsman or an axeman, inherits from Hero class. Also takes specialization attribute.
+#     """
+#
+#     def __init__(self,
+#                  name,
+#                  gender,
+#                  clan,
+#                  level=1,
+#                  exp=0,
+#                  chr_points=0,
+#                  hp=100,
+#                  luck=1,
+#                  strength=5,
+#                  agility=3,
+#                  movement=2,
+#                  intelligence=1,
+#                  critical_chance=0,
+#                  bag=[],
+#                  what_is_on=[],
+#                  sword_skill=0,
+#                  knife_skill=0,
+#                  axe_skill=0,
+#                  bow_skill=0,
+#                  fist_skill=0,
+#                  head=items.naked,
+#                  torso=items.naked,
+#                  left_arm=items.naked,
+#                  right_arm=items.naked,
+#                  legs=items.naked,
+#                  feet=items.naked,
+#                  active_weapon=items.fist,
+#                  spec=None,
+#                  chr_type='npc'):
+#         super().__init__(name,
+#                          gender,
+#                          clan,
+#                          level,
+#                          exp,
+#                          chr_points,
+#                          hp,
+#                          luck,
+#                          strength,
+#                          agility,
+#                          movement,
+#                          intelligence,
+#                          critical_chance,
+#                          bag,
+#                          what_is_on,
+#                          sword_skill,
+#                          knife_skill,
+#                          axe_skill,
+#                          bow_skill,
+#                          fist_skill,
+#                          head,
+#                          torso,
+#                          left_arm,
+#                          right_arm,
+#                          legs,
+#                          feet,
+#                          active_weapon,
+#                          spec,
+#                          chr_type)
+#         self.spec = spec
+#         self.axeman_bonuses()
+#         if self.chr_type == 'npc':
+#             self.npc_weapon()
+#             self.npc_clothes()
+#
+#     def npc_weapon(self):
+#         self.active_skill = self.skills[self.active_weapon.weapon_type]
+#         self.luck += self.active_weapon.luck
+#         self.strength += self.active_weapon.strength
+#         self.agility += self.active_weapon.agility
+#         self.movement += self.active_weapon.movement
+#         self.intelligence += self.active_weapon.intelligence
+#         self.critical_chance += self.active_weapon.critical_chance
+#         return self.active_skill
+#
+#     def npc_clothes(self):
+#         self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
+#         self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+#                       self.feet.luck)
+#         self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+#                           self.legs.strength + self.feet.strength)
+#         self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+#                          self.legs.agility + self.feet.agility)
+#         self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+#                           self.legs.movement + self.feet.movement)
+#         self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+#                               self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
+#         self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
+#                                  + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
+#
+#     def axeman_bonuses(self):
+#         self.critical_chance += 10
+#         self.axe_skill = 3
+#
+#
+# class Thief(Hero):
+#     """
+#     A knifesman, inherits from Hero, takes specialization. Sneaky - high agility, smart - high intelect
+#     """
+#
+#     def __init__(self, name, gender, clan, spec):
+#         super().__init__(name, gender, clan)
+#         self.spec = spec
+#
+#         if self.spec == "sneaky":  # if sneaky is agile
+#             self.agility = 5
+#         else:  # if smart is smart
+#             self.intelligence = 5
