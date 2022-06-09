@@ -3,27 +3,16 @@ import random
 from console_game.game import hrs_profs
 from console_game.game import armor
 from console_game.game import chr_npc
-from console_game.game import items
 from console_game.game import weapon
 
 
 def npc_creator(name: str, gender: str, clan: str, specialization: str, level: int, armored: bool = True,
-                list_to_append: list = chr_npc.npc_list):
+                bag_contents: bool = True, list_to_append: list = chr_npc.npc_list):
     """This function will take some arguments and create an NPC the characteristics will depend on the level of the
     NPC you wanna create. Indicate the list where these NPC will be added
     Here are values for level 1 NPC
     """
-    npc_counter = 1
-
-    ref_hp = [90, 120]
-    ref_luck = [1, 3]
-    ref_strength = [2, 5]
-    ref_agility = [1, 3]
-    ref_movement = [1, 4]
-    ref_intelligence = [1, 3]
-
     """Dictionary containing the multipliers for each level"""
-
     level_multipliers = {"1": 1,
                          "2": 1.13,
                          "3": 1.2,
@@ -33,7 +22,29 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
                          "7": 1.49,
                          "8": 1.53,
                          "9": 1.55,
-                         "10": 1.9}
+                         "10": 1.9,
+                         "11": 2.4}
+
+    def bag_contents_chance():
+        """Will calculate the chance and the amount of items to put into the bag"""
+        items_to_add = False
+        if random.randint(0, 100) < 15:
+            if random.randint(0, 100) < 10:
+                items_to_add = 3
+            elif random.randint(0, 100) < 30:
+                items_to_add = 2
+            elif random.randint(0, 100) < 100:
+                items_to_add = 1
+        return items_to_add
+
+    npc_counter = 1     # Not used now
+
+    ref_hp = [90, 120]      # Probably need to convert this into dict.
+    ref_luck = [1, 3]
+    ref_strength = [2, 5]
+    ref_agility = [1, 3]
+    ref_movement = [1, 4]
+    ref_intelligence = [1, 3]
 
     hp = int(level_multipliers[str(level)] * random.randint(ref_hp[0], ref_hp[1]))
     luck = int(level_multipliers[str(level)] * random.randint(ref_luck[0], ref_luck[1]))
@@ -43,7 +54,7 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
     intelligence = int(level_multipliers[str(level)] * random.randint(ref_intelligence[0], ref_intelligence[1]))
     critical_chance = int(1.21 * level_multipliers[str(level)])
 
-    if specialization.lower() == 'swordsman':
+    if specialization.lower() == 'swordsman':       # Choosing weapon types to be generated based on the specialization of NPC
         weapon_type = ['sword', 'small sword', 'heavy sword']
     elif specialization.lower() == 'axeman':
         weapon_type = ['axe', 'heavy axe', 'small axe']
@@ -60,6 +71,15 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
                              legs=armor_creator(requested_armor_type='trousers', requested_level=[1, level]),
                              feet=armor_creator(requested_armor_type='boots', requested_level=[1, level]),
                              active_weapon=weapon_creator(requested_weapon_type=weapon_type, requested_level=[1, level]))
+
+    """ If NPC to have something in the bag, bg_contents_chance() will calculate a chance of adding something to the bag
+    typically 15%. It will return the number of items to add. Example: if number_of_items it will add 2 weapons and 2 armors.
+    Levels are random from 1 to NPC+1 level"""
+    if bag_contents:
+        number_of_items = bag_contents_chance()
+        if number_of_items:
+            weapon_creator(number_of_weapon=number_of_items, requested_level=[1, level+1], add_to_bag=True, character=npc)
+            armor_creator(number_of_armor=number_of_items, requested_level=[1, level+1], add_to_bag=True, character=npc)
 
     list_to_append.append(npc)
     return None
@@ -126,7 +146,7 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
 
 
 def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level=None,
-                  number_of_armor: int = None, list_to_append=items.armor_list):
+                  number_of_armor: int = None, list_to_append=None, add_to_bag=False, character=None):
     """This function will create a list of random armor objects based on requested armor type and level
     if armor type is not specified it will make random items. If the level is not specified it will make random levels.
     Indicate the list where these NPC will be added"""
@@ -158,16 +178,22 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
             condition = requested_condition
         name = str(condition) + " " + str(armor_type)
         armor_item = armor.Armor(name=name, condition=condition, level=level, armor_type=armor_type)
-        list_to_append.append(armor_item)
         """Erase all previous selections"""
         level = None
         armor_type = None
         condition = None
-    return armor_item
+        if add_to_bag:
+            character.add_item_to_the_bag(armor_item)
+        elif isinstance(list_to_append, list):
+            list_to_append.append(armor_item)
+    if list_to_append is None:  # Is used when we use this function with NPC creation and put the weapon\clothes on the NPC
+        return armor_item
+    else:
+        return None
 
 
 def weapon_creator(requested_weapon_type=None, requested_condition: str = None, requested_level=None,
-                   number_of_weapon: int = None, list_to_append=items.weapon_list):
+                   number_of_weapon: int = None, list_to_append=None, add_to_bag=False, character=None):
     """This function will create a list of random weapons objects based on requested weapon type and level
         if weapon type is not specified it will make random items. If the level is not specified it will
         make random levels. Indicate the list where these NPC will be added"""
@@ -175,7 +201,7 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
     condition_list = ['broken', 'rusty', 'simple', 'normal', 'excellent', 'heroic']  # choosing the condition
     if number_of_weapon is None:
         number_of_weapon = 1
-    for weapon_iter in range(0, number_of_weapon + 1):
+    for weapon_iter in range(1, number_of_weapon+1):
         """Determining items level here"""
         if requested_level is None:  # If nothing passed to the level it will use a range from 1 to 10, if list passed
             # use this list to randomly choose level. If int is passed-that will be the level
@@ -201,18 +227,30 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
             condition = requested_condition
         name = str(condition) + " " + str(weapon_type)
         weapon_item = weapon.Weapon(name=name, condition=condition, level=level, weapon_type=weapon_type)
-        list_to_append.append(weapon_item)
         """Erase all previous selections"""
         level = None
         weapon_type = None
         condition = None
-    return weapon_item
+        if add_to_bag:
+            character.add_item_to_the_bag(weapon_item)
+        elif isinstance(list_to_append, list):
+            list_to_append.append(weapon_item)
+    if list_to_append is None:      # Is used when we use this function with NPC creation and put the weapon\clothes on the NPC
+        return weapon_item
+    else:
+        return None
 
 
-def npc_list_print(npc_list: list):
+def npc_list_print(npc_list):
     """Will print all NPC from the NPC list in chr_npc module"""
-    for npc in npc_list:
-        npc_dict = npc.characteristics
+    if isinstance(npc_list, list):
+        for npc in npc_list:
+            npc_dict = npc.characteristics
+            print("\n")
+            for key, value in npc_dict.items():
+                print(key, ":", value)
+    else:
+        npc_dict = npc_list.characteristics
         print("\n")
         for key, value in npc_dict.items():
             print(key, ":", value)
@@ -227,15 +265,33 @@ def armor_list_print(armor_list: list):
             print(key, ":", value)
 
 
-def weapon_list_print(weapon_list: list):
+def item_list_print(weapon_list: list):
     """Will print all armor from the armor list in items module"""
     for weapon_item in weapon_list:
-        item_dict = weapon_item.weapon_chr
         print("\n")
-        for key, value in item_dict.items():
-            print(key, ":", value)
-
-
-def take_item(item_list, player):
-    for item in item_list:
-        player.add_item_to_the_bag(item)
+        if weapon_item.item_type == 'weapon':
+            print('\nName', ':', weapon_item.name.capitalize(),
+                  '\nCondition', weapon_item.condition,
+                  '\nHp: ', weapon_item.hp,
+                  '\nDamage: ', weapon_item.damage,
+                  '\nDurability:', weapon_item.durability,
+                  '\nLuck: ', weapon_item.luck,
+                  '\nStrength: ', weapon_item.strength,
+                  '\nAgility: ', weapon_item.agility,
+                  '\nMovement: ', weapon_item.movement,
+                  '\nIntelligence: ', weapon_item.intelligence,
+                  '\nCritical chance: ', weapon_item.critical_chance,
+                  '\nLevel: ', weapon_item.level)
+        elif weapon_item.item_type == 'clothes':
+            print('\nName', ':', weapon_item.name.capitalize(),
+                  '\nCondition', weapon_item.condition,
+                  '\nHp: ', weapon_item.hp,
+                  '\nArmor: ', weapon_item.armor,
+                  '\nDurability:', weapon_item.durability,
+                  '\nLuck: ', weapon_item.luck,
+                  '\nStrength: ', weapon_item.strength,
+                  '\nAgility: ', weapon_item.agility,
+                  '\nMovement: ', weapon_item.movement,
+                  '\nIntelligence: ', weapon_item.intelligence,
+                  '\nCritical chance: ', weapon_item.critical_chance,
+                  '\nLevel: ', weapon_item.level)
