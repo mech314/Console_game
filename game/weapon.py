@@ -6,7 +6,7 @@ class Weapon:
 
     def __init__(self, name, condition=None, damage=None, durability=0, hp=0, luck=0, strength=0, agility=0,
                  movement=0, intelligence=0, critical_chance=0, level=1, item_type='weapon', weapon_type=None,
-                 Not_Custom=True):
+                 not_custom=True):
         self.item_modifier = {'broken': 0.5, 'rusty': 0.6, 'simple': 0.8, 'normal': 1, 'excellent': 1.2,
                               'heroic': 1.3}
         if damage is None:
@@ -27,8 +27,7 @@ class Weapon:
         self.level = level
         self.item_type = item_type
         self.weapon_type = weapon_type  # Important for putting armor on the character body parts
-        self.Not_Custom = Not_Custom
-
+        self.not_custom = not_custom
 
         if self.condition is None:  # If condition is 'fist' armor will be just naked.
             self.damage = [0, 1]
@@ -38,7 +37,7 @@ class Weapon:
 
     def weapon_maker(self):
         """This functions only for automatically generated items, Custom items will made by hand."""
-        if self.Not_Custom and self.weapon_type.lower() != 'fist':
+        if self.not_custom and self.weapon_type.lower() != 'fist':
             if self.weapon_type.lower() == 'sword':
                 self.damage = [(int(random.randint(1, 4) * (self.level * self.item_modifier[self.condition]))),
                                (int(random.randint(3, 5) * (self.level * self.item_modifier[self.condition])))]

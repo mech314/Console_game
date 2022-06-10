@@ -13,20 +13,20 @@ class Creature(ABC):
                  level,
                  exp,
                  chr_points,
-                 hp,
-                 luck,
-                 strength,
-                 agility,
-                 movement,
-                 intelligence,
-                 critical_chance,
+                 base_hp,
+                 base_luck,
+                 base_strength,
+                 base_agility,
+                 base_movement,
+                 base_intelligence,
+                 base_critical_chance,
                  _bag,
                  _what_is_on,
-                 sword_skill,
-                 knife_skill,
-                 axe_skill,
-                 bow_skill,
-                 fist_skill,
+                 base_sword_skill,
+                 base_knife_skill,
+                 base_axe_skill,
+                 base_bow_skill,
+                 base_fist_skill,
                  head,
                  torso,
                  left_arm,
@@ -43,20 +43,20 @@ class Creature(ABC):
         self.level = level  # Level
         self.exp = exp  # Experience, will be added after battles etc
         self.chr_points = chr_points  # Amount of points received with the level_UP.
-        self.hp = hp  # Amount of hit-points
-        self.luck = luck  # How lucky the bastard is
-        self.strength = strength  # Strong man?
-        self.agility = agility  # Agile
-        self.movement = movement  # will be helping to calculate how far hero can go or how many action can perform
-        self.intelligence = intelligence  # How smart
-        self.critical_chance = critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
+        self.base_hp = base_hp  # Amount of hit-points
+        self.base_luck = base_luck  # How lucky the bastard is
+        self.base_strength = base_strength  # Strong man?
+        self.base_agility = base_agility  # Agile
+        self.base_movement = base_movement  # will be helping to calculate how far hero can go or how many action can perform
+        self.base_intelligence = base_intelligence  # How smart
+        self.base_critical_chance = base_critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
         self._bag = _bag  # A storage for all the shit that Hero has
         self._what_is_on = _what_is_on  # List that contains all clothes on a hero. Pop them from _bag when you put them
-        self.sword_skill = sword_skill
-        self.knife_skill = knife_skill
-        self.axe_skill = axe_skill
-        self.bow_skill = bow_skill
-        self.fist_skill = fist_skill
+        self.base_sword_skill = base_sword_skill
+        self.base_knife_skill = base_knife_skill
+        self.base_axe_skill = base_axe_skill
+        self.base_bow_skill = base_bow_skill
+        self.base_fist_skill = base_fist_skill
         self.head = head  # What is on your head
         self.torso = torso  # What is on your torso
         self.left_arm = left_arm  # What is on your LEFT ARM
@@ -87,20 +87,20 @@ class Hero(Creature):
                  level=1,
                  exp=0,
                  chr_points=0,
-                 hp=100,
-                 luck=1,
-                 strength=3,
-                 agility=3,
-                 movement=2,
-                 intelligence=1,
-                 critical_chance=0,
+                 base_hp=100,
+                 base_luck=1,
+                 base_strength=3,
+                 base_agility=3,
+                 base_movement=2,
+                 base_intelligence=1,
+                 base_critical_chance=0,
                  _bag=[],
                  _what_is_on=[],
-                 sword_skill=0,
-                 knife_skill=0,
-                 axe_skill=0,
-                 bow_skill=0,
-                 fist_skill=0,
+                 base_sword_skill=0,
+                 base_knife_skill=0,
+                 base_axe_skill=0,
+                 base_bow_skill=0,
+                 base_fist_skill=0,
                  head=items.naked,
                  torso=items.naked,
                  left_arm=items.naked,
@@ -118,20 +118,20 @@ class Hero(Creature):
                          level,
                          exp,
                          chr_points,
-                         hp,
-                         luck,
-                         strength,
-                         agility,
-                         movement,
-                         intelligence,
-                         critical_chance,
+                         base_hp,
+                         base_luck,
+                         base_strength,
+                         base_agility,
+                         base_movement,
+                         base_intelligence,
+                         base_critical_chance,
                          _bag,
                          _what_is_on,
-                         sword_skill,
-                         knife_skill,
-                         axe_skill,
-                         bow_skill,
-                         fist_skill,
+                         base_sword_skill,
+                         base_knife_skill,
+                         base_axe_skill,
+                         base_bow_skill,
+                         base_fist_skill,
                          head,
                          torso,
                          left_arm,
@@ -146,43 +146,62 @@ class Hero(Creature):
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
         an effective value for the parameters based on what is on the character. This is here because it is handy if you wanna
         start with the character not naked but with clothes and weapon. Not necessary for sure but works so far."""
-        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp +
-                    self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-        self.luck += (
-                self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+        self.hp = self.base_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
+                                  self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
+        self.luck = (
+                self.base_luck + self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
                 self.feet.luck + self.active_weapon.luck)
-        self.strength += (
-                self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+        self.strength = (
+                self.base_strength + self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
                 self.legs.strength + self.feet.strength + self.active_weapon.strength)
-        self.agility += (
-                self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+        self.agility = (
+                self.base_agility + self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
                 self.legs.agility + self.feet.agility + self.active_weapon.agility)
-        self.movement += (
-                self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+        self.movement = (
+                self.base_movement + self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
                 self.legs.movement + self.feet.movement + self.active_weapon.movement)
-        self.intelligence += (
-                self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+        self.intelligence = (
+                self.base_intelligence + self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
                 self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence +
                 self.active_weapon.intelligence)
-        self.critical_chance += (self.head.critical_chance +
-                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
-                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
-        self.reference_hp = hp
+        self.critical_chance = (self.base_critical_chance + self.head.critical_chance +
+                                self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
+                                + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
+
         self.max_hp = self.hp
-        self.sword_skill = sword_skill
-        self.knife_skill = knife_skill
-        self.axe_skill = axe_skill
-        self.bow_skill = bow_skill
-        self.fist_skill = fist_skill
+        self.sword_skill = base_sword_skill
+        self.knife_skill = base_knife_skill
+        self.axe_skill = base_axe_skill
+        self.bow_skill = base_bow_skill
+        self.fist_skill = base_fist_skill
         self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
+
+    def base_specs(self):  # Makes a dict with the UNMODIFIED VALUES
+        base_specs_dict = {'hp': self.base_hp, 'strength': self.base_strength, 'agility': self.base_agility,
+                           'luck': self.base_luck,
+                           'movement': self.base_movement, 'intelligence': self.base_intelligence,
+                           'critical_chance': self.base_critical_chance,
+                           'Sword skill': self.base_sword_skill, 'Axe skill': self.base_axe_skill,
+                           'Bow skill': self.base_bow_skill,
+                           'Fist skill': self.base_fist_skill, 'Knife skill': self.base_knife_skill}
+        return base_specs_dict
+
+    def effective_specs(self):  # Makes a dict with CURRENT VALUES
+        effective_specs_dict = {'hp': self.hp, 'strength': self.strength, 'agility': self.agility, 'luck': self.luck,
+                                'movement': self.movement, 'intelligence': self.intelligence,
+                                'critical_chance': self.critical_chance,
+                                'Sword skill': self.sword_skill, 'Axe skill': self.axe_skill,
+                                'Bow skill': self.bow_skill,
+                                'Fist skill': self.fist_skill, 'Knife skill': self.knife_skill}
+        return effective_specs_dict
 
     def apply_specialization(self):
         if self.spec.lower() == 'swordsman':
-            self.sword_skill += 3
-            self.hp += 30
+            self.base_sword_skill += 3
+            self.base_hp += 30
         elif self.spec.lower() == 'axeman':
-            self.axe_skill += 3
-            self.critical_chance += 5
+            self.base_axe_skill += 3
+            self.base_critical_chance += 5
 
     # def hp_difference(self):
 
@@ -193,62 +212,52 @@ class Hero(Creature):
     #     else:
     #         bonus = 0
     #
-    #     self.max_hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
+    #     self.max_hp = self.base_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
     #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
     #
-    #     self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
+    #     self.hp = self.base_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
     #                               self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
     #
     #     if self.max_hp == self.hp:
-    #         self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
+    #         self.hp = self.base_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
     #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
     #         print(self.hp)
     #     elif self.max_hp > self.hp:
     #         hp_difference = self.max_hp - self.hp
-    #         self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
+    #         self.hp = self.base_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
     #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp) - hp_difference
     #
     #     self.luck = (
-    #             self.luck + self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
+    #             self.base_luck + self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
     #             self.feet.luck + self.active_weapon.luck)
     #     self.strength = (
-    #             self.strength + self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
+    #             self.base_strength + self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
     #             self.legs.strength + self.feet.strength + self.active_weapon.strength)
     #     self.agility = (
-    #             self.agility + self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
+    #             self.base_agility + self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
     #             self.legs.agility + self.feet.agility + self.active_weapon.agility)
     #     self.movement = (
-    #             self.movement + self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
+    #             self.base_movement + self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
     #             self.legs.movement + self.feet.movement + self.active_weapon.movement)
     #     self.intelligence = (
-    #             self.intelligence + self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
+    #             self.base_intelligence + self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
     #             self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence +
     #             self.active_weapon.intelligence)
     #     if self.spec.lower() == 'axeman':  # Apply axeman critical change bonus
-    #         self.critical_chance = (10 + self.critical_chance + self.head.critical_chance +
+    #         self.critical_chance = (10 + self.base_critical_chance + self.head.critical_chance +
     #                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
     #                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
     #     else:
-    #         self.critical_chance = (self.critical_chance + self.head.critical_chance +
+    #         self.critical_chance = (self.base_critical_chance + self.head.critical_chance +
     #                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
     #                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
     #     self.effective_specs()
 
-    def current_max_hp(self):
-        if self.spec.lower() == 'swordsman':
-            self.max_hp = self.reference_hp + (30 * self.level) + (self.head.hp + self.torso.hp + self.left_arm.hp +
-                                                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-        else:
-            self.max_hp = self.reference_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
-                                               self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-        print((self.head.hp + self.torso.hp + self.left_arm.hp +
-                                               self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp))
-
     @property
     def skills(self):
         """Returns all skills as a dict"""
-        return {'sword': self.sword_skill, 'knife': self.knife_skill, 'axe': self.axe_skill,
-                'bow': self.bow_skill, 'fist': self.fist_skill}
+        return {'sword': self.base_sword_skill, 'knife': self.base_knife_skill, 'axe': self.base_axe_skill,
+                'bow': self.base_bow_skill, 'fist': self.base_fist_skill}
 
     @property
     def current_characteristics(self):
@@ -320,9 +329,8 @@ class Hero(Creature):
             self.chr_points += 5
             if self.spec.lower() == 'swordsman':
                 self.hp += 30
-                self.current_max_hp
             if self.spec.lower() == 'axeman':
-                self.critical_chance += 5
+                self.base_critical_chance += 5
             print("Congratulations, you have reached {} level, you have {} free "
                   "points to make yourself better".format(self.level, self.chr_points))
             flag = True
@@ -347,25 +355,25 @@ class Hero(Creature):
             choice = input(str('What characteristic you want to improve: a) strength, b) agility, c) luck, '
                                'd) movement, f) intelligence'))
             if choice.lower() == 'a' and 'strength':
-                self.strength += 1
+                self.base_strength += 1
                 self.chr_points -= 1
-                print("Your Base Strength is {}".format(self.strength))
+                print("Your Base Strength is {}".format(self.base_strength))
             elif choice.lower() == 'b' and 'agility':
-                self.agility += 1
+                self.base_agility += 1
                 self.chr_points -= 1
-                print("Your Base Agility is {}".format(self.agility))
+                print("Your Base Agility is {}".format(self.base_agility))
             elif choice.lower() == 'c' and 'luck':
-                self.luck += 1
+                self.base_luck += 1
                 self.chr_points -= 1
-                print("Your Base Luck is {}".format(self.luck))
+                print("Your Base Luck is {}".format(self.base_luck))
             elif choice.lower() == 'd' and 'movement':
-                self.movement += 1
+                self.base_movement += 1
                 self.chr_points -= 1
-                print("Your Base Movement is {}".format(self.movement))
+                print("Your Base Movement is {}".format(self.base_movement))
             elif choice.lower() == 'f' and 'intelligence':
-                self.intelligence += 1
+                self.base_intelligence += 1
                 self.chr_points -= 1
-                print("Your Base Intelligence is {}".format(self.intelligence))
+                print("Your Base Intelligence is {}".format(self.base_intelligence))
         print("Your character's characteristics are:")
         self.print_chr()
 
@@ -414,6 +422,24 @@ class Hero(Creature):
                       '\nLevel: ', item.level)
         print('----------------------------------------')
 
+    # def choose_weapon(self, choice):
+    #     """Selecting the weapon from the bag and adds-up all the characteristic to self.whatever_chr_is"""
+    #     item = self.bag_content[choice]
+    #     if isinstance(item, weapon.Weapon):
+    #         self.active_weapon = self.bag_content[choice]
+    #         self.active_skill = self.skills[self.active_weapon.weapon_type]
+    #         self.luck += self.active_weapon.luck
+    #         self.hp += self.active_weapon.hp
+    #         self.strength += self.active_weapon.strength
+    #         self.agility += self.active_weapon.agility
+    #         self.movement += self.active_weapon.movement
+    #         self.intelligence += self.active_weapon.intelligence
+    #         self.critical_chance += self.active_weapon.critical_chance
+    #         print(f'You have {item.name.lower()} in your hand')
+    #         return self.active_skill
+    #     else:
+    #         print(f'You are trying to fight with {item.name.lower()}, are you too smart?')
+
     def put_on_items(self, choice=None):
         """Puts a piece of armor on you"""
         if choice:
@@ -428,8 +454,6 @@ class Hero(Creature):
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You put {item.name} on your body')
                 self.torso = self.bag_content[int(choice)]
-                self.left_arm = self.bag_content[int(choice)]
-                self.right_arm = self.bag_content[int(choice)]
                 self.torso_armor = item.armor
                 self.left_arm_armor = item.armor
                 self.right_arm_armor = item.armor
@@ -474,14 +498,13 @@ class Hero(Creature):
             self.active_weapon = self.bag_content[int(choice)]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
         self._what_is_on.append(self._bag.pop(int(choice)))
-        self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
+        self.base_hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck += item.luck
         self.strength += item.strength
         self.agility += item.agility
         self.movement += item.movement
         self.intelligence += item.intelligence
         self.critical_chance += item.critical_chance
-        self.current_max_hp()
         if len(self.bag_content) > 0:
             self.print_bag_cnt()
             more_items = input('Do you want to put something else? ')
@@ -528,8 +551,8 @@ class Hero(Creature):
                         elif hand.lower() == 'right':
                             print(f'You took off {item.name} from your right hand')
                             naked = items.naked
-                            self.right_arm = naked
-                            self.right_arm_armor = naked.armor
+                            self.left_arm = naked
+                            self.left_arm_armor = naked.armor
                             flag = False
                         elif hand.lower() == 'no':
                             return None
@@ -557,14 +580,13 @@ class Hero(Creature):
             self.active_weapon = items.fist
             self.active_skill = self.skills[self.active_weapon.weapon_type]
         self._bag.append(self._what_is_on.pop(int(choice)))
-        self.hp -= item.hp  # Now adds up all characteristics of a cloth to character's chr.
+        self.base_hp -= item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck -= item.luck
         self.strength -= item.strength
         self.agility -= item.agility
         self.movement -= item.movement
         self.intelligence -= item.intelligence
         self.critical_chance -= item.critical_chance
-        self.current_max_hp()
         if len(self._what_is_on) > 0:
             naked_party = input('Do you want to take something else off? ')
             if str(naked_party).lower() == "no":
@@ -697,6 +719,7 @@ class Hero(Creature):
     #                           self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
     #     self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
     #                              + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
+
 # class Thief(Hero):
 #     """
 #     A knifesman, inherits from Hero, takes specialization. Sneaky - high agility, smart - high intelect

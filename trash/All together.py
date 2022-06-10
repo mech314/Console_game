@@ -27,8 +27,8 @@ class Hero:
         """Calculates the damage from a weapon based on chr charactetistics and hits the target"""
         modifier = 1 + (self.strength / 100) + (self.agility / 150) + (self.skills['sword_skill'] / 10)
         dmg = modifier * random.randint(self.bag['sword'][0], self.bag['sword'][1])
-        whom_to_hit.hp -= dmg
-        return whom_to_hit.hp
+        whom_to_hit.base_hp -= dmg
+        return whom_to_hit.base_hp
 
 
 class Fighter(Hero):

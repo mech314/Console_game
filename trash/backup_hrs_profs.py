@@ -166,7 +166,7 @@ class Hero:
         if isinstance(item, weapon.Weapon):
             self.active_weapon = self.bag_content[choice]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
-            self.hp += self.active_weapon.hp
+            self.hp += self.active_weapon.base_hp
             self.luck += self.active_weapon.luck
             self.strength += self.active_weapon.strength
             self.agility += self.active_weapon.agility
@@ -223,7 +223,7 @@ class Hero:
                 print(f'You put {item.name} on your head')
                 self.head = self.bag_content[choice]
                 self.head_armor = item.damage
-            self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
+            self.hp += item.base_hp  # Now adds up all characteristics of a cloth to character's chr.
             self.luck += item.luck
             self.strength += item.strength
             self.agility += item.agility

@@ -224,7 +224,7 @@ class Axeman(Enemy):
 
     def npc_weapon(self):
         self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self.hp += self.active_weapon.hp
+        self.hp += self.active_weapon.base_hp
         self.luck += self.active_weapon.luck
         self.strength += self.active_weapon.strength
         self.agility += self.active_weapon.agility
@@ -234,7 +234,7 @@ class Axeman(Enemy):
         return self.active_skill
 
     def npc_clothes(self):
-        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
+        self.hp += (self.head.base_hp + self.torso.base_hp + self.left_arm.base_hp + self.right_arm.base_hp + self.legs.base_hp + self.feet.base_hp)
         self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
                       self.feet.luck)
         self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +

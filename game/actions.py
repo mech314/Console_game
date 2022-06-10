@@ -67,13 +67,13 @@ def fight(player, enemy):
 
 def calc_exp(enemy):
     """Calculates experience that player will gain after defeating an enemy."""
-    return (enemy.lvl * 10) + (enemy.hp / 2)
+    return (enemy.level * 10) + (enemy.hp / 2)
 
 
 def battle(player, enemy):
     """Automatic battle between the Player and the NPC enemy"""
     print(f'Battle between {player.name} (Hp: {player.hp}) and {enemy.name} (Hp: {enemy.hp})')
-    exp = ((enemy.lvl * 10) + (enemy.hp / 2))  # Calculates experience
+    exp = ((enemy.level * 10) + (enemy.hp / 2))  # Calculates experience
 
     def fight_finale():
         """Checks if somebody is dead"""
