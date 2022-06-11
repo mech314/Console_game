@@ -9,15 +9,6 @@ from colorama import Fore, Style, Back
 # wpn_dmg = (4, 14)
 # hit_points = 130
 
-potions = {"small": (0, 7), 'medium': (5, 12), 'large': (25, 70)}
-potions_in_pocket = ['small', 'small', 'large', 'medium']
-
-
-def take_all_items(player, lst):
-    for item in lst:
-        player.add_item_to_the_bag(item)
-
-
 def unlucky(player):
     """Chance to harm yourself.
     Based on based_luck calculates the chance of unsucssefull potion application"""
@@ -100,7 +91,7 @@ def battle(player, enemy):
                 f'{player.name} punched {enemy.name} in the {player_hit_choice} for {Back.RED}{Fore.BLACK}{player_dmg} '
                 f'hp!!!{Style.RESET_ALL}, {enemy.name} has {Fore.GREEN}{enemy.hp}{Style.RESET_ALL} hp')
             if enemy_critical:
-                print((f'{enemy.name} punched {player.name}layer in the {enemy_hit_choice} for {Back.RED}{Fore.BLACK}'
+                print((f'{enemy.name} punched {player.name} player in the {enemy_hit_choice} for {Back.RED}{Fore.BLACK}'
                        f'{enemy_dmg} hp!!!{Style.RESET_ALL}, {player.name} has {Fore.GREEN}{player.hp}{Style.RESET_ALL} '
                        f'hp'))
             else:

@@ -3,6 +3,7 @@ import random
 from console_game.game import weapon
 from console_game.game import armor
 from console_game.game import items
+from console_game.game import potions
 
 
 class Creature(ABC):
@@ -184,56 +185,6 @@ class Hero(Creature):
             self.axe_skill += 3
             self.critical_chance += 5
 
-    # def hp_difference(self):
-
-    # def set_current_specs(self):
-    #     """This is rather redundant but didn't find a better solution yet. It will just set current specs by adding all bonuses"""
-    #     if self.spec.lower() == 'swordsman':
-    #         bonus = 30 * self.level
-    #     else:
-    #         bonus = 0
-    #
-    #     self.max_hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
-    #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-    #
-    #     self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
-    #                               self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-    #
-    #     if self.max_hp == self.hp:
-    #         self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
-    #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-    #         print(self.hp)
-    #     elif self.max_hp > self.hp:
-    #         hp_difference = self.max_hp - self.hp
-    #         self.hp = self.hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
-    #                                   self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp) - hp_difference
-    #
-    #     self.luck = (
-    #             self.luck + self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
-    #             self.feet.luck + self.active_weapon.luck)
-    #     self.strength = (
-    #             self.strength + self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
-    #             self.legs.strength + self.feet.strength + self.active_weapon.strength)
-    #     self.agility = (
-    #             self.agility + self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
-    #             self.legs.agility + self.feet.agility + self.active_weapon.agility)
-    #     self.movement = (
-    #             self.movement + self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
-    #             self.legs.movement + self.feet.movement + self.active_weapon.movement)
-    #     self.intelligence = (
-    #             self.intelligence + self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
-    #             self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence +
-    #             self.active_weapon.intelligence)
-    #     if self.spec.lower() == 'axeman':  # Apply axeman critical change bonus
-    #         self.critical_chance = (10 + self.critical_chance + self.head.critical_chance +
-    #                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
-    #                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
-    #     else:
-    #         self.critical_chance = (self.critical_chance + self.head.critical_chance +
-    #                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
-    #                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
-    #     self.effective_specs()
-
     def current_max_hp(self):
         if self.spec.lower() == 'swordsman':
             self.max_hp = self.reference_hp + (30 * self.level) + (self.head.hp + self.torso.hp + self.left_arm.hp +
@@ -241,8 +192,6 @@ class Hero(Creature):
         else:
             self.max_hp = self.reference_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
                                                self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-        print((self.head.hp + self.torso.hp + self.left_arm.hp +
-                                               self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp))
 
     @property
     def skills(self):
@@ -369,13 +318,13 @@ class Hero(Creature):
         print("Your character's characteristics are:")
         self.print_chr()
 
-    def add_item_to_the_bag(self, item):
-        """Adds item to the bag, if the list was passed - entire list will be picked up"""
-        if isinstance(item, list):
-            for i in item:
-                self._bag.append(i)
+    def add_item_to_the_bag(self, loot, specific_item=None):
+        if specific_item:
+            self._bag.append(specific_item)
+            loot.remove(specific_item)
         else:
-            self._bag.append(item)
+            self._bag += loot
+            loot = []
 
     @property
     def bag_content(self):
@@ -412,7 +361,39 @@ class Hero(Creature):
                       '\nIntelligence: ', item.intelligence,
                       '\nCritical chance: ', item.critical_chance,
                       '\nLevel: ', item.level)
+            elif item.item_type == 'potion':
+                print('Item # ', count, '\nName', ':', item.name.capitalize(),
+                      '\nHp: ', item.hp,
+                      '\nLevel: ', item.level)
         print('----------------------------------------')
+
+    def health_potion(self):
+        potion_counter = 0
+        for item in self._bag:      # Yes this is stupid, probably need to learn how to find object in the list using __eq__
+            if item.item_type == 'potion':
+                potion_counter += 1
+        if potion_counter >= 1:
+            self.print_potion_bag()
+            choice = input('Which potion do you want to take? ')
+            potion = self._bag.pop(int(choice))
+            if self.hp + potion.hp >= self.max_hp:
+                self.hp = self.max_hp
+                print("You health has been restored to the max level")
+            else:
+                self.hp += potion.hp
+                print(f'You health restored to {self.hp}')
+        else:
+            print("You have checked your bag and it seems that you don't have any potions buddy...")
+
+    def print_potion_bag(self):
+        """Will print only the potions in the bag"""
+        print("You have following potions in the bag:")
+        for count, item in enumerate(self._bag):
+            if item.item_type == 'potion':
+                print('----------------------------------------')
+                print('Item # ', count, '\nName', ':', item.name.capitalize(),
+                      '\nHp: ', item.hp,
+                      '\nLevel: ', item.level)
 
     def put_on_items(self, choice=None):
         """Puts a piece of armor on you"""
@@ -588,15 +569,16 @@ class Hero(Creature):
         chance = random.randint(self.critical_chance, 100)
         return True if chance in range(95, 100) else False
 
-    @staticmethod
-    def player_hit(target):
+    def player_hit(self, target):
         """Gives a choice to a player to hit an enemy."""
         """To fix later. Wanted to code 'a or head' kind of response but face a bug where uses only first if"""
         flag = True
         while flag:
             where_to_hit = input(
-                'Where you want to hit your enemy? a) Head, b) Torso, c) Left hand, d) Right hand, f) Legs ')
-            if where_to_hit.lower() == "a":
+                'Where you want to hit your enemy? a) Head, b) Torso, c) Left hand, d) Right hand, f) Legs, p) Drink potion ')
+            if where_to_hit.lower() == 'p':     # Will allow you to drink a potion in the battle
+                self.health_potion()
+            elif where_to_hit.lower() == "a":
                 hit_choice = 'head'
                 active_armor = target.head_armor
                 flag = False
@@ -671,32 +653,6 @@ class Hero(Creature):
             print(active_armor)
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
 
-    # def npc_weapon(self):
-    #     """Adds weapon bonuses to NPC"""
-    #     self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
-    #     self.luck += self.active_weapon.luck
-    #     self.hp += self.active_weapon.hp
-    #     self.strength += self.active_weapon.strength
-    #     self.agility += self.active_weapon.agility
-    #     self.movement += self.active_weapon.movement
-    #     self.intelligence += self.active_weapon.intelligence
-    #     self.critical_chance += self.active_weapon.critical_chance
-    #
-    # def npc_clothes(self):
-    #     """Adds clothes bonuses to NPC"""
-    #     self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp + self.right_arm.hp + self.legs.hp + self.feet.hp)
-    #     self.luck += (self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
-    #                   self.feet.luck)
-    #     self.strength += (self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
-    #                       self.legs.strength + self.feet.strength)
-    #     self.agility += (self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
-    #                      self.legs.agility + self.feet.agility)
-    #     self.movement += (self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
-    #                       self.legs.movement + self.feet.movement)
-    #     self.intelligence += (self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
-    #                           self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence)
-    #     self.critical_chance += (self.head.critical_chance + self.torso.critical_chance + self.left_arm.critical_chance
-    #                              + self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance)
 # class Thief(Hero):
 #     """
 #     A knifesman, inherits from Hero, takes specialization. Sneaky - high agility, smart - high intelect
