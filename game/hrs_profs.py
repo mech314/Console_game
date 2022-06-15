@@ -419,52 +419,324 @@ class Hero(Creature):
         item = self.bag_content[choice]
         if isinstance(item, armor.Armor):
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
-                print(f'You put {item.name} on your body')
-                self.torso = self.bag_content[int(choice)]
-                self.left_arm = self.bag_content[int(choice)]
-                self.right_arm = self.bag_content[int(choice)]
-                self.torso_armor = item.armor
-                self.left_arm_armor = item.armor
-                self.right_arm_armor = item.armor
+                if self.torso == items.naked:
+                    print(f'You put {item.name} on your body')
+                    self.torso = self.bag_content[int(choice)]
+                    self.left_arm = self.bag_content[int(choice)]
+                    self.right_arm = self.bag_content[int(choice)]
+                    self.torso_armor = item.armor
+                    self.left_arm_armor = item.armor
+                    self.right_arm_armor = item.armor
+                else:
+                    reply_flag = True
+                    while reply_flag:
+                        user_input = input(f'You have {self.torso.name} on you, do you want to change it? ')
+                        if user_input.lower() == 'yes':
+                            reply_flag = False
+                            old_item = self.torso
+                            self._bag.append(old_item)
+                            self._what_is_on.remove(old_item)
+                            self.torso = self.bag_content[int(choice)]
+                            self.left_arm = self.bag_content[int(choice)]
+                            self.right_arm = self.bag_content[int(choice)]
+                            self.torso_armor = item.armor
+                            self.left_arm_armor = item.armor
+                            self.right_arm_armor = item.armor
+                            print(f'You have changed {old_item.name} for {self.torso.name}')
+                        elif user_input.lower() == 'no':
+                            reply_flag = False
+                            if len(self.bag_content) > 0:
+                                more_items_flag = True
+                                while more_items_flag:
+                                    self.print_bag_cnt()
+                                    more_items = input('Do you want to put something else? ')
+                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                        more_items_flag = False
+                                        self.put_on_items(int(more_items))
+                                    elif str(more_items).lower() == "no":
+                                        more_items_flag = False
+                                        print('Alright')
+                                        return None
+                                    else:
+                                        print('Wrong input')
+                            else:
+                                print("You have nothing in your bag")
+                        else:
+                            print("Wrong input")
             elif item.armor_type == 'vest':  # Put vest, naked arms but can put armlets now
-                print(f'You put {item.name} on your body, you can put armlets as well')
-                self.torso = self.bag_content[int(choice)]
-                self.torso_armor = item.armor
+                if self.torso == items.naked:
+                    print(f'You put {item.name} on your body, you can put armlets as well')
+                    self.torso = self.bag_content[int(choice)]
+                    self.torso_armor = item.armor
+                else:
+                    reply_flag = True
+                    while reply_flag:
+                        user_input = input(f'You have {self.torso.name} on you, do you want to change it? ')
+                        if user_input.lower() == 'yes':
+                            reply_flag = False
+                            old_item = self.torso
+                            self._bag.append(old_item)
+                            self._what_is_on.remove(old_item)
+                            self.torso = self.bag_content[int(choice)]
+                            self.torso_armor = item.armor
+                            print(f'You have changed {old_item.name} for {self.torso.name}')
+                        elif user_input.lower() == 'no':
+                            reply_flag = False
+                            if len(self.bag_content) > 0:
+                                more_items_flag = True
+                                while more_items_flag:
+                                    self.print_bag_cnt()
+                                    more_items = input('Do you want to put something else? ')
+                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                        more_items_flag = False
+                                        self.put_on_items(int(more_items))
+                                    elif str(more_items).lower() == "no":
+                                        more_items_flag = False
+                                        print('Alright')
+                                        return None
+                                    else:
+                                        print('Wrong input')
+                            else:
+                                print("You have nothing in your bag")
+                        else:
+                            print("Wrong input")
             elif item.armor_type == 'armlet':
                 armlet_flag = True
                 while armlet_flag:
                     if self.torso.armor_type != 'jacket':  # Can put armlets only with vest or naked
                         hand = input('Put on left or right hand?')
                         if hand.lower() == 'left':
-                            print(f'You put {item.name} on your left hand')
-                            self.left_arm = self.bag_content[int(choice)]
-                            self.left_arm_armor = item.armor
-                            armlet_flag = False
+                            if self.left_arm == items.naked:
+                                print(f'You put {item.name} on your left hand')
+                                self.left_arm = self.bag_content[int(choice)]
+                                self.left_arm_armor = item.armor
+                                armlet_flag = False
+                            else:
+                                reply_flag = True
+                                while reply_flag:
+                                    user_input = input(
+                                        f'You have {self.left_arm.name} on you, do you want to change it? ')
+                                    if user_input.lower() == 'yes':
+                                        reply_flag = False
+                                        old_item = self.left_arm
+                                        self._bag.append(old_item)
+                                        self._what_is_on.remove(old_item)
+                                        self.left_arm = self.bag_content[int(choice)]
+                                        self.left_arm_armor = item.armor
+                                        print(f'You have changed {old_item.name} for {self.left_arm.name}')
+                                        armlet_flag = False
+                                    elif user_input.lower() == 'no':
+                                        reply_flag = False
+                                        if len(self.bag_content) > 0:
+                                            more_items_flag = True
+                                            while more_items_flag:
+                                                self.print_bag_cnt()
+                                                more_items = input('Do you want to put something else? ')
+                                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                                    more_items_flag = False
+                                                    self.put_on_items(int(more_items))
+                                                elif str(more_items).lower() == "no":
+                                                    more_items_flag = False
+                                                    print('Alright')
+                                                    return None
+                                                else:
+                                                    print('Wrong input')
+                                        else:
+                                            print("You have nothing in your bag")
+                                    else:
+                                        print("Wrong input")
                         elif hand.lower() == 'right':
-                            print(f'You put {item.name} on your right hand')
-                            self.right_arm = self.bag_content[int(choice)]
-                            self.right_arm_armor = item.armor
-                            armlet_flag = False
+                            if self.right_arm == items.naked:
+                                print(f'You put {item.name} on your right hand')
+                                self.right_arm = self.bag_content[int(choice)]
+                                self.right_arm_armor = item.armor
+                                armlet_flag = False
+                            else:
+                                reply_flag = True
+                                while reply_flag:
+                                    user_input = input(
+                                        f'You have {self.right_arm.name} on you, do you want to change it? ')
+                                    if user_input.lower() == 'yes':
+                                        reply_flag = False
+                                        old_item = self.right_arm
+                                        self._bag.append(old_item)
+                                        self._what_is_on.remove(old_item)
+                                        self.right_arm = self.bag_content[int(choice)]
+                                        self.right_arm_armor = item.armor
+                                        print(f'You have changed {old_item.name} for {self.right_arm.name}')
+                                        armlet_flag = False
+                                    elif user_input.lower() == 'no':
+                                        reply_flag = False
+                                        if len(self.bag_content) > 0:
+                                            more_items_flag = True
+                                            while more_items_flag:
+                                                self.print_bag_cnt()
+                                                more_items = input('Do you want to put something else? ')
+                                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                                    more_items_flag = False
+                                                    self.put_on_items(int(more_items))
+                                                elif str(more_items).lower() == "no":
+                                                    more_items_flag = False
+                                                    print('Alright')
+                                                    return None
+                                                else:
+                                                    print('Wrong input')
+                                        else:
+                                            print("You have nothing in your bag")
+                                    else:
+                                        print("Wrong input")
                         else:
                             print(f'Choose the hand on which you wanna put {item.name}')
                     else:
                         print(f'You cannot put armlets on because you are wearing {self.torso.name}')
             elif item.armor_type == 'trousers':  # Same story with pants
-                print(f'You put {item.name} on legs')
-                self.legs = self.bag_content[int(choice)]
-                self.legs_armor = item.armor
+                if self.legs == items.naked:
+                    print(f'You put {item.name} on legs')
+                    self.legs = self.bag_content[int(choice)]
+                    self.legs_armor = item.armor
+                else:
+                    reply_flag = True
+                    while reply_flag:
+                        user_input = input(f'You have {self.legs.name} on you, do you want to change it? ')
+                        if user_input.lower() == 'yes':
+                            reply_flag = False
+                            old_item = self.legs
+                            self._bag.append(old_item)
+                            self._what_is_on.remove(old_item)
+                            self.legs = self.bag_content[int(choice)]
+                            self.legs_armor = item.armor
+                            print(f'You have changed {old_item.name} for {self.legs.name}')
+                        elif user_input.lower() == 'no':
+                            reply_flag = False
+                            if len(self.bag_content) > 0:
+                                more_items_flag = True
+                                while more_items_flag:
+                                    self.print_bag_cnt()
+                                    more_items = input('Do you want to put something else? ')
+                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                        more_items_flag = False
+                                        self.put_on_items(int(more_items))
+                                    elif str(more_items).lower() == "no":
+                                        more_items_flag = False
+                                        print('Alright')
+                                        return None
+                                    else:
+                                        print('Wrong input')
+                            else:
+                                print("You have nothing in your bag")
+                        else:
+                            print("Wrong input")
             elif item.armor_type == 'boots':  # Same story with boots
-                print(f'You put {item.name} on your feet')
-                self.feet = self.bag_content[int(choice)]
-                self.feet_armor = item.armor
+                if self.feet == items.naked:
+                    print(f'You put {item.name} on feet')
+                    self.feet = self.bag_content[int(choice)]
+                    self.feet_armor = item.armor
+                else:
+                    reply_flag = True
+                    while reply_flag:
+                        user_input = input(f'You have {self.feet.name} on you, do you want to change it? ')
+                        if user_input.lower() == 'yes':
+                            reply_flag = False
+                            old_item = self.feet
+                            self._bag.append(old_item)
+                            self._what_is_on.remove(old_item)
+                            self.feet = self.bag_content[int(choice)]
+                            self.feet_armor = item.armor
+                            print(f'You have changed {old_item.name} for {self.feet.name}')
+                        elif user_input.lower() == 'no':
+                            reply_flag = False
+                            if len(self.bag_content) > 0:
+                                more_items_flag = True
+                                while more_items_flag:
+                                    self.print_bag_cnt()
+                                    more_items = input('Do you want to put something else? ')
+                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                        more_items_flag = False
+                                        self.put_on_items(int(more_items))
+                                    elif str(more_items).lower() == "no":
+                                        more_items_flag = False
+                                        print('Alright')
+                                        return None
+                                    else:
+                                        print('Wrong input')
+                            else:
+                                print("You have nothing in your bag")
+                        else:
+                            print('Wrong input')
             elif item.armor_type == 'helmet':  # Same story with helmet
-                print(f'You put {item.name} on your head')
-                self.head = self.bag_content[int(choice)]
-                self.head_armor = item.armor
+                if self.head == items.naked:
+                    print(f'You put {item.name} on feet')
+                    self.head = self.bag_content[int(choice)]
+                    self.head_armor = item.armor
+                else:
+                    reply_flag = True
+                    while reply_flag:
+                        user_input = input(f'You have {self.head.name} on you, do you want to change it? ')
+                        if user_input.lower() == 'yes':
+                            reply_flag = False
+                            old_item = self.head
+                            self._bag.append(old_item)
+                            self._what_is_on.remove(old_item)
+                            self.head = self.bag_content[int(choice)]
+                            self.head_armor = item.armor
+                            print(f'You have changed {old_item.name} for {self.head.name} ')
+                        elif user_input.lower() == 'no':
+                            reply_flag = False
+                            if len(self.bag_content) > 0:
+                                more_items_flag = True
+                                while more_items_flag:
+                                    self.print_bag_cnt()
+                                    more_items = input('Do you want to put something else? ')
+                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                        more_items_flag = False
+                                        self.put_on_items(int(more_items))
+                                    elif str(more_items).lower() == "no":
+                                        more_items_flag = False
+                                        print('Alright')
+                                        return None
+                                    else:
+                                        print('Wrong input')
+                            else:
+                                print("You have nothing in your bag")
+                        else:
+                            print('Wrong input')
         elif isinstance(item, weapon.Weapon):
-            print(f'You have {item.name.lower()} in your hands')
-            self.active_weapon = self.bag_content[int(choice)]
-            self.active_skill = self.skills[self.active_weapon.weapon_type]
+            if self.active_weapon == items.fist:
+                print(f'You have {item.name.lower()} in your hands')
+                self.active_weapon = self.bag_content[int(choice)]
+                self.active_skill = self.skills[self.active_weapon.weapon_type]
+            else:
+                reply_flag = True
+                while reply_flag:
+                    user_input = input(f'You have {self.active_weapon.name} on you, do you want to change it? ')
+                    if user_input.lower() == 'yes':
+                        reply_flag = False
+                        old_item = self.active_weapon
+                        self._bag.append(old_item)
+                        self._what_is_on.remove(old_item)
+                        self.active_weapon = self.bag_content[int(choice)]
+                        self.active_skill = self.skills[self.active_weapon.weapon_type]
+                        print(f'You have changed {old_item.name} for {self.active_weapon.name}')
+                    elif user_input.lower() == 'no':
+                        reply_flag = False
+                        if len(self.bag_content) > 0:
+                            more_items_flag = True
+                            while more_items_flag:
+                                self.print_bag_cnt()
+                                more_items = input('Do you want to put something else? ')
+                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    more_items_flag = False
+                                    self.put_on_items(int(more_items))
+                                elif str(more_items).lower() == "no":
+                                    more_items_flag = False
+                                    print('Alright')
+                                    return None
+                                else:
+                                    print('Wrong input')
+                        else:
+                            print("You have nothing in your bag")
+                    else:
+                        print('Wrong input')
         else:
             repeater_flag = True
             print("Wrong item")

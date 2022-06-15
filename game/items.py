@@ -3,6 +3,7 @@ from console_game.game import weapon
 from console_game.game import armor
 from console_game.game import potions
 
+
 class LootBoxes:
 
     def __init__(self, name, contents=[]):
@@ -64,10 +65,10 @@ helmet_of_holy_tester = armor.Armor(name='Holy helmet', condition=100, armor=[20
 vest_of_holy_tester = armor.Armor(name='Holy vest', condition=100, armor=[30, 40], durability=100, hp=3, luck=5,
                                   strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                                   item_type='clothes', armor_type='vest', not_custom=False)
-armlet_of_holy_tester1 = armor.Armor(name='Holy armlet', condition=100, armor=[20, 30], durability=100, hp=4, luck=5,
+armlet_of_holy_tester1 = armor.Armor(name='Holy armlet1', condition=100, armor=[20, 30], durability=100, hp=4, luck=5,
                                      strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                                      item_type='clothes', armor_type='armlet', not_custom=False)
-armlet_of_holy_tester2 = armor.Armor(name='Holy armlet', condition=100, armor=[20, 30], durability=100, hp=5, luck=5,
+armlet_of_holy_tester2 = armor.Armor(name='Holy armlet2', condition=100, armor=[20, 30], durability=100, hp=5, luck=5,
                                      strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                                      item_type='clothes', armor_type='armlet', not_custom=False)
 trousers_of_holy_tester = armor.Armor(name='Holy trousers', condition=100, armor=[40, 50], durability=100, hp=6,
@@ -82,12 +83,31 @@ rusty_sword = weapon.Weapon('Rusty sword', condition=100, damage=[5, 7], durabil
                             strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                             item_type='weapon', weapon_type='sword', not_custom=False)
 
+helmet1 = armor.Armor(name='Holy helmet1', condition=1, armor=[20, 30], durability=1, hp=1, luck=1,
+                      strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+                      item_type='clothes', armor_type='helmet', not_custom=False)
+
+helmet2 = armor.Armor(name='Holy helmet2', condition=2, armor=[20, 30], durability=2, hp=2, luck=2,
+                      strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+                      item_type='clothes', armor_type='helmet', not_custom=False)
+
+boot1 = armor.Armor(name='Holy boots1', condition=1, armor=[50, 60], durability=1, hp=1, luck=1,
+                    strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+                    item_type='clothes', armor_type='boots', not_custom=False)
+
+boot2 = armor.Armor(name='Holy boots2', condition=2, armor=[50, 60], durability=2, hp=2, luck=2,
+                    strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+                    item_type='clothes', armor_type='boots', not_custom=False)
+
 small_health_potion = potions.Health_Potions(name='Small HP potion', level=1, hp=20)
 medium_health_potion = potions.Health_Potions(name='Medium HP potion', level=1, hp=35)
 large_health_potion = potions.Health_Potions(name='Large HP potion', level=1, hp=50)
 
 good_box = [super_sword, helmet_of_holy_tester, vest_of_holy_tester, trousers_of_holy_tester, boots_of_holy_tester,
-            armlet_of_holy_tester1, armlet_of_holy_tester2, small_health_potion, medium_health_potion, large_health_potion]
+            armlet_of_holy_tester1, armlet_of_holy_tester2, small_health_potion, medium_health_potion,
+            large_health_potion]
+
+check_box = [helmet1, helmet2, boot1, boot2, rusty_sword, super_sword, armlet_of_holy_tester1, armlet_of_holy_tester2]
 
 potion_box = [small_health_potion, medium_health_potion, large_health_potion]
 """All armor is here"""
