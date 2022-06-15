@@ -369,7 +369,7 @@ class Hero(Creature):
 
     def health_potion(self):
         potion_counter = 0
-        for item in self._bag:      # Yes this is stupid, probably need to learn how to find object in the list using __eq__
+        for item in self._bag:  # Yes this is stupid, probably need to learn how to find object in the list using __eq__
             if item.item_type == 'potion':
                 potion_counter += 1
         if potion_counter >= 1:
@@ -397,14 +397,26 @@ class Hero(Creature):
 
     def put_on_items(self, choice=None):
         """Puts a piece of armor on you"""
-        if choice:
-            print(choice)
-        elif choice is None:
+        if choice is None:
+            print('PUTTING ON THE ITEMS This is what you have in the bag:')
             self.print_bag_cnt()
-            choice = input('PUTTING ON ITEMS What do you want to put on:')
-            if choice == "no":
+            input_choice = input('What do you want to put on:')
+            if input_choice.isnumeric() and len(self._bag)-1 >= int(input_choice):
+                try:
+                    choice = int(input_choice)
+                except ValueError:
+                    print("Input error")
+                    self.put_on_items()
+            elif str(input_choice) == "no":
+                print("You decided not to put on anything")
                 return None
-        item = self.bag_content[int(choice)]
+            elif input_choice == "q":
+                print("Quiting")
+                exit()
+            else:
+                print("Input error")
+                self.put_on_items()
+        item = self.bag_content[choice]
         if isinstance(item, armor.Armor):
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You put {item.name} on your body')
@@ -419,25 +431,24 @@ class Hero(Creature):
                 self.torso = self.bag_content[int(choice)]
                 self.torso_armor = item.armor
             elif item.armor_type == 'armlet':
-                flag = True
-                while flag:
+                armlet_flag = True
+                while armlet_flag:
                     if self.torso.armor_type != 'jacket':  # Can put armlets only with vest or naked
                         hand = input('Put on left or right hand?')
                         if hand.lower() == 'left':
                             print(f'You put {item.name} on your left hand')
                             self.left_arm = self.bag_content[int(choice)]
                             self.left_arm_armor = item.armor
-                            flag = False
+                            armlet_flag = False
                         elif hand.lower() == 'right':
                             print(f'You put {item.name} on your right hand')
                             self.right_arm = self.bag_content[int(choice)]
                             self.right_arm_armor = item.armor
-                            flag = False
+                            armlet_flag = False
                         else:
                             print(f'Choose the hand on which you wanna put {item.name}')
                     else:
                         print(f'You cannot put armlets on because you are wearing {self.torso.name}')
-
             elif item.armor_type == 'trousers':  # Same story with pants
                 print(f'You put {item.name} on legs')
                 self.legs = self.bag_content[int(choice)]
@@ -454,6 +465,19 @@ class Hero(Creature):
             print(f'You have {item.name.lower()} in your hands')
             self.active_weapon = self.bag_content[int(choice)]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
+        else:
+            repeater_flag = True
+            print("Wrong item")
+            while repeater_flag:
+                decision = input("What do you wanna do? Try again? yes or no? ")
+                if decision.lower() == 'yes':
+                    repeater_flag = False
+                    self.put_on_items()
+                elif decision.lower() == 'no':
+                    return None
+                else:
+                    print('Wrong input')
+            return None
         self._what_is_on.append(self._bag.pop(int(choice)))
         self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck += item.luck
@@ -464,25 +488,47 @@ class Hero(Creature):
         self.critical_chance += item.critical_chance
         self.current_max_hp()
         if len(self.bag_content) > 0:
-            self.print_bag_cnt()
-            more_items = input('Do you want to put something else? ')
-            if str(more_items).lower() == "no":
-                print('Alright')
-            else:
-                self.put_on_items(choice=int(more_items))
+            more_items_flag = True
+            while more_items_flag:
+                self.print_bag_cnt()
+                more_items = input('Do you want to put something else? ')
+                if more_items.isnumeric() and len(self._bag)-1 >= int(more_items):
+                    more_items_flag = False
+                    self.put_on_items(int(more_items))
+                elif str(more_items).lower() == "no":
+                    more_items_flag = False
+                    print('Alright')
+                    return None
+                else:
+                    print('Wrong input')
+        else:
+            print("You have nothing in your bag")
         return item
 
     def put_off_items(self, choice=None):
-        if choice:
-            print(choice)
+        """Taking items off. Will check your input, if it is correct will put the item on you and remove it from the bag
+         and add it to the whats_on list"""
         if choice is None:
             print('TAKING OFF THE ITEMS This is what is on you:')
             self.print_whats_on()
-            choice = input('What do you want to take off:')
-            if choice == "no":
+            input_choice = input('What do you want to take off:')
+            if input_choice.isnumeric() and len(self._what_is_on)-1 >= int(input_choice):       # Checking input
+                try:
+                    choice = int(input_choice)
+                except ValueError:
+                    print("Input error")
+                    self.put_off_items()
+            elif str(input_choice) == "no":      # Checking input
+                print("You decided not to take off anything")
                 return None
-        item = self._what_is_on[int(choice)]
-        if isinstance(item, armor.Armor):
+            elif input_choice == "q":        # Exit
+                print("Quiting")
+                exit()
+            else:       # Restart
+                print("Input error")
+                self.put_off_items()
+        item = self._what_is_on[choice]
+        if isinstance(item, armor.Armor):       # If this is an armor will proceed
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You took off {item.name} from your body')
                 naked = items.naked
@@ -533,7 +579,7 @@ class Hero(Creature):
                 naked = items.naked
                 self.head = naked
                 self.head_armor = naked.armor
-        elif isinstance(item, weapon.Weapon):
+        elif isinstance(item, weapon.Weapon):    # If this is an weapon will proceed
             print(f'You put {item.name.lower()} away from your hands')
             self.active_weapon = items.fist
             self.active_skill = self.skills[self.active_weapon.weapon_type]
@@ -546,12 +592,22 @@ class Hero(Creature):
         self.intelligence -= item.intelligence
         self.critical_chance -= item.critical_chance
         self.current_max_hp()
-        if len(self._what_is_on) > 0:
-            naked_party = input('Do you want to take something else off? ')
-            if str(naked_party).lower() == "no":
-                print('Alright')
-            else:
-                self.put_off_items(choice=int(naked_party))
+        if len(self._what_is_on) > 0:       # Will ask if you wanna take more items off.
+            more_items_flag = True
+            while more_items_flag:
+                self.print_whats_on()
+                more_items = input('Do you want to take something else off? ')
+                if more_items.isnumeric() and len(self._what_is_on)-1 >= int(more_items):
+                    more_items_flag = False
+                    self.put_off_items(choice=int(more_items))
+                elif str(more_items).lower() == "no":
+                    more_items_flag = False
+                    print('Alright')
+                    return None
+                else:
+                    print('Wrong input')
+        else:
+            print('You are naked')
         return item
 
     def calc_dmg(self):
@@ -575,8 +631,9 @@ class Hero(Creature):
         flag = True
         while flag:
             where_to_hit = input(
-                'Where you want to hit your enemy? a) Head, b) Torso, c) Left hand, d) Right hand, f) Legs, p) Drink potion ')
-            if where_to_hit.lower() == 'p':     # Will allow you to drink a potion in the battle
+                'Where you want to hit your enemy? a) Head, b) Torso, c) Left hand, d) Right hand, f) Legs, '
+                'p) Drink potion, q) quit ')
+            if where_to_hit.lower() == 'p':  # Will allow you to drink a potion in the battle
                 self.health_potion()
             elif where_to_hit.lower() == "a":
                 hit_choice = 'head'
@@ -599,6 +656,9 @@ class Hero(Creature):
                 active_armor = ((int(target.legs_armor[0] + target.feet_armor[0])), int(
                     (target.legs_armor[1] + target.feet_armor[1])))
                 flag = False
+            elif where_to_hit.lower() == 'q':
+                print('Stopping the battle ')
+                exit()
             else:
                 print(
                     "You trying to hit an imaginary part of {}'s body, maybe it is not a good idea".format(target.name))

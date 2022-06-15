@@ -233,8 +233,6 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
         condition = None
         if add_to_bag:
             character.add_item_to_the_bag(weapon_item)
-        elif isinstance(list_to_append, list):
-            list_to_append.append(weapon_item)
     if list_to_append is None:      # Is used when we use this function with NPC creation and put the weapon\clothes on the NPC
         return weapon_item
     else:

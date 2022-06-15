@@ -1,6 +1,4 @@
 
-
-
 class Health_Potions:
 
     def __init__(self, name, level, hp, item_type='potion'):

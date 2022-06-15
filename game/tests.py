@@ -20,7 +20,7 @@ def test():
     # chr_npc.badboy.print_chr()
     # actions.battle(chr_npc.mech, chr_npc.badboy)
     # functions.weapon_creator(number_of_weapon=1)
-    functions.create_npcs(number_of_npcs=4, requested_level=3)
+    # functions.create_npcs(number_of_npcs=4, requested_level=3)
     # print(chr_npc.npc_list)
     # functions.npc_list_print(chr_npc.npc_list)
     # chr_npc.npc_list[0].print_whats_on()
@@ -35,18 +35,20 @@ def test():
     # chr_npc.mech.print_chr()
     # chr_npc.mech.put_on_items()
     chr_npc.mech.print_chr()
-    chr_npc.mech.add_item_to_the_bag(items.potion_box)
+    chr_npc.mech.add_item_to_the_bag(items.good_box)
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
-    # chr_npc.mech.put_on_items()
+    # chr_npc.mech.put_off_items()
+    chr_npc.mech.put_on_items()
+    chr_npc.mech.put_off_items()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
     # chr_npc.mech.put_off_items()
     # chr_npc.mech.print_chr()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
-    for enemy in chr_npc.npc_list:
-        actions.battle(chr_npc.mech, enemy)
+    # for enemy in chr_npc.npc_list:
+    #     actions.battle(chr_npc.mech, enemy)
 
 
     # chr_npc.mech.put_on_items()
