@@ -76,6 +76,7 @@ def battle(player, enemy):
             print(f'{player.name} is dead. What a shame')
             return None
         elif enemy.hp <= 0:
+            enemy.loot_drop()
             print(f'{enemy.name} is dead. {player.name} has won!')
             player.exp += exp
             print(f'You gained {exp} for defeating {enemy.name}')

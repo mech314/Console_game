@@ -326,6 +326,43 @@ class Hero(Creature):
             self._bag += loot
             loot = []
 
+    def chr_belongings(self):
+        chr_belongings = []
+        for item in self.bag_content:
+            chr_belongings.append(item)
+        for key, value in self.whats_on_dict.items():
+            if value.item_type.lower() == 'clothes':
+                if value.armor_type != 'naked':
+                    chr_belongings.append(value)
+            elif value.item_type.lower() == 'weapon':
+                if value.weapon_type != 'fist':
+                    chr_belongings.append(value)
+        for item in chr_belongings:
+            print(item.name)
+
+    def loot_drop(self):
+        """Function that will make a drop of the loot. Will take all the items from the bag and on the character
+        with certain chance it will make only a part of the items to actually drop. Dropped items will be an
+        instance of lootbox class."""
+
+        if self.chr_belongings:      # If there is anything to drop
+            """Calculating the chance of dropping stuff."""
+            chance = random.randint(0, 100)
+            n = 0
+            if chance < 95:
+                if chance < 10:
+                    n = len(self.chr_belongings)
+                elif chance < 30:
+                    n = int(len(self.chr_belongings) / 1.2)
+                else:
+                    n = 1
+                loot_name = str(self.name + ' loot')
+                loot_box = random.sample(self.chr_belongings, n)     # Creating random amount loot
+                loot = items.LootBoxes(name=loot_name, contents=loot_box)       # Creating a class object of loot
+                items.location_loot.append(loot)        # Appending it to the location's items
+            else:
+                print(f"Nothing has fallen from {self.name}")
+
     @property
     def bag_content(self):
         return self._bag
@@ -336,35 +373,35 @@ class Hero(Creature):
             print('----------------------------------------')
             """Will print all armor from the armor list in items module"""
             if item.item_type == 'weapon':
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nCondition', item.condition,
-                      '\nHp: ', item.hp,
-                      '\nDamage: ', item.damage,
-                      '\nDurability:', item.durability,
-                      '\nLuck: ', item.luck,
-                      '\nStrength: ', item.strength,
-                      '\nAgility: ', item.agility,
-                      '\nMovement: ', item.movement,
-                      '\nIntelligence: ', item.intelligence,
-                      '\nCritical chance: ', item.critical_chance,
-                      '\nLevel: ', item.level)
+                print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                      'Condition', item.condition,
+                      'Hp: ', item.hp,
+                      'Damage: ', item.damage,
+                      'Durability:', item.durability,
+                      'Luck: ', item.luck,
+                      'Strength: ', item.strength,
+                      'Agility: ', item.agility,
+                      'Movement: ', item.movement,
+                      'Intelligence: ', item.intelligence,
+                      'Critical chance: ', item.critical_chance,
+                      'Level: ', item.level)
             elif item.item_type == 'clothes':
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nCondition', item.condition,
-                      '\nHp: ', item.hp,
-                      '\nArmor: ', item.armor,
-                      '\nDurability:', item.durability,
-                      '\nLuck: ', item.luck,
-                      '\nStrength: ', item.strength,
-                      '\nAgility: ', item.agility,
-                      '\nMovement: ', item.movement,
-                      '\nIntelligence: ', item.intelligence,
-                      '\nCritical chance: ', item.critical_chance,
-                      '\nLevel: ', item.level)
+                print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                      'Condition', item.condition,
+                      'Hp: ', item.hp,
+                      'Armor: ', item.armor,
+                      'Durability:', item.durability,
+                      'Luck: ', item.luck,
+                      'Strength: ', item.strength,
+                      'Agility: ', item.agility,
+                      'Movement: ', item.movement,
+                      'Intelligence: ', item.intelligence,
+                      'Critical chance: ', item.critical_chance,
+                      'Level: ', item.level)
             elif item.item_type == 'potion':
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nHp: ', item.hp,
-                      '\nLevel: ', item.level)
+                print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                      'Hp: ', item.hp,
+                      'Level: ', item.level)
         print('----------------------------------------')
 
     def health_potion(self):
@@ -391,9 +428,9 @@ class Hero(Creature):
         for count, item in enumerate(self._bag):
             if item.item_type == 'potion':
                 print('----------------------------------------')
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nHp: ', item.hp,
-                      '\nLevel: ', item.level)
+                print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                      'Hp: ', item.hp,
+                      'Level: ', item.level)
 
     def put_on_items(self, choice=None):
         """Puts a piece of armor on you"""
@@ -894,8 +931,11 @@ class Hero(Creature):
         """Calculates chance for critical damage based on character's self.critical_chance value,
         returns True if chance is within default 5%, players self.critical_chance increases the probability by
         lowering the random range"""
-        chance = random.randint(self.critical_chance, 100)
-        return True if chance in range(95, 100) else False
+        if self.critical_chance >= 100:
+            return True
+        else:
+            chance = random.randint(self.critical_chance, 100)
+            return True if chance in range(95, 100) else False
 
     def player_hit(self, target):
         """Gives a choice to a player to hit an enemy."""

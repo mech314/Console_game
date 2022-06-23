@@ -20,7 +20,7 @@ def test():
     # chr_npc.badboy.print_chr()
     # actions.battle(chr_npc.mech, chr_npc.badboy)
     # functions.weapon_creator(number_of_weapon=1)
-    # functions.create_npcs(number_of_npcs=4, requested_level=3)
+    functions.create_npcs(number_of_npcs=1, requested_level=1)
     # print(chr_npc.npc_list)
     # functions.npc_list_print(chr_npc.npc_list)
     # chr_npc.npc_list[0].print_whats_on()
@@ -34,14 +34,16 @@ def test():
     # chr_npc.mech.print_bag_cnt()
     # chr_npc.mech.print_chr()
     # chr_npc.mech.put_on_items()
-    chr_npc.mech.print_chr()
-    chr_npc.mech.add_item_to_the_bag(items.check_box)
+    #chr_npc.mech.print_chr()
+    chr_npc.mech.add_item_to_the_bag(items.good_box)
+    for enemy in chr_npc.npc_list:
+        enemy.chr_belongings()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
-    # chr_npc.mech.put_off_items()
-    chr_npc.mech.put_on_items()
-    chr_npc.mech.print_whats_on()
-    chr_npc.mech.print_bag_cnt()
+    # chr_npc.mech.put_on_items()
+
+    for item in items.location_loot:
+        item.print_contents()
     # chr_npc.mech.put_off_items()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
@@ -49,20 +51,13 @@ def test():
     # chr_npc.mech.print_chr()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
-    # for enemy in chr_npc.npc_list:
-    #     actions.battle(chr_npc.mech, enemy)
-
-
     # chr_npc.mech.put_on_items()
     # chr_npc.mech.print_bag_cnt()
     # chr_npc.npc_list[0].print_bag_cnt()
-
     # functions.weapon_list_print(weapon_list=chr_npc.mech.bag)
-
     # chr_npc.mech.print_bag_cnt()
     # chr_npc.mech.choose_weapon(0)
 
 
 if __name__ == '__main__':
     test()
-    # test_clothes()

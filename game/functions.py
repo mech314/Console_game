@@ -183,10 +183,9 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
         armor_type = None
         condition = None
         if add_to_bag:
-            character.add_item_to_the_bag(armor_item)
-        elif isinstance(list_to_append, list):
-            list_to_append.append(armor_item)
-    if list_to_append is None:  # Is used when we use this function with NPC creation and put the weapon\clothes on the NPC
+            loot_list = [armor_item]
+            character.add_item_to_the_bag(loot_list)
+    if list_to_append is None:  # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return armor_item
     else:
         return None
@@ -232,8 +231,9 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
         weapon_type = None
         condition = None
         if add_to_bag:
-            character.add_item_to_the_bag(weapon_item)
-    if list_to_append is None:      # Is used when we use this function with NPC creation and put the weapon\clothes on the NPC
+            loot_list = [weapon_item]
+            character.add_item_to_the_bag(loot_list)
+    if list_to_append is None:   # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return weapon_item
     else:
         return None

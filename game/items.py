@@ -5,6 +5,7 @@ from console_game.game import potions
 
 
 class LootBoxes:
+    """Class for everything that gonna fall from the NPC or elsewhere"""
 
     def __init__(self, name, contents=[]):
         self.name = name
@@ -12,43 +13,45 @@ class LootBoxes:
 
     def print_contents(self):
         if len(self.contents) >= 1:
+            print(f"You found {self.name}'s on the floor:")
             for count, item in enumerate(self.contents):
-                print('----------------------------------------')
                 """Will print all armor from the armor list in items module"""
                 if item.item_type == 'weapon':
-                    print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                          '\nCondition', item.condition,
-                          '\nHp: ', item.hp,
-                          '\nDamage: ', item.damage,
-                          '\nDurability:', item.durability,
-                          '\nLuck: ', item.luck,
-                          '\nStrength: ', item.strength,
-                          '\nAgility: ', item.agility,
-                          '\nMovement: ', item.movement,
-                          '\nIntelligence: ', item.intelligence,
-                          '\nCritical chance: ', item.critical_chance,
-                          '\nLevel: ', item.level)
+                    print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                          'Condition', item.condition,
+                          'Hp: ', item.hp,
+                          'Damage: ', item.damage,
+                          'Durability:', item.durability,
+                          'Luck: ', item.luck,
+                          'Strength: ', item.strength,
+                          'Agility: ', item.agility,
+                          'Movement: ', item.movement,
+                          'Intelligence: ', item.intelligence,
+                          'Critical chance: ', item.critical_chance,
+                          'Level: ', item.level)
                 elif item.item_type == 'clothes':
-                    print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                          '\nCondition', item.condition,
-                          '\nHp: ', item.hp,
-                          '\nArmor: ', item.armor,
-                          '\nDurability:', item.durability,
-                          '\nLuck: ', item.luck,
-                          '\nStrength: ', item.strength,
-                          '\nAgility: ', item.agility,
-                          '\nMovement: ', item.movement,
-                          '\nIntelligence: ', item.intelligence,
-                          '\nCritical chance: ', item.critical_chance,
-                          '\nLevel: ', item.level)
+                    print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                          'Condition', item.condition,
+                          'Hp: ', item.hp,
+                          'Armor: ', item.armor,
+                          'Durability:', item.durability,
+                          'Luck: ', item.luck,
+                          'Strength: ', item.strength,
+                          'Agility: ', item.agility,
+                          'Movement: ', item.movement,
+                          'Intelligence: ', item.intelligence,
+                          'Critical chance: ', item.critical_chance,
+                          'Level: ', item.level)
                 elif item.item_type == 'potion':
-                    print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                          '\nHp: ', item.hp,
-                          '\nLevel: ', item.level)
+                    print('Item # ', count, 'Name', ':', item.name.capitalize(),
+                          'Hp: ', item.hp,
+                          'Level: ', item.level)
             print('----------------------------------------')
 
 
 weapon_list = []
+
+location_loot = []
 
 gold_chest = []  # Test list for items to pick up
 
@@ -107,7 +110,7 @@ good_box = [super_sword, helmet_of_holy_tester, vest_of_holy_tester, trousers_of
             armlet_of_holy_tester1, armlet_of_holy_tester2, small_health_potion, medium_health_potion,
             large_health_potion]
 
-check_box = [helmet1, helmet2, boot1, boot2, rusty_sword, super_sword, armlet_of_holy_tester1, armlet_of_holy_tester2]
+check_box = [helmet1, super_sword, medium_health_potion]
 
 potion_box = [small_health_potion, medium_health_potion, large_health_potion]
 """All armor is here"""
