@@ -9,7 +9,6 @@ from console_game.game import hrs_profs
 # box_with_stuff = [items.rusty_sword, items.nice_sword, items.heavy_axe, items.simple_boots, items.simple_helmet,
 #                   items.simple_jacket, items.simple_trousers, items.simple_vest, items.simple_armlet,
 #                   items.simple_armlet]
-from console_game.game.chr_npc import npc_list
 
 
 def test():
@@ -36,14 +35,15 @@ def test():
     # chr_npc.mech.put_on_items()
     #chr_npc.mech.print_chr()
     chr_npc.mech.add_item_to_the_bag(items.good_box)
-    for enemy in chr_npc.npc_list:
-        enemy.chr_belongings()
+    chr_npc.npc_list[0].chr_belongings()
+    # for enemy in chr_npc.npc_list:
+    #     enemy.chr_belongings()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
     # chr_npc.mech.put_on_items()
-
-    for item in items.location_loot:
-        item.print_contents()
+    #
+    # for item in items.location_loot:
+    #     item.print_contents()
     # chr_npc.mech.put_off_items()
     # print("Current hp", chr_npc.mech.hp)
     # print("Max recorded hp", chr_npc.mech.max_hp)
