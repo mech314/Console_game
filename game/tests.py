@@ -20,6 +20,8 @@ def test():
     # actions.battle(chr_npc.mech, chr_npc.badboy)
     # functions.weapon_creator(number_of_weapon=1)
     functions.create_npcs(number_of_npcs=1, requested_level=1)
+    chr_npc.mech.add_item_to_the_bag(items.good_box)
+    chr_npc.npc_list[0].chr_belongings()
     # print(chr_npc.npc_list)
     # functions.npc_list_print(chr_npc.npc_list)
     # chr_npc.npc_list[0].print_whats_on()
@@ -34,8 +36,7 @@ def test():
     # chr_npc.mech.print_chr()
     # chr_npc.mech.put_on_items()
     #chr_npc.mech.print_chr()
-    chr_npc.mech.add_item_to_the_bag(items.good_box)
-    chr_npc.npc_list[0].chr_belongings()
+
     # for enemy in chr_npc.npc_list:
     #     enemy.chr_belongings()
     # print("Current hp", chr_npc.mech.hp)
