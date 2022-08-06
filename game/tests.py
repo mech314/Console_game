@@ -4,11 +4,10 @@ from console_game.game import chr_npc
 from console_game.game import functions
 from console_game.game import hrs_profs
 
-# TODO: write correct unittests
+mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="Swordsman", chr_type='player')
+test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keybordman", chr_type='npc')
 
-# box_with_stuff = [items.rusty_sword, items.nice_sword, items.heavy_axe, items.simple_boots, items.simple_helmet,
-#                   items.simple_jacket, items.simple_trousers, items.simple_vest, items.simple_armlet,
-#                   items.simple_armlet]
+# TODO: write correct unittests
 
 
 def test():
@@ -19,9 +18,13 @@ def test():
     # chr_npc.badboy.print_chr()
     # actions.battle(chr_npc.mech, chr_npc.badboy)
     # functions.weapon_creator(number_of_weapon=1)
-    functions.create_npcs(number_of_npcs=1, requested_level=1)
-    chr_npc.mech.add_item_to_the_bag(items.good_box)
-    chr_npc.npc_list[0].chr_belongings()
+    #functions.create_npcs(number_of_npcs=1, requested_level=1)
+    #print(chr_npc.npc_list[0])
+    mech.add_item_to_the_bag(items.good_box)
+    #print(chr_npc.npc_list[0])
+    test_obj.chr_belongings()
+    mech.print_chr()
+    test_obj.print_chr()
     # print(chr_npc.npc_list)
     # functions.npc_list_print(chr_npc.npc_list)
     # chr_npc.npc_list[0].print_whats_on()
