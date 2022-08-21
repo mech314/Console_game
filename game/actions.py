@@ -1,5 +1,8 @@
 import random
+
 from colorama import Fore, Style, Back
+
+
 #
 # base_strenght = 5
 # base_agility = 3

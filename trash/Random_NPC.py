@@ -1,5 +1,7 @@
 import random
+
 import hrs_profs
+
 
 def npc_creator(name, gender, clan, specialization, level):
     """This function will take some arguments and create an NPC

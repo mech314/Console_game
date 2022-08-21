@@ -1,8 +1,9 @@
 """This file contains various functions for the game to work such as creating the NPCs, items etc"""
 import random
-from console_game.game import hrs_profs
+
 from console_game.game import armor
 from console_game.game import chr_npc
+from console_game.game import hrs_profs
 from console_game.game import weapon
 
 
@@ -78,8 +79,8 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
     if bag_contents:
         number_of_items = bag_contents_chance()
         if number_of_items:
-            weapon_creator(number_of_weapon=number_of_items, requested_level=[1, level+1], add_to_bag=True, character=npc)
-            armor_creator(number_of_armor=number_of_items, requested_level=[1, level+1], add_to_bag=True, character=npc)
+            weapon_creator(number_of_weapon=number_of_items, requested_level=[1, level+1], add_tobag=True, character=npc)
+            armor_creator(number_of_armor=number_of_items, requested_level=[1, level+1], add_tobag=True, character=npc)
 
     list_to_append.append(npc)
     return None
@@ -146,7 +147,7 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
 
 
 def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level=None,
-                  number_of_armor: int = None, list_to_append=None, add_to_bag=False, character=None):
+                  number_of_armor: int = None, list_to_append=None, add_tobag=False, character=None):
     """This function will create a list of random armor objects based on requested armor type and level
     if armor type is not specified it will make random items. If the level is not specified it will make random levels.
     Indicate the list where these NPC will be added"""
@@ -182,9 +183,9 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
         level = None
         armor_type = None
         condition = None
-        if add_to_bag:
+        if add_tobag:
             loot_list = [armor_item]
-            character.add_item_to_the_bag(loot_list)
+            character.add_item_to_thebag(loot_list)
     if list_to_append is None:  # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return armor_item
     else:
@@ -192,7 +193,7 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
 
 
 def weapon_creator(requested_weapon_type=None, requested_condition: str = None, requested_level=None,
-                   number_of_weapon: int = None, list_to_append=None, add_to_bag=False, character=None):
+                   number_of_weapon: int = None, list_to_append=None, add_tobag=False, character=None):
     """This function will create a list of random weapons objects based on requested weapon type and level
         if weapon type is not specified it will make random items. If the level is not specified it will
         make random levels. Indicate the list where these NPC will be added"""
@@ -230,9 +231,9 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
         level = None
         weapon_type = None
         condition = None
-        if add_to_bag:
+        if add_tobag:
             loot_list = [weapon_item]
-            character.add_item_to_the_bag(loot_list)
+            character.add_item_to_thebag(loot_list)
     if list_to_append is None:   # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return weapon_item
     else:

@@ -1,5 +1,6 @@
-from abc import ABC
 import random
+from abc import ABC
+
 from game import constants, armor, items, weapon
 
 
@@ -22,7 +23,7 @@ class Creature(ABC):
         self.movement = movement  # will be helping to calculate how far hero can go or how many action can perform
         self.intelligence = intelligence  # How smart
         self.critical_chance = critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
-        self._bag = bag  # A storage for all the shit that Hero has
+        self.bag = bag  # A storage for all the shit that Hero has
         self.sword_skill = sword_skill
         self.knife_skill = knife_skill
         self.axe_skill = axe_skill
@@ -179,16 +180,16 @@ class Hero(Creature):
         print("Your character's characteristics are:")
         self.print_chr()
 
-    def add_item_to_the_bag(self, item):
+    def add_item_to_thebag(self, item):
         """Adds item to the bag"""
-        self._bag.append(item)
+        self.bag.append(item)
 
     @property
     def bag_content(self):
-        return self._bag
+        return self.bag
 
-    def print_bag_cnt(self):
-        for count, item in enumerate(self._bag):
+    def printbag_cnt(self):
+        for count, item in enumerate(self.bag):
             print(count, item.name)
 
     def choose_weapon(self, choice):

@@ -1,6 +1,3 @@
-from console_game.game import hrs_profs
-from console_game.game import items
-
 npc_list = []
 
 

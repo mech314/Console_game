@@ -1,8 +1,9 @@
-from abc import ABC
 import random
-from console_game.game import weapon
+from abc import ABC
+
 from console_game.game import armor
 from console_game.game import items
+from console_game.game import weapon
 
 
 class Creature(ABC):
@@ -20,7 +21,7 @@ class Creature(ABC):
                  base_movement,
                  base_intelligence,
                  base_critical_chance,
-                 _bag,
+                 bag,
                  _what_is_on,
                  base_sword_skill,
                  base_knife_skill,
@@ -50,8 +51,8 @@ class Creature(ABC):
         self.base_movement = base_movement  # will be helping to calculate how far hero can go or how many action can perform
         self.base_intelligence = base_intelligence  # How smart
         self.base_critical_chance = base_critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
-        self._bag = _bag  # A storage for all the shit that Hero has
-        self._what_is_on = _what_is_on  # List that contains all clothes on a hero. Pop them from _bag when you put them
+        self.bag = bag  # A storage for all the shit that Hero has
+        self._what_is_on = _what_is_on  # List that contains all clothes on a hero. Pop them from bag when you put them
         self.base_sword_skill = base_sword_skill
         self.base_knife_skill = base_knife_skill
         self.base_axe_skill = base_axe_skill
@@ -94,7 +95,7 @@ class Hero(Creature):
                  base_movement=2,
                  base_intelligence=1,
                  base_critical_chance=0,
-                 _bag=[],
+                 bag=[],
                  _what_is_on=[],
                  base_sword_skill=0,
                  base_knife_skill=0,
@@ -125,7 +126,7 @@ class Hero(Creature):
                          base_movement,
                          base_intelligence,
                          base_critical_chance,
-                         _bag,
+                         bag,
                          _what_is_on,
                          base_sword_skill,
                          base_knife_skill,
@@ -377,21 +378,21 @@ class Hero(Creature):
         print("Your character's characteristics are:")
         self.print_chr()
 
-    def add_item_to_the_bag(self, item):
+    def add_item_to_thebag(self, item):
         """Adds item to the bag, if the list was passed - entire list will be picked up"""
         if isinstance(item, list):
             for i in item:
-                self._bag.append(i)
+                self.bag.append(i)
         else:
-            self._bag.append(item)
+            self.bag.append(item)
 
     @property
     def bag_content(self):
-        return self._bag
+        return self.bag
 
-    def print_bag_cnt(self):
+    def printbag_cnt(self):
         print("You have following items in the bag:")
-        for count, item in enumerate(self._bag):
+        for count, item in enumerate(self.bag):
             print('----------------------------------------')
             """Will print all armor from the armor list in items module"""
             if item.item_type == 'weapon':
@@ -445,7 +446,7 @@ class Hero(Creature):
         if choice:
             print(choice)
         elif choice is None:
-            self.print_bag_cnt()
+            self.printbag_cnt()
             choice = input('PUTTING ON ITEMS What do you want to put on:')
             if choice == "no":
                 return None
@@ -497,7 +498,7 @@ class Hero(Creature):
             print(f'You have {item.name.lower()} in your hands')
             self.active_weapon = self.bag_content[int(choice)]
             self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self._what_is_on.append(self._bag.pop(int(choice)))
+        self._what_is_on.append(self.bag.pop(int(choice)))
         self.base_hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck += item.luck
         self.strength += item.strength
@@ -506,7 +507,7 @@ class Hero(Creature):
         self.intelligence += item.intelligence
         self.critical_chance += item.critical_chance
         if len(self.bag_content) > 0:
-            self.print_bag_cnt()
+            self.printbag_cnt()
             more_items = input('Do you want to put something else? ')
             if str(more_items).lower() == "no":
                 print('Alright')
@@ -579,7 +580,7 @@ class Hero(Creature):
             print(f'You put {item.name.lower()} away from your hands')
             self.active_weapon = items.fist
             self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self._bag.append(self._what_is_on.pop(int(choice)))
+        self.bag.append(self._what_is_on.pop(int(choice)))
         self.base_hp -= item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck -= item.luck
         self.strength -= item.strength

@@ -1,13 +1,14 @@
-import random
-from console_game.game import weapon
-from console_game.game import armor
-from console_game.game import potions
+from game import armor
+from game import potions
+from game import weapon
 
 
 class LootBoxes:
     """Class for everything that gonna fall from the NPC or elsewhere"""
 
-    def __init__(self, name, contents=[]):
+    def __init__(self, name, contents=None):
+        if contents is None:
+            contents = []
         self.name = name
         self.contents = contents
 

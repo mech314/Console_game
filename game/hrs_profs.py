@@ -1,9 +1,9 @@
-from abc import ABC
 import random
-from console_game.game import weapon
-from console_game.game import armor
-from console_game.game import items
-from console_game.game import potions
+from abc import ABC
+
+from game import armor
+from game import items
+from game import weapon
 
 
 class Creature(ABC):
@@ -21,7 +21,7 @@ class Creature(ABC):
                  movement,
                  intelligence,
                  critical_chance,
-                 _bag,
+                 bag,
                  _what_is_on,
                  sword_skill,
                  knife_skill,
@@ -51,8 +51,8 @@ class Creature(ABC):
         self.movement = movement  # will be helping to calculate how far hero can go or how many action can perform
         self.intelligence = intelligence  # How smart
         self.critical_chance = critical_chance  # A chance to make a critical hit, strikes ignoring armor + 10% dmg
-        self._bag = _bag  # A storage for all the shit that Hero has
-        self._what_is_on = _what_is_on  # List that contains all clothes on a hero. Pop them from _bag when you put them
+        self.bag = bag  # A storage for all the shit that Hero has
+        self._what_is_on = _what_is_on  # List that contains all clothes on a hero. Pop them from bag when you put them
         self.sword_skill = sword_skill
         self.knife_skill = knife_skill
         self.axe_skill = axe_skill
@@ -95,7 +95,7 @@ class Hero(Creature):
                  movement=2,
                  intelligence=1,
                  critical_chance=0,
-                 _bag=[],
+                 bag=[],
                  _what_is_on=[],
                  sword_skill=0,
                  knife_skill=0,
@@ -126,7 +126,7 @@ class Hero(Creature):
                          movement,
                          intelligence,
                          critical_chance,
-                         _bag,
+                         bag,
                          _what_is_on,
                          sword_skill,
                          knife_skill,
@@ -318,27 +318,25 @@ class Hero(Creature):
         print("Your character's characteristics are:")
         self.print_chr()
 
-    def add_item_to_the_bag(self, loot, specific_item=None):
+    def add_item_to_thebag(self, loot, specific_item=None):
         if specific_item:
-            self._bag.append(specific_item)
+            self.bag.append(specific_item)
             loot.remove(specific_item)
         else:
-            self._bag += loot
+            self.bag += loot
             loot = []
 
     def chr_belongings(self):
-        chr_belongings = []
-        for item in self.bag_content:
-            chr_belongings.append(item)
-        for key, value in self.whats_on_dict.items():
-            if value.item_type.lower() == 'clothes':
-                if value.armor_type != 'naked':
-                    chr_belongings.append(value)
-            elif value.item_type.lower() == 'weapon':
-                if value.weapon_type != 'fist':
-                    chr_belongings.append(value)
-        for item in chr_belongings:
+        """This method prints what's on the character and what is in the bag ignoring "naked" or "fist" objects"""
+        print(f'{self.name} bag contents:')
+        for item in self.bag:
             print(item.name)
+        print(f'{self.name} has on him:')
+        for key, value in self.whats_on_dict.items():
+            if value.item_type.lower() == 'clothes' and value.armor_type != 'naked':
+                print(value.name)
+            elif value.item_type.lower() == 'weapon' and value.weapon_type != 'fist':
+                print(value.name)
 
     def loot_drop(self):
         """Function that will make a drop of the loot. Will take all the items from the bag and on the character
@@ -365,11 +363,11 @@ class Hero(Creature):
 
     @property
     def bag_content(self):
-        return self._bag
+        return self.bag
 
-    def print_bag_cnt(self):
+    def printbag_cnt(self):
         print("You have following items in the bag:")
-        for count, item in enumerate(self._bag):
+        for count, item in enumerate(self.bag):
             print('----------------------------------------')
             """Will print all armor from the armor list in items module"""
             if item.item_type == 'weapon':
@@ -406,13 +404,13 @@ class Hero(Creature):
 
     def health_potion(self):
         potion_counter = 0
-        for item in self._bag:  # Yes this is stupid, probably need to learn how to find object in the list using __eq__
+        for item in self.bag:  # Yes this is stupid, probably need to learn how to find object in the list using __eq__
             if item.item_type == 'potion':
                 potion_counter += 1
         if potion_counter >= 1:
-            self.print_potion_bag()
+            self.print_potionbag()
             choice = input('Which potion do you want to take? ')
-            potion = self._bag.pop(int(choice))
+            potion = self.bag.pop(int(choice))
             if self.hp + potion.hp >= self.max_hp:
                 self.hp = self.max_hp
                 print("You health has been restored to the max level")
@@ -422,10 +420,10 @@ class Hero(Creature):
         else:
             print("You have checked your bag and it seems that you don't have any potions buddy...")
 
-    def print_potion_bag(self):
+    def print_potionbag(self):
         """Will print only the potions in the bag"""
         print("You have following potions in the bag:")
-        for count, item in enumerate(self._bag):
+        for count, item in enumerate(self.bag):
             if item.item_type == 'potion':
                 print('----------------------------------------')
                 print('Item # ', count, 'Name', ':', item.name.capitalize(),
@@ -436,9 +434,9 @@ class Hero(Creature):
         """Puts a piece of armor on you"""
         if choice is None:
             print('PUTTING ON THE ITEMS This is what you have in the bag:')
-            self.print_bag_cnt()
+            self.printbag_cnt()
             input_choice = input('What do you want to put on:')
-            if input_choice.isnumeric() and len(self._bag)-1 >= int(input_choice):
+            if input_choice.isnumeric() and len(self.bag)-1 >= int(input_choice):
                 try:
                     choice = int(input_choice)
                 except ValueError:
@@ -471,7 +469,7 @@ class Hero(Creature):
                         if user_input.lower() == 'yes':
                             reply_flag = False
                             old_item = self.torso
-                            self._bag.append(old_item)
+                            self.bag.append(old_item)
                             self._what_is_on.remove(old_item)
                             self.torso = self.bag_content[int(choice)]
                             self.left_arm = self.bag_content[int(choice)]
@@ -485,9 +483,9 @@ class Hero(Creature):
                             if len(self.bag_content) > 0:
                                 more_items_flag = True
                                 while more_items_flag:
-                                    self.print_bag_cnt()
+                                    self.printbag_cnt()
                                     more_items = input('Do you want to put something else? ')
-                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                         more_items_flag = False
                                         self.put_on_items(int(more_items))
                                     elif str(more_items).lower() == "no":
@@ -512,7 +510,7 @@ class Hero(Creature):
                         if user_input.lower() == 'yes':
                             reply_flag = False
                             old_item = self.torso
-                            self._bag.append(old_item)
+                            self.bag.append(old_item)
                             self._what_is_on.remove(old_item)
                             self.torso = self.bag_content[int(choice)]
                             self.torso_armor = item.armor
@@ -522,9 +520,9 @@ class Hero(Creature):
                             if len(self.bag_content) > 0:
                                 more_items_flag = True
                                 while more_items_flag:
-                                    self.print_bag_cnt()
+                                    self.printbag_cnt()
                                     more_items = input('Do you want to put something else? ')
-                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                         more_items_flag = False
                                         self.put_on_items(int(more_items))
                                     elif str(more_items).lower() == "no":
@@ -556,7 +554,7 @@ class Hero(Creature):
                                     if user_input.lower() == 'yes':
                                         reply_flag = False
                                         old_item = self.left_arm
-                                        self._bag.append(old_item)
+                                        self.bag.append(old_item)
                                         self._what_is_on.remove(old_item)
                                         self.left_arm = self.bag_content[int(choice)]
                                         self.left_arm_armor = item.armor
@@ -567,9 +565,9 @@ class Hero(Creature):
                                         if len(self.bag_content) > 0:
                                             more_items_flag = True
                                             while more_items_flag:
-                                                self.print_bag_cnt()
+                                                self.printbag_cnt()
                                                 more_items = input('Do you want to put something else? ')
-                                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                                if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                                     more_items_flag = False
                                                     self.put_on_items(int(more_items))
                                                 elif str(more_items).lower() == "no":
@@ -596,7 +594,7 @@ class Hero(Creature):
                                     if user_input.lower() == 'yes':
                                         reply_flag = False
                                         old_item = self.right_arm
-                                        self._bag.append(old_item)
+                                        self.bag.append(old_item)
                                         self._what_is_on.remove(old_item)
                                         self.right_arm = self.bag_content[int(choice)]
                                         self.right_arm_armor = item.armor
@@ -607,9 +605,9 @@ class Hero(Creature):
                                         if len(self.bag_content) > 0:
                                             more_items_flag = True
                                             while more_items_flag:
-                                                self.print_bag_cnt()
+                                                self.printbag_cnt()
                                                 more_items = input('Do you want to put something else? ')
-                                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                                if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                                     more_items_flag = False
                                                     self.put_on_items(int(more_items))
                                                 elif str(more_items).lower() == "no":
@@ -638,7 +636,7 @@ class Hero(Creature):
                         if user_input.lower() == 'yes':
                             reply_flag = False
                             old_item = self.legs
-                            self._bag.append(old_item)
+                            self.bag.append(old_item)
                             self._what_is_on.remove(old_item)
                             self.legs = self.bag_content[int(choice)]
                             self.legs_armor = item.armor
@@ -648,9 +646,9 @@ class Hero(Creature):
                             if len(self.bag_content) > 0:
                                 more_items_flag = True
                                 while more_items_flag:
-                                    self.print_bag_cnt()
+                                    self.printbag_cnt()
                                     more_items = input('Do you want to put something else? ')
-                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                         more_items_flag = False
                                         self.put_on_items(int(more_items))
                                     elif str(more_items).lower() == "no":
@@ -675,7 +673,7 @@ class Hero(Creature):
                         if user_input.lower() == 'yes':
                             reply_flag = False
                             old_item = self.feet
-                            self._bag.append(old_item)
+                            self.bag.append(old_item)
                             self._what_is_on.remove(old_item)
                             self.feet = self.bag_content[int(choice)]
                             self.feet_armor = item.armor
@@ -685,9 +683,9 @@ class Hero(Creature):
                             if len(self.bag_content) > 0:
                                 more_items_flag = True
                                 while more_items_flag:
-                                    self.print_bag_cnt()
+                                    self.printbag_cnt()
                                     more_items = input('Do you want to put something else? ')
-                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                         more_items_flag = False
                                         self.put_on_items(int(more_items))
                                     elif str(more_items).lower() == "no":
@@ -712,7 +710,7 @@ class Hero(Creature):
                         if user_input.lower() == 'yes':
                             reply_flag = False
                             old_item = self.head
-                            self._bag.append(old_item)
+                            self.bag.append(old_item)
                             self._what_is_on.remove(old_item)
                             self.head = self.bag_content[int(choice)]
                             self.head_armor = item.armor
@@ -722,9 +720,9 @@ class Hero(Creature):
                             if len(self.bag_content) > 0:
                                 more_items_flag = True
                                 while more_items_flag:
-                                    self.print_bag_cnt()
+                                    self.printbag_cnt()
                                     more_items = input('Do you want to put something else? ')
-                                    if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                    if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                         more_items_flag = False
                                         self.put_on_items(int(more_items))
                                     elif str(more_items).lower() == "no":
@@ -749,7 +747,7 @@ class Hero(Creature):
                     if user_input.lower() == 'yes':
                         reply_flag = False
                         old_item = self.active_weapon
-                        self._bag.append(old_item)
+                        self.bag.append(old_item)
                         self._what_is_on.remove(old_item)
                         self.active_weapon = self.bag_content[int(choice)]
                         self.active_skill = self.skills[self.active_weapon.weapon_type]
@@ -759,9 +757,9 @@ class Hero(Creature):
                         if len(self.bag_content) > 0:
                             more_items_flag = True
                             while more_items_flag:
-                                self.print_bag_cnt()
+                                self.printbag_cnt()
                                 more_items = input('Do you want to put something else? ')
-                                if more_items.isnumeric() and len(self._bag) - 1 >= int(more_items):
+                                if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                                     more_items_flag = False
                                     self.put_on_items(int(more_items))
                                 elif str(more_items).lower() == "no":
@@ -787,7 +785,7 @@ class Hero(Creature):
                 else:
                     print('Wrong input')
             return None
-        self._what_is_on.append(self._bag.pop(int(choice)))
+        self._what_is_on.append(self.bag.pop(int(choice)))
         self.hp += item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck += item.luck
         self.strength += item.strength
@@ -799,9 +797,9 @@ class Hero(Creature):
         if len(self.bag_content) > 0:
             more_items_flag = True
             while more_items_flag:
-                self.print_bag_cnt()
+                self.printbag_cnt()
                 more_items = input('Do you want to put something else? ')
-                if more_items.isnumeric() and len(self._bag)-1 >= int(more_items):
+                if more_items.isnumeric() and len(self.bag)-1 >= int(more_items):
                     more_items_flag = False
                     self.put_on_items(int(more_items))
                 elif str(more_items).lower() == "no":
@@ -892,7 +890,7 @@ class Hero(Creature):
             print(f'You put {item.name.lower()} away from your hands')
             self.active_weapon = items.fist
             self.active_skill = self.skills[self.active_weapon.weapon_type]
-        self._bag.append(self._what_is_on.pop(int(choice)))
+        self.bag.append(self._what_is_on.pop(int(choice)))
         self.hp -= item.hp  # Now adds up all characteristics of a cloth to character's chr.
         self.luck -= item.luck
         self.strength -= item.strength
