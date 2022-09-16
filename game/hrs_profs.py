@@ -176,6 +176,7 @@ class Hero(Creature):
         self.bow_skill = bow_skill
         self.fist_skill = fist_skill
         self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
+        self.bag = bag
 
     def apply_specialization(self):
         if self.spec.lower() == 'swordsman':
