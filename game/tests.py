@@ -26,6 +26,7 @@ def test():
     # =====
     mech.torso = items.vest_of_holy_tester
     test_obj.chr_belongings()
+    print('==========')
     mech.chr_belongings()
     # =====
     # mech.print_chr()
