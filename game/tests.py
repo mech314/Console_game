@@ -21,11 +21,13 @@ def test():
     # functions.weapon_creator(number_of_weapon=1)
     # functions.create_npcs(number_of_npcs=1, requested_level=1)
     # print(chr_npc.npc_list[0])
-    mech.add_item_to_thebag(good_box, good_box[0])
+    mech.add_item_to_thebag(good_box)
     # print(chr_npc.npc_list[0])
-    mech.torso=items.vest_of_holy_tester
+    # =====
+    mech.torso = items.vest_of_holy_tester
     test_obj.chr_belongings()
     mech.chr_belongings()
+    # =====
     # mech.print_chr()
     # test_obj.print_chr()
     # print(chr_npc.npc_list)

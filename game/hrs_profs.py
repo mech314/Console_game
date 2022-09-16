@@ -95,8 +95,8 @@ class Hero(Creature):
                  movement=2,
                  intelligence=1,
                  critical_chance=0,
-                 bag=[],
-                 _what_is_on=[],
+                 bag=None,
+                 _what_is_on=None,
                  sword_skill=0,
                  knife_skill=0,
                  axe_skill=0,
@@ -143,6 +143,10 @@ class Hero(Creature):
                          active_skill,
                          chr_type,
                          spec)
+        if _what_is_on is None:
+            _what_is_on = []
+        if bag is None:
+            bag = []
         self.apply_specialization()  # Adds specialization bonuses at the character creation
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
         an effective value for the parameters based on what is on the character. This is here because it is handy if you wanna
