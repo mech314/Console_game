@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f43f941-bc96-4f58-9272-924ec2b62a59" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/global_vars.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/global_vars.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/hrs_profs.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/hrs_profs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game/weapon.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/weapon.py" afterDir="false" />
-    </list>
+    <list default="true" id="6f43f941-bc96-4f58-9272-924ec2b62a59" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,7 +168,7 @@
       <workItem from="1673925515911" duration="337000" />
       <workItem from="1673925875378" duration="853000" />
       <workItem from="1673926791939" duration="13186000" />
-      <workItem from="1674074891462" duration="1232000" />
+      <workItem from="1674074891462" duration="1434000" />
     </task>
     <servers />
   </component>
