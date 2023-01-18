@@ -1,8 +1,10 @@
-from game import hrs_profs
-from game import items
+import hrs_profs
+import items
+import functions
+import chr_npc
 
-mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="Swordsman", chr_type='player', head=items.helmet1)
-test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keybordman", chr_type='npc', head=items.helmet2)
+#mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player', head=items.helmet1)
+#test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keybordman", chr_type='npc', head=items.helmet2)
 
 good_box = [items.super_sword, items.helmet_of_holy_tester, items.vest_of_holy_tester, items.trousers_of_holy_tester, items.boots_of_holy_tester,
             items.armlet_of_holy_tester1, items.armlet_of_holy_tester2, items.small_health_potion, items.medium_health_potion,
@@ -19,15 +21,22 @@ def test():
     # chr_npc.badboy.print_chr()
     # actions.battle(chr_npc.mech, chr_npc.badboy)
     # functions.weapon_creator(number_of_weapon=1)
-    # functions.create_npcs(number_of_npcs=1, requested_level=1)
-    # print(chr_npc.npc_list[0])
-    mech.add_item_to_thebag(good_box)
+    functions.create_npcs(number_of_npcs=1, requested_level=1)
+    print(chr_npc.npc_list[0].name)
+    print(chr_npc.npc_list[0].gender)
+    print(chr_npc.npc_list[0].active_weapon.name)
+    print(chr_npc.npc_list[0].active_weapon.weapon_type)
+    print(chr_npc.npc_list[0].spec)
+    print(chr_npc.npc_list[0].active_skill)
+    print(chr_npc.npc_list[0].sword_skill)
+    print(chr_npc.npc_list[0].axe_skill)
+    #mech.add_item_to_thebag(good_box)
     # print(chr_npc.npc_list[0])
     # =====
-    mech.torso = items.vest_of_holy_tester
-    test_obj.chr_belongings()
+    #mech.torso = items.vest_of_holy_tester
+    #test_obj.chr_belongings()
     print('==========')
-    mech.chr_belongings()
+    #mech.chr_belongings()
     # =====
     # mech.print_chr()
     # test_obj.print_chr()

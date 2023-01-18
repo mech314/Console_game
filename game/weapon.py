@@ -97,17 +97,16 @@ class Weapon:
     level: int = 1
     item_type: str = 'weapon'
     weapon_type: str = ''
-    weapon_spec: str = ''   # Is used to add bonus for weapon specialisation
     not_custom: bool = True
 
     def __post_init__(self):
         # Why not use a global variable for this?
         Weapon._id += 1
 
-        if self.weapon_type == 'sword' or self.weapon_type == 'small sword' or self.weapon_type == 'heavy sword':
-            self.weapon_spec = 'sword'
-        elif self.weapon_type == 'axe' or self.weapon_type == 'small axe' or self.weapon_type == 'heavy axe':
-            self.weapon_spec = 'axe'
+        if self.weapon_type in global_vars.swords:
+            self.weapon_type = 'sword'
+        elif self.weapon_type in global_vars.axes:
+            self.weapon_type = 'axe'
         if self.condition is None:  # If condition is 'fist' armor will be just naked.
             self.damage = (0, 1)
             self.weapon_type = 'fist'

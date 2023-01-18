@@ -147,7 +147,7 @@ class Hero(Creature):
             _what_is_on = []
         if bag is None:
             bag = []
-        self.apply_specialization()  # Adds specialization bonuses at the character creation
+
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
         an effective value for the parameters based on what is on the character. This is here because it is handy if you wanna
         start with the character not naked but with clothes and weapon. Not necessary for sure but works so far."""
@@ -179,8 +179,8 @@ class Hero(Creature):
         self.axe_skill = axe_skill
         self.bow_skill = bow_skill
         self.fist_skill = fist_skill
-        self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
         self.bag = bag
+        self.apply_specialization()  # Adds specialization bonuses at the character creation
 
     def apply_specialization(self):
         if self.spec.lower() == 'swordsman':
@@ -189,6 +189,7 @@ class Hero(Creature):
         elif self.spec.lower() == 'axeman':
             self.axe_skill += 3
             self.critical_chance += 5
+        self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
 
     def current_max_hp(self):
         if self.spec.lower() == 'swordsman':
