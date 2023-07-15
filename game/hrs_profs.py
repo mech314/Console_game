@@ -1,5 +1,5 @@
 import random
-from abc import ABC
+from abc import ABC, ABCMeta, abstractmethod
 
 from game import armor
 from game import items
@@ -74,6 +74,10 @@ class Creature(ABC):
         self.feet_armor = self.feet.armor
         self.chr_type = chr_type  # NPC of Player
         self.spec = spec  # specialization
+
+        @abstractmethod
+        def def apply_specialization(self):
+            pass
 
 
 class Hero(Creature):
