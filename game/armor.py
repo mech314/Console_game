@@ -1,7 +1,8 @@
 import random
-import global_vars
 from dataclasses import dataclass
 from typing import Dict, Tuple, NamedTuple, Any
+
+import global_vars
 
 
 class ArmorStat(NamedTuple):

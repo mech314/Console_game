@@ -1,6 +1,6 @@
-from game import armor
-from game import potions
-from game import weapon
+import armor
+import potions
+import weapon
 
 
 class LootBoxes:

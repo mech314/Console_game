@@ -1,7 +1,6 @@
-import hrs_profs
-import items
-import functions
 import chr_npc
+import functions
+import items
 
 #mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player', head=items.helmet1)
 #test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keybordman", chr_type='npc', head=items.helmet2)

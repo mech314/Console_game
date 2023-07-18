@@ -1,9 +1,9 @@
 import random
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 
-from game import armor
-from game import items
-from game import weapon
+import armor
+import items
+import weapon
 
 
 class Creature(ABC):
@@ -76,7 +76,7 @@ class Creature(ABC):
         self.spec = spec  # specialization
 
         @abstractmethod
-        def def apply_specialization(self):
+        def apply_specialization(self):
             pass
 
 
@@ -117,36 +117,36 @@ class Hero(Creature):
                  chr_type='npc',
                  spec=None):
 
-        super().__init__(name,
-                         gender,
-                         clan,
-                         level,
-                         exp,
-                         chr_points,
-                         hp,
-                         luck,
-                         strength,
-                         agility,
-                         movement,
-                         intelligence,
-                         critical_chance,
-                         bag,
-                         _what_is_on,
-                         sword_skill,
-                         knife_skill,
-                         axe_skill,
-                         bow_skill,
-                         fist_skill,
-                         head,
-                         torso,
-                         left_arm,
-                         right_arm,
-                         legs,
-                         feet,
-                         active_weapon,
-                         active_skill,
-                         chr_type,
-                         spec)
+        Creature.__init__(name,
+                          gender,
+                          clan,
+                          level,
+                          exp,
+                          chr_points,
+                          hp,
+                          luck,
+                          strength,
+                          agility,
+                          movement,
+                          intelligence,
+                          critical_chance,
+                          bag,
+                          _what_is_on,
+                          sword_skill,
+                          knife_skill,
+                          axe_skill,
+                          bow_skill,
+                          fist_skill,
+                          head,
+                          torso,
+                          left_arm,
+                          right_arm,
+                          legs,
+                          feet,
+                          active_weapon,
+                          active_skill,
+                          chr_type,
+                          spec)
         if _what_is_on is None:
             _what_is_on = []
         if bag is None:
@@ -353,7 +353,7 @@ class Hero(Creature):
         with certain chance it will make only a part of the items to actually drop. Dropped items will be an
         instance of lootbox class."""
 
-        if self.chr_belongings:      # If there is anything to drop
+        if self.chr_belongings:  # If there is anything to drop
             """Calculating the chance of dropping stuff."""
             chance = random.randint(0, 100)
             n = 0
@@ -365,9 +365,9 @@ class Hero(Creature):
                 else:
                     n = 1
                 loot_name = str(self.name + ' loot')
-                loot_box = random.sample(self.chr_belongings, n)     # Creating random amount loot
-                loot = items.LootBoxes(name=loot_name, contents=loot_box)       # Creating a class object of loot
-                items.location_loot.append(loot)        # Appending it to the location's items
+                loot_box = random.sample(self.chr_belongings, n)  # Creating random amount loot
+                loot = items.LootBoxes(name=loot_name, contents=loot_box)  # Creating a class object of loot
+                items.location_loot.append(loot)  # Appending it to the location's items
             else:
                 print(f"Nothing has fallen from {self.name}")
 
@@ -446,7 +446,7 @@ class Hero(Creature):
             print('PUTTING ON THE ITEMS This is what you have in the bag:')
             self.printbag_cnt()
             input_choice = input('What do you want to put on:')
-            if input_choice.isnumeric() and len(self.bag)-1 >= int(input_choice):
+            if input_choice.isnumeric() and len(self.bag) - 1 >= int(input_choice):
                 try:
                     choice = int(input_choice)
                 except ValueError:
@@ -809,7 +809,7 @@ class Hero(Creature):
             while more_items_flag:
                 self.printbag_cnt()
                 more_items = input('Do you want to put something else? ')
-                if more_items.isnumeric() and len(self.bag)-1 >= int(more_items):
+                if more_items.isnumeric() and len(self.bag) - 1 >= int(more_items):
                     more_items_flag = False
                     self.put_on_items(int(more_items))
                 elif str(more_items).lower() == "no":
@@ -829,23 +829,23 @@ class Hero(Creature):
             print('TAKING OFF THE ITEMS This is what is on you:')
             self.print_whats_on()
             input_choice = input('What do you want to take off:')
-            if input_choice.isnumeric() and len(self._what_is_on)-1 >= int(input_choice):       # Checking input
+            if input_choice.isnumeric() and len(self._what_is_on) - 1 >= int(input_choice):  # Checking input
                 try:
                     choice = int(input_choice)
                 except ValueError:
                     print("Input error")
                     self.put_off_items()
-            elif str(input_choice) == "no":      # Checking input
+            elif str(input_choice) == "no":  # Checking input
                 print("You decided not to take off anything")
                 return None
-            elif input_choice == "q":        # Exit
+            elif input_choice == "q":  # Exit
                 print("Quiting")
                 exit()
-            else:       # Restart
+            else:  # Restart
                 print("Input error")
                 self.put_off_items()
         item = self._what_is_on[choice]
-        if isinstance(item, armor.Armor):       # If this is an armor will proceed
+        if isinstance(item, armor.Armor):  # If this is an armor will proceed
             if item.armor_type == 'jacket':  # Put jacket on body, gives armor for hands and torso
                 print(f'You took off {item.name} from your body')
                 naked = items.naked
@@ -896,7 +896,7 @@ class Hero(Creature):
                 naked = items.naked
                 self.head = naked
                 self.head_armor = naked.armor
-        elif isinstance(item, weapon.Weapon):    # If this is an weapon will proceed
+        elif isinstance(item, weapon.Weapon):  # If this is an weapon will proceed
             print(f'You put {item.name.lower()} away from your hands')
             self.active_weapon = items.fist
             self.active_skill = self.skills[self.active_weapon.weapon_type]
@@ -909,12 +909,12 @@ class Hero(Creature):
         self.intelligence -= item.intelligence
         self.critical_chance -= item.critical_chance
         self.current_max_hp()
-        if len(self._what_is_on) > 0:       # Will ask if you wanna take more items off.
+        if len(self._what_is_on) > 0:  # Will ask if you wanna take more items off.
             more_items_flag = True
             while more_items_flag:
                 self.print_whats_on()
                 more_items = input('Do you want to take something else off? ')
-                if more_items.isnumeric() and len(self._what_is_on)-1 >= int(more_items):
+                if more_items.isnumeric() and len(self._what_is_on) - 1 >= int(more_items):
                     more_items_flag = False
                     self.put_off_items(choice=int(more_items))
                 elif str(more_items).lower() == "no":

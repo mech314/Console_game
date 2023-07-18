@@ -1,8 +1,9 @@
 """This file contains various functions for the game to work such as creating the NPCs, items etc"""
 import random
-import global_vars
+
 import armor
 import chr_npc
+import global_vars
 import hrs_profs
 import weapon
 
