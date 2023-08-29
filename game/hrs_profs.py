@@ -114,10 +114,10 @@ class Hero(Creature):
                  feet=items.naked,
                  active_weapon=items.fist,
                  active_skill=0,
-                 chr_type='npc',
-                 spec=None):
+                 spec=None,
+                 chr_type='npc'):
 
-        Creature.__init__(name,
+        super().__init__(name,
                           gender,
                           clan,
                           level,
@@ -145,8 +145,8 @@ class Hero(Creature):
                           feet,
                           active_weapon,
                           active_skill,
-                          chr_type,
-                          spec)
+                          spec,
+                          chr_type)
         if _what_is_on is None:
             _what_is_on = []
         if bag is None:
