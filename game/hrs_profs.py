@@ -5,6 +5,7 @@ import armor
 import items
 import weapon
 
+# TODO Comment everything for the god sake!
 
 class Creature(ABC):
     def __init__(self,
@@ -88,7 +89,7 @@ class Hero(Creature):
     def __init__(self,
                  name,
                  gender,
-                 clan,
+                 clan="adventures",
                  level=1,
                  exp=0,
                  chr_points=0,
@@ -114,39 +115,39 @@ class Hero(Creature):
                  feet=items.naked,
                  active_weapon=items.fist,
                  active_skill=0,
-                 spec=None,
-                 chr_type='npc'):
+                 chr_type='npc',
+                 spec=None):
 
         super().__init__(name,
-                          gender,
-                          clan,
-                          level,
-                          exp,
-                          chr_points,
-                          hp,
-                          luck,
-                          strength,
-                          agility,
-                          movement,
-                          intelligence,
-                          critical_chance,
-                          bag,
-                          _what_is_on,
-                          sword_skill,
-                          knife_skill,
-                          axe_skill,
-                          bow_skill,
-                          fist_skill,
-                          head,
-                          torso,
-                          left_arm,
-                          right_arm,
-                          legs,
-                          feet,
-                          active_weapon,
-                          active_skill,
-                          spec,
-                          chr_type)
+                         gender,
+                         clan,
+                         level,
+                         exp,
+                         chr_points,
+                         hp,
+                         luck,
+                         strength,
+                         agility,
+                         movement,
+                         intelligence,
+                         critical_chance,
+                         bag,
+                         _what_is_on,
+                         sword_skill,
+                         knife_skill,
+                         axe_skill,
+                         bow_skill,
+                         fist_skill,
+                         head,
+                         torso,
+                         left_arm,
+                         right_arm,
+                         legs,
+                         feet,
+                         active_weapon,
+                         active_skill,
+                         chr_type,
+                         spec)
         if _what_is_on is None:
             _what_is_on = []
         if bag is None:
@@ -986,7 +987,7 @@ class Hero(Creature):
 
     @staticmethod
     def npc_hit(target):
-        """Uses random to choose where to hit a plyaer."""
+        """Uses random to choose where to hit a player."""
         hit_choice = ''
         active_armor = None
         random_where_to_hit = random.randint(1, 5)
@@ -1019,7 +1020,7 @@ class Hero(Creature):
                 critical = True
             else:
                 damage = self.calc_dmg() - armor_value
-            print(active_armor)
+            # print(f"Armor where you hit is: {active_armor}")
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
         elif target.chr_type == 'player':
             critical = False
@@ -1030,7 +1031,7 @@ class Hero(Creature):
                 critical = True
             else:
                 damage = self.calc_dmg() - armor_value
-            print(active_armor)
+            #print(f"Armor where you hit is: {active_armor}")
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
 
 # class Thief(Hero):
