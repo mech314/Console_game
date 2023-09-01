@@ -130,6 +130,10 @@ def doStart():
                     # print("There is some loot dropped")
                     # print(enemy.loot)
                     # player.add_item_to_thebag(loot=enemy.loot)
+        elif choice == "S":
+            pass
+        elif choice == "G":
+            print("This mode is not available yet")
         elif choice == "B":
             player.printbag_cnt()
 
