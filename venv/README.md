@@ -96,3 +96,5 @@ python3 -m pip install -r requirements.txt
 ```bash
 python3 game/tests.py
 ```
+## Gameplay
+python3 game/main.py
