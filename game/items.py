@@ -84,10 +84,10 @@ boots_of_holy_tester = armor.Armor(name='Holy boots', condition=100, armor=[50, 
                                    item_type='clothes', armor_type='boots', not_custom=False)
 
 rusty_sword = weapon.Weapon('Rusty sword', condition=100, damage=[5, 7], durability=100, hp=1, luck=5,
-                            strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+                            strength=10, agility=10, movement=5, intelligence=1, critical_chance=6, level=10,
                             item_type='weapon', weapon_type='sword', not_custom=False)
 
-helmet1 = armor.Armor(name='Holy helmet1', condition=1, armor=[20, 30], durability=1, hp=1, luck=1,
+helmet1 = armor.Armor(name='helmet1', condition=1, armor=[2, 5], durability=1, hp=1, luck=1,
                       strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                       item_type='clothes', armor_type='helmet', not_custom=False)
 
@@ -95,13 +95,29 @@ helmet2 = armor.Armor(name='Holy helmet2', condition=2, armor=[20, 30], durabili
                       strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                       item_type='clothes', armor_type='helmet', not_custom=False)
 
-boot1 = armor.Armor(name='Holy boots1', condition=1, armor=[50, 60], durability=1, hp=1, luck=1,
-                    strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
+boot1 = armor.Armor(name='boots1', condition=1, armor=[2, 6], durability=1, hp=1, luck=1,
+                    strength=10, agility=10, movement=5, intelligence=1, critical_chance=7, level=10,
                     item_type='clothes', armor_type='boots', not_custom=False)
 
 boot2 = armor.Armor(name='Holy boots2', condition=2, armor=[50, 60], durability=2, hp=2, luck=2,
                     strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                     item_type='clothes', armor_type='boots', not_custom=False)
+
+simple_trousers = armor.Armor(name='trousers', condition=100, armor=[3, 4], durability=100, hp=6,
+                              luck=5,
+                              strength=10, agility=10, movement=5, intelligence=1, critical_chance=4, level=10,
+                              item_type='clothes', armor_type='trousers', not_custom=False)
+
+simple_vest = armor.Armor(name='vest', condition=100, armor=[3, 7], durability=100, hp=3, luck=5,
+                          strength=10, agility=10, movement=5, intelligence=1, critical_chance=4, level=10,
+                          item_type='clothes', armor_type='vest', not_custom=False)
+
+simple_armlet1 = armor.Armor(name='armlet1', condition=100, armor=[2, 3], durability=100, hp=4, luck=5,
+                             strength=10, agility=10, movement=5, intelligence=1, critical_chance=2, level=10,
+                             item_type='clothes', armor_type='armlet', not_custom=False)
+simple_armlet2 = armor.Armor(name='armlet2', condition=100, armor=[2, 3], durability=100, hp=5, luck=5,
+                             strength=10, agility=10, movement=5, intelligence=1, critical_chance=2, level=10,
+                             item_type='clothes', armor_type='armlet', not_custom=False)
 
 small_health_potion = potions.Health_Potions(name='Small HP potion', level=1, hp=20)
 medium_health_potion = potions.Health_Potions(name='Medium HP potion', level=1, hp=35)
@@ -110,6 +126,9 @@ large_health_potion = potions.Health_Potions(name='Large HP potion', level=1, hp
 good_box = [super_sword, helmet_of_holy_tester, vest_of_holy_tester, trousers_of_holy_tester, boots_of_holy_tester,
             armlet_of_holy_tester1, armlet_of_holy_tester2, small_health_potion, medium_health_potion,
             large_health_potion]
+
+simple_box = [rusty_sword, helmet1, boot1, simple_trousers, simple_vest, simple_armlet1, simple_armlet2]
+
 
 check_box = [helmet1, super_sword, medium_health_potion]
 

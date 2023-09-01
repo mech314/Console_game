@@ -22,6 +22,8 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
     Here are values for level 1 NPC
     """
 
+    global npc
+
     def bag_contents_chance():
         """Will calculate the chance and the amount of items to put into the bag"""
         items_to_add = False
@@ -30,8 +32,8 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
                 items_to_add = 3
             elif random.randint(0, 100) < 30:
                 items_to_add = 2
-            elif random.randint(0, 100) < 100:
-                items_to_add = 1
+            elif random.randint(0, 100) <= 100:
+                items_to_add = 5
         return items_to_add
 
     npc_counter = 1  # Not used now
@@ -45,7 +47,8 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
         global_vars.level_multipliers[str(level)] * random.randint(*global_vars.ref_stats['intelligence']))
     critical_chance = int(1.21 * global_vars.level_multipliers[str(level)])
 
-    if specialization.lower() == 'swordsman':  # Choosing weapon types to be generated based on the specialization of NPC
+    # Choosing weapon types to be generated based on the specialization of NPC
+    if specialization.lower() == 'swordsman':
         weapon_type = ['sword', 'small sword', 'heavy sword']
     elif specialization.lower() == 'axeman':
         weapon_type = ['axe', 'heavy axe', 'small axe']
@@ -68,13 +71,23 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
     typically 15%. It will return the number of items to add. Example: if number_of_items it will add 2 weapons and 2 armors.
     Levels are random from 1 to NPC+1 level"""
     if bag_contents:
+        # How many items to make
         number_of_items = bag_contents_chance()
         if number_of_items:
-            weapon_creator(number_of_weapon=number_of_items, requested_level=[1, level + 1], add_tobag=True,
-                           character=npc)
-            armor_creator(number_of_armor=number_of_items, requested_level=[1, level + 1], add_tobag=True,
-                          character=npc)
-
+            while number_of_items > 0:
+                # Random armor OR weapon
+                items = ["W", "A"]
+                # Make a choice
+                choice = random.choice(items)
+                if choice == "W":
+                    weapon_creator(number_of_weapon=1, requested_level=[1, level + 1], add_tobag=True,
+                                   character=npc)
+                elif choice == "A":
+                    armor_creator(number_of_armor=1, requested_level=[1, level + 1], add_tobag=True,
+                                  character=npc)
+                # Decrement number of items
+                number_of_items -= 1
+    # Add new NPC to the list
     list_to_append.append(npc)
     return None
 
@@ -122,7 +135,7 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
             name_choice = "NPC" + str(npc_name_counter)
             name = name_choice
         else:
-            requested_name = requested_name
+            name = requested_name
         """After all parameters were defined function will make a set number of NPCs and put them into list"""
         npc_creator(name, gender, clan, spec, level)
 
@@ -172,8 +185,8 @@ def armor_creator(requested_armor_type: str = None, requested_condition: str = N
         armor_type = None
         condition = None
         if add_tobag:
-            loot_list = [armor_item]
-            character.add_item_to_thebag(loot_list)
+            items = [armor_item]
+            character.add_item_to_thebag(items, specific_item=0)
     if list_to_append is None:  # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return armor_item
     else:
@@ -219,8 +232,8 @@ def weapon_creator(requested_weapon_type=None, requested_condition: str = None, 
         weapon_type = None
         condition = None
         if add_tobag:
-            loot_list = [weapon_item]
-            character.add_item_to_thebag(loot_list)
+            items = [weapon_item]
+            character.add_item_to_thebag(items, specific_item=0)
     if list_to_append is None:  # Is used when we use this function with NPC creation and put weapon\clothes on the NPC
         return weapon_item
     else:
@@ -343,6 +356,7 @@ def inputYesNo(text):
             return True
         elif x in ["N", "NO"]:
             return False
+
 
 def gameOver():
     print("GameOver")

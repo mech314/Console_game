@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 import armor
 import items
 import weapon
+import Utils
+
 
 # TODO Comment everything for the god sake!
 
@@ -100,8 +102,8 @@ class Hero(Creature):
                  movement=2,
                  intelligence=1,
                  critical_chance=0,
-                 bag=None,
-                 _what_is_on=None,
+                 bag=[],
+                 _what_is_on=[],
                  sword_skill=0,
                  knife_skill=0,
                  axe_skill=0,
@@ -148,11 +150,8 @@ class Hero(Creature):
                          active_skill,
                          chr_type,
                          spec)
-        if _what_is_on is None:
-            _what_is_on = []
-        if bag is None:
-            bag = []
 
+        self.loot = None
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
         an effective value for the parameters based on what is on the character. This is here because it is handy if you wanna
         start with the character not naked but with clothes and weapon. Not necessary for sure but works so far."""
@@ -184,6 +183,7 @@ class Hero(Creature):
         self.axe_skill = axe_skill
         self.bow_skill = bow_skill
         self.fist_skill = fist_skill
+        self._what_is_on = _what_is_on
         self.bag = bag
         self.apply_specialization()  # Adds specialization bonuses at the character creation
 
@@ -230,35 +230,39 @@ class Hero(Creature):
     def print_whats_on(self):
         """Prints clothes and weapon on the character """
         print('----------------------------------------')
-        for count, item in enumerate(self._what_is_on):
-            """Will print all armor from the armor list in items module"""
-            if item.item_type == 'weapon':
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nCondition', item.condition,
-                      '\nHp: ', item.hp,
-                      '\nDamage: ', item.damage,
-                      '\nDurability:', item.durability,
-                      '\nLuck: ', item.luck,
-                      '\nStrength: ', item.strength,
-                      '\nAgility: ', item.agility,
-                      '\nMovement: ', item.movement,
-                      '\nIntelligence: ', item.intelligence,
-                      '\nCritical chance: ', item.critical_chance,
-                      '\nLevel: ', item.level)
-            elif item.item_type == 'clothes':
-                print('Item # ', count, '\nName', ':', item.name.capitalize(),
-                      '\nCondition', item.condition,
-                      '\nHp: ', item.hp,
-                      '\nArmor: ', item.armor,
-                      '\nDurability:', item.durability,
-                      '\nLuck: ', item.luck,
-                      '\nStrength: ', item.strength,
-                      '\nAgility: ', item.agility,
-                      '\nMovement: ', item.movement,
-                      '\nIntelligence: ', item.intelligence,
-                      '\nCritical chance: ', item.critical_chance,
-                      '\nLevel: ', item.level)
-            print('----------------------------------------')
+        if len(self._what_is_on) > -1:
+            # Check what is on and print out.
+            for key, value in self.whats_on_dict.items():
+                """Will print all armor from the armor list in items module"""
+                if value.item_type == 'weapon':
+                    print('Item # ', key, '\nName', ':', value.name.capitalize(),
+                          '\nCondition', value.condition,
+                          '\nHp: ', value.hp,
+                          '\nDamage: ', value.damage,
+                          '\nDurability:', value.durability,
+                          '\nLuck: ', value.luck,
+                          '\nStrength: ', value.strength,
+                          '\nAgility: ', value.agility,
+                          '\nMovement: ', value.movement,
+                          '\nIntelligence: ', value.intelligence,
+                          '\nCritical chance: ', value.critical_chance,
+                          '\nLevel: ', value.level)
+                elif value.item_type == 'clothes':
+                    print('Item # ', key, '\nName', ':', value.name.capitalize(),
+                          '\nCondition', value.condition,
+                          '\nHp: ', value.hp,
+                          '\nArmor: ', value.armor,
+                          '\nDurability:', value.durability,
+                          '\nLuck: ', value.luck,
+                          '\nStrength: ', value.strength,
+                          '\nAgility: ', value.agility,
+                          '\nMovement: ', value.movement,
+                          '\nIntelligence: ', value.intelligence,
+                          '\nCritical chance: ', value.critical_chance,
+                          '\nLevel: ', value.level)
+                print('----------------------------------------')
+        else:
+            print("There is nothing on the character")
 
         on_chr = {key: value for (key, value) in self.whats_on_dict.items() if value}
         return {k.capitalize(): v for k, v in on_chr.items()}
@@ -329,48 +333,84 @@ class Hero(Creature):
         print("Your character's characteristics are:")
         self.print_chr()
 
-    def add_item_to_thebag(self, loot, specific_item=None):
-        if specific_item:
-            self.bag.append(specific_item)
-            loot.remove(specific_item)
+    def add_item_to_thebag(self, loot: list, specific_item=None):
+        # If pass just single item
+        if not isinstance(loot, list):
+            loot = [loot]
+        # If passed specific item from the list
+        if specific_item or specific_item == 0:
+            self.bag.append(loot[specific_item])
+            del loot[specific_item]
+        # If the entire list is passed
         else:
-            self.bag += loot
-            loot = []
+            exitFlag = False
+            print("What items you want to take?\n"
+                  "______________________________")
+            while not exitFlag:
+                "Standard choices is to stop or to take all"
+                choices = [["D", "I'm done!"], ["A", "Take all!"]]
+                print("Currently in the box:")
+                for count, item in enumerate(loot, start=0):
+                    choices.insert(len(loot), [str(count), item.name])
+                    print("________________________________")
+                    print(count, item.name)
+                for item in self.bag:
+                    print("Your bag contents: ")
+                    print(item.name)
+                    print("________________________________")
+                print("What do you want to do? ")
+                print("________________________________")
+                choice = Utils.getUserChoice(choices)
+                if str(choice) == "D":
+                    exitFlag = True
+                elif str(choice) == "A":
+                    for index in range(len(loot)):
+                        self.bag.append(loot[index])
+                    loot = []
+                    print("Items in the bag left: ", len(loot))
+                    exitFlag = True
+                elif isinstance(int(choice), int):
+                    self.bag.append(loot[int(choice)])
+                    del loot[int(choice)]
 
     def chr_belongings(self):
         """This method prints what's on the character and what is in the bag ignoring "naked" or "fist" objects"""
         print(f'{self.name} bag contents:')
         for item in self.bag:
-            print(item.name)
+            print(f"{item.name.capitalize()} (you don't see exact characteristics of the item.)")
+        # Print what is on the character and show how much armor or damage the item has
         print(f'{self.name} has on him:')
         for key, value in self.whats_on_dict.items():
             if value.item_type.lower() == 'clothes' and value.armor_type != 'naked':
-                print(value.name)
+                print(f"{value.name.capitalize()} armor {value.armor}")
             elif value.item_type.lower() == 'weapon' and value.weapon_type != 'fist':
-                print(value.name)
+                print(f"{value.name.capitalize()} damage {value.damage}")
 
     def loot_drop(self):
         """Function that will make a drop of the loot. Will take all the items from the bag and on the character
         with certain chance it will make only a part of the items to actually drop. Dropped items will be an
         instance of lootbox class."""
-
-        if self.chr_belongings:  # If there is anything to drop
-            """Calculating the chance of dropping stuff."""
-            chance = random.randint(0, 100)
-            n = 0
-            if chance < 95:
-                if chance < 10:
-                    n = len(self.chr_belongings)
-                elif chance < 30:
-                    n = int(len(self.chr_belongings) / 1.2)
-                else:
-                    n = 1
-                loot_name = str(self.name + ' loot')
-                loot_box = random.sample(self.chr_belongings, n)  # Creating random amount loot
-                loot = items.LootBoxes(name=loot_name, contents=loot_box)  # Creating a class object of loot
-                items.location_loot.append(loot)  # Appending it to the location's items
-            else:
-                print(f"Nothing has fallen from {self.name}")
+        pass
+        # if self.chr_belongings:  # If there is anything to drop
+        #     """Calculating the chance of dropping stuff."""
+        #     chance = random.randint(0, 100)
+        #     n = 0
+        #     if chance < 100:
+        #         if chance < 10:
+        #             n = len(self.bag)
+        #         elif chance < 30:
+        #             n = int(len(self.bag) / 1.2)
+        #         else:
+        #             n = 3
+        #         loot_name = str(self.name + ' loot')
+        #         loot_box = random.sample(self.bag, n)  # Creating random amount loot
+        #
+        #         self.loot = items.LootBoxes(name=loot_name, contents=loot_box)  # Creating a class object of loot
+        #         items.location_loot.append(self.loot)  # Appending it to the location's items
+        #         return True
+        #     else:
+        #         print(f"Nothing has fallen from {self.name}")
+        #         return False
 
     @property
     def bag_content(self):
@@ -1031,7 +1071,7 @@ class Hero(Creature):
                 critical = True
             else:
                 damage = self.calc_dmg() - armor_value
-            #print(f"Armor where you hit is: {active_armor}")
+            # print(f"Armor where you hit is: {active_armor}")
             return (0, hit_choice, critical) if damage < 0 else (damage, hit_choice, critical)
 
 # class Thief(Hero):

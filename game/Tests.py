@@ -1,19 +1,30 @@
 import chr_npc
 import Utils
 import items
-
-# mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
-# head=items.helmet1) test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keyboarder",
-# chr_type='npc', head=items.helmet2)
-
-good_box = [items.super_sword, items.helmet_of_holy_tester, items.vest_of_holy_tester, items.trousers_of_holy_tester,
-            items.boots_of_holy_tester,
-            items.armlet_of_holy_tester1, items.armlet_of_holy_tester2, items.small_health_potion,
-            items.medium_health_potion,
-            items.large_health_potion]
+import hrs_profs
 
 
-# TODO: write correct unittests
+def testWhatIsOn():
+    mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
+                          head=items.helmet1)
+    test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keyboarder",
+                              chr_type='npc', head=items.helmet2)
+    print("______________________________\n"
+          "Players stuff:")
+    mech.print_whats_on()
+    print("______________________________\n"
+          "NPC stuff:")
+    test_obj.print_whats_on()
+
+
+def testPickLootPrintChrBelongings():
+    """Creates the character with the items in the bag and adds more items, prints the result."""
+    mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
+                          head=items.helmet1, bag=items.check_box)
+    print(len(items.good_box))
+    mech.add_item_to_thebag(items.good_box)
+    mech.chr_belongings()
+    print(len(items.good_box))
 
 
 def test():
@@ -82,4 +93,4 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    testPickLootPrintChrBelongings()
