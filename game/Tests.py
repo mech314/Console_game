@@ -8,7 +8,7 @@ def testWhatIsOn():
     mech = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
                           head=items.helmet1)
     test_obj = hrs_profs.Hero(name='testman', gender="gender", clan='testers', spec="keyboarder",
-                              chr_type='npc', head=items.helmet2)
+                              chr_type='npc', head=items.holy_helmet2, active_weapon=items.super_sword)
     print("______________________________\n"
           "Players stuff:")
     mech.print_whats_on()

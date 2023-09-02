@@ -16,13 +16,11 @@ import weapon
 
 
 def npc_creator(name: str, gender: str, clan: str, specialization: str, level: int, armored: bool = True,
-                bag_contents: bool = True, list_to_append: list = chr_npc.npc_list):
+                bag_contents: bool = True, list_to_append: list = chr_npc.npc_list, append_to_list: bool = True):
     """This function will take some arguments and create an NPC the characteristics will depend on the level of the
     NPC you wanna create. Indicate the list where these NPC will be added
     Here are values for level 1 NPC
     """
-
-    global npc
 
     def bag_contents_chance():
         """Will calculate the chance and the amount of items to put into the bag"""
@@ -88,13 +86,18 @@ def npc_creator(name: str, gender: str, clan: str, specialization: str, level: i
                 # Decrement number of items
                 number_of_items -= 1
     # Add new NPC to the list
-    list_to_append.append(npc)
-    return None
+    # If needed to add NPCs to the list append_to_list flag is True (by default), it will check it and add to the list
+    if append_to_list:
+        list_to_append.append(npc)
+    # If append flag is set return is None but if append flag is False it will return and npc instance object
+    return None if append_to_list else npc
 
 
 def create_npcs(requested_name: str = None, requested_gender: str = None, requested_clan: str = None,
-                requested_spec: str = None, requested_level=None, number_of_npcs: int = None):
+                requested_spec: str = None, requested_level=None, number_of_npcs: int = None,
+                append_to_list: bool = True):
     """This function will make several NPCs and put them into the npc_list list"""
+    global append_flag
     levels = [1, 10]  # default range of levels
     npc_name_counter = 0
     if number_of_npcs is None:
@@ -136,8 +139,9 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
             name = name_choice
         else:
             name = requested_name
-        """After all parameters were defined function will make a set number of NPCs and put them into list"""
-        npc_creator(name, gender, clan, spec, level)
+        """After all parameters were defined npc_creator function will make a set number of NPCs and put them into list
+        or return one single NPC"""
+        npc = npc_creator(name, gender, clan, spec, level, append_to_list=append_to_list)
 
         """Erase previous selections"""
         gender_choice = None
@@ -145,8 +149,8 @@ def create_npcs(requested_name: str = None, requested_gender: str = None, reques
         specialization_choice = None
         level_choice = None
         name_choice = None
-
-    return None
+    # If append flag is set return is None but if append flag is False it will return and npc instance object
+    return None if append_to_list else npc
 
 
 def armor_creator(requested_armor_type: str = None, requested_condition: str = None, requested_level=None,

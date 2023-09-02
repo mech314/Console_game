@@ -91,7 +91,7 @@ helmet1 = armor.Armor(name='helmet1', condition=1, armor=[2, 5], durability=1, h
                       strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                       item_type='clothes', armor_type='helmet', not_custom=False)
 
-helmet2 = armor.Armor(name='Holy helmet2', condition=2, armor=[20, 30], durability=2, hp=2, luck=2,
+holy_helmet2 = armor.Armor(name='Holy helmet2', condition=2, armor=[20, 30], durability=2, hp=2, luck=2,
                       strength=10, agility=10, movement=5, intelligence=1, critical_chance=15, level=10,
                       item_type='clothes', armor_type='helmet', not_custom=False)
 
