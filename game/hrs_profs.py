@@ -5,6 +5,7 @@ import armor
 import items
 import weapon
 import Utils
+import Locations
 
 
 # TODO Comment everything for the god sake!
@@ -40,7 +41,8 @@ class Creature(ABC):
                  active_weapon,
                  active_skill,
                  chr_type,
-                 spec):
+                 spec,
+                 location):
         self.name = name  # Name of the character
         self.gender = gender  # Gender
         self.clan = clan  # Clan
@@ -77,6 +79,7 @@ class Creature(ABC):
         self.feet_armor = self.feet.armor
         self.chr_type = chr_type  # NPC of Player
         self.spec = spec  # specialization
+        self.location = location  # instance of Location class
 
         @abstractmethod
         def apply_specialization(self):
@@ -118,7 +121,8 @@ class Hero(Creature):
                  active_weapon=items.fist,
                  active_skill=0,
                  chr_type='npc',
-                 spec=None):
+                 spec=None,
+                 location=None):
 
         super().__init__(name,
                          gender,
@@ -149,7 +153,8 @@ class Hero(Creature):
                          active_weapon,
                          active_skill,
                          chr_type,
-                         spec)
+                         spec,
+                         location)
 
         self.loot = None
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
@@ -176,15 +181,11 @@ class Hero(Creature):
         self.critical_chance += (self.head.critical_chance +
                                  self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
                                  + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
+        # Removed skills from here, if there will be a glitch - fix
         self.reference_hp = hp
         self.max_hp = self.hp
-        self.sword_skill = sword_skill
-        self.knife_skill = knife_skill
-        self.axe_skill = axe_skill
-        self.bow_skill = bow_skill
-        self.fist_skill = fist_skill
-        self._what_is_on = _what_is_on
-        self.bag = bag
+        if location is None:
+            self.location = Locations.loc_0_0
         self.apply_specialization()  # Adds specialization bonuses at the character creation
 
     def apply_specialization(self):

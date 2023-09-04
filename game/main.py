@@ -25,6 +25,8 @@ def doStart():
             test_functions.continousMode(player)
         elif choice == "5":
             player.printbag_cnt()
+        elif choice == "6":
+            print(player.location)
         elif choice == "0":
             # Changing flag to True to quit the program
             exitFlag = True

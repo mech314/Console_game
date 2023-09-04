@@ -1,4 +1,8 @@
-import hrs_profs, items, Utils, actions, chr_npc
+import Utils
+import actions
+import chr_npc
+import hrs_profs
+import items
 
 
 # Create holy tester character
@@ -84,6 +88,7 @@ def mainModesMenu():
         ["3", "Sandbox, you gonna kill everyone"],
         ["4", "Continuous game, fight, loot, fight etc."],
         ["5", "Check your bag"],
+        ["6", "Where am I?"],
         ["0", "Quit."]
     ]
     # Prompt for user action
