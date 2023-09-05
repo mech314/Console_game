@@ -2,6 +2,19 @@ import chr_npc
 import Utils
 import items
 import hrs_profs
+import Locations
+
+# Test character
+traveler = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
+                          head=items.helmet1)
+
+
+def testLocationChange(player, new_location):
+    print("__________________________")
+    print(player.location.coordinates)
+    player.changeLocation(player.location, new_location)
+    print(player.location.coordinates)
+
 
 
 def testWhatIsOn():
@@ -93,4 +106,5 @@ def test():
 
 
 if __name__ == '__main__':
-    testPickLootPrintChrBelongings()
+    testLocationChange(traveler, Locations.loc_1_0)
+    testLocationChange(traveler, Locations.loc_3_0)

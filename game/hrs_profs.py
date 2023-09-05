@@ -18,7 +18,7 @@ class Creature(ABC):
                  level,
                  exp,
                  chr_points,
-                 hp,
+                 hp: int,
                  luck,
                  strength,
                  agility,
@@ -98,7 +98,7 @@ class Hero(Creature):
                  level=1,
                  exp=0,
                  chr_points=0,
-                 hp=100,
+                 hp: int = 100,
                  luck=1,
                  strength=3,
                  agility=3,
@@ -196,6 +196,57 @@ class Hero(Creature):
             self.axe_skill += 3
             self.critical_chance += 5
         self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
+
+    # Changing location method
+    def changeLocation(self, old_location, new_location):
+        # Max walking distance
+        max_distance = 1
+        # If X coordinate of current location is 0, check if new location's X coordinate not bigger then 1
+        if old_location.coordinates[0] == 0 and abs(new_location.coordinates[0]) > 1:
+            print("Can't do that")
+        # If Y coordinate of current location is 0, check if new location's Y coordinate not bigger then 1
+        elif old_location.coordinates[1] == 0 and abs(new_location.coordinates[1]) > 1:
+            print("Can't do that")
+        # Check if the distance between coordinates not bigger them 1
+
+        elif ((abs(new_location.coordinates[0]) - abs(old_location.coordinates[0])) or (abs(new_location.coordinates[1]) - abs(old_location.coordinates[1]))) > max_distance:
+            print("Can't do that")
+        else:
+            # If passed tests - change the location.
+            self.location = new_location
+    # def changeLocation(self, old_location, new_location):
+    #     """By some reason when I add self. parameters to the effect parameter it converts everything to tuple.
+    #     To fix later, have no idea what is wrong"""
+    #     # Remove buff from old location
+    #     if old_location.external_effect.effect_name != "no effect":
+    #         self.hp = self.hp - old_location.external_effect.hp,
+    #         self.luck = self.luck - old_location.external_effect.luck,
+    #         self.strength = self.strength - old_location.external_effect.strength,
+    #         self.agility = self.agility - old_location.external_effect.agility,
+    #         self.movement = self.movement - old_location.external_effect.movement,
+    #         self.intelligence = self.intelligence - old_location.external_effect.intelligence,
+    #         self.critical_chance = self.critical_chance - old_location.external_effect.critical_chance,
+    #         self.sword_skill = self.sword_skill - old_location.external_effect.sword_skill,
+    #         self.knife_skill = self.knife_skill - old_location.external_effect.knife_skill,
+    #         self.axe_skill = self.axe_skill - old_location.external_effect.axe_skill,
+    #         self.bow_skill = self.bow_skill - old_location.external_effect.bow_skill,
+    #         self.fist_skill = self.fist_skill - old_location.external_effect.fist_skill
+    #     # Set new location
+    #     self.location = new_location
+    #     # Add buff from new location
+    #     if new_location.external_effect.effect_name != "no effect":
+    #         self.hp = self.hp + new_location.external_effect.hp,
+    #         self.luck += new_location.external_effect.luck,
+    #         self.strength += new_location.external_effect.strength,
+    #         self.agility += new_location.external_effect.agility,
+    #         self.movement += new_location.external_effect.movement,
+    #         self.intelligence += new_location.external_effect.intelligence,
+    #         self.critical_chance += new_location.external_effect.critical_chance,
+    #         self.sword_skill += new_location.external_effect.sword_skill,
+    #         self.knife_skill += new_location.external_effect.knife_skill,
+    #         self.axe_skill += new_location.external_effect.axe_skill,
+    #         self.bow_skill += new_location.external_effect.bow_skill,
+    #         self.fist_skill += new_location.external_effect.fist_skill
 
     def current_max_hp(self):
         if self.spec.lower() == 'swordsman':

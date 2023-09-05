@@ -1,7 +1,10 @@
+from dataclasses import dataclass
+
+
 class Effects:
     def __init__(self,
                  effect_name,
-                 hp=0,
+                 hp: int = 0,
                  luck=0,
                  strength=0,
                  agility=0,
@@ -29,4 +32,5 @@ class Effects:
 
 
 no_effect = Effects(effect_name="no effect")
-city = Effects(effect_name="city", hp=-10, luck=10)
+city = Effects(effect_name="city", hp=int(-10), luck=10)
+desert = Effects(effect_name="desert", hp=1, movement=-10, luck=15)
