@@ -1,5 +1,6 @@
 import random
 from abc import ABC, abstractmethod
+from typing import Type
 
 import armor
 import items
@@ -81,9 +82,77 @@ class Creature(ABC):
         self.spec = spec  # specialization
         self.location = location  # instance of Location class
 
-        @abstractmethod
-        def apply_specialization(self):
-            pass
+    @abstractmethod
+    def apply_specialization(self):
+        pass
+
+    # Prints character name
+    @property
+    def print_name(self) -> str:
+        return f"{self.name}"
+
+    # Returns dict with all skills
+    @property
+    def skills(self) -> dict:
+        """Returns all skills as a dict"""
+        return {'sword': self.sword_skill, 'knife': self.knife_skill, 'axe': self.axe_skill,
+                'bow': self.bow_skill, 'fist': self.fist_skill}
+
+    # Return all EFFECTIVE Hero's characteristics as a dict
+    @property
+    def current_characteristics(self) -> dict:
+        """Return all EFFECTIVE Hero's characteristics as a dict"""
+        return {'name': self.name, 'chr_type': self.chr_type, 'specialization': self.spec, 'level': self.level,
+                'hp': self.hp, 'strength': self.strength, 'agility': self.agility, 'luck': self.luck,
+                'movement': self.movement, 'intelligence': self.intelligence, 'critical_chance': self.critical_chance,
+                'active_skill': self.active_skill, 'Axe skill': self.axe_skill, 'Sword skill': self.sword_skill,
+                'Head armor': self.head_armor, 'Body armor': self.torso_armor, 'Left arm armor': self.left_arm_armor,
+                'Right arm armor': self.right_arm_armor, 'Legs armor': self.legs_armor, 'Feet armor': self.feet_armor,
+                'Weapon damage': self.whats_on_dict['Active weapon'].damage}
+
+    # Return all Hero's clothes as a dict
+    @property
+    def whats_on_dict(self) -> dict:
+        """Return all Hero's clothes as a dict"""
+        return {'Head': self.head, 'Torso': self.torso, 'Left arm': self.left_arm, 'Right arm': self.right_arm,
+                "Legs": self.legs, 'Feet': self.feet, 'Active weapon': self.active_weapon}
+
+    # Prints what is in the bag
+    @property
+    def bag_content(self) -> list:
+        return self.bag
+
+    # Draft of the function to set initial characteristics of the character when it is created, adds stats from armor
+    @staticmethod
+    def statCalculator(char_stat: int, stat_list: list) -> int:
+        for stat in stat_list:
+            char_stat += stat
+        return char_stat
+
+    # Uses random to choose where to hit a player.
+    @staticmethod
+    def npc_hit(target) -> tuple[str, str]:
+        """Uses random to choose where to hit a player."""
+        hit_choice = ''
+        active_armor = None
+        random_where_to_hit = random.randint(1, 5)
+        if random_where_to_hit == 1:
+            hit_choice = 'head'
+            active_armor = target.head_armor
+        elif random_where_to_hit == 2:
+            hit_choice = 'torso'
+            active_armor = target.torso_armor
+        elif random_where_to_hit == 3:
+            hit_choice = 'left arm'
+            active_armor = target.left_arm_armor
+        elif random_where_to_hit == 4:
+            hit_choice = 'right arm'
+            active_armor = target.right_arm_armor
+        elif random_where_to_hit == 5:
+            hit_choice = 'legs'
+            active_armor = int((target.legs_armor[0] + target.feet_armor[0])), int((target.legs_armor[1] +
+                                                                                    target.feet_armor[1]))
+        return hit_choice, active_armor
 
 
 class Hero(Creature):
@@ -92,26 +161,26 @@ class Hero(Creature):
     """
 
     def __init__(self,
-                 name,
-                 gender,
-                 clan="adventures",
-                 level=1,
-                 exp=0,
-                 chr_points=0,
+                 name: str,
+                 gender: str,
+                 clan: str = "adventures",
+                 level: int = 1,
+                 exp: int = 0,
+                 chr_points: int = 0,
                  hp: int = 100,
-                 luck=1,
-                 strength=3,
-                 agility=3,
-                 movement=2,
-                 intelligence=1,
-                 critical_chance=0,
-                 bag=[],
-                 _what_is_on=[],
-                 sword_skill=0,
-                 knife_skill=0,
-                 axe_skill=0,
-                 bow_skill=0,
-                 fist_skill=0,
+                 luck: int = 1,
+                 strength: int = 3,
+                 agility: int = 3,
+                 movement: int = 2,
+                 intelligence: int = 1,
+                 critical_chance: int = 0,
+                 bag: list = [],
+                 _what_is_on: list = [],
+                 sword_skill: int =0,
+                 knife_skill: int =0,
+                 axe_skill: int =0,
+                 bow_skill: int =0,
+                 fist_skill: int =0,
                  head=items.naked,
                  torso=items.naked,
                  left_arm=items.naked,
@@ -119,9 +188,9 @@ class Hero(Creature):
                  legs=items.naked,
                  feet=items.naked,
                  active_weapon=items.fist,
-                 active_skill=0,
-                 chr_type='npc',
-                 spec=None,
+                 active_skill: int = 0,
+                 chr_type: str = 'npc',
+                 spec: str = None,
                  location=None):
 
         super().__init__(name,
@@ -160,27 +229,37 @@ class Hero(Creature):
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
         an effective value for the parameters based on what is on the character. This is here because it is handy if you wanna
         start with the character not naked but with clothes and weapon. Not necessary for sure but works so far."""
-        self.hp += (self.head.hp + self.torso.hp + self.left_arm.hp +
-                    self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
+
         self.luck += (
                 self.head.luck + self.torso.luck + self.left_arm.luck + self.right_arm.luck + self.legs.luck +
                 self.feet.luck + self.active_weapon.luck)
+
+        # Alternative option, not better than hardcoded shit
+        self.hp_list = [self.head.hp, self.torso.hp, self.left_arm.hp,
+                        self.right_arm.hp, self.legs.hp, self.feet.hp, self.active_weapon.hp]
+        self.hp = self.statCalculator(self.hp, self.hp_list)
+
         self.strength += (
                 self.head.strength + self.torso.strength + self.left_arm.strength + self.right_arm.strength +
                 self.legs.strength + self.feet.strength + self.active_weapon.strength)
+
         self.agility += (
                 self.head.agility + self.torso.agility + self.left_arm.agility + self.right_arm.agility +
                 self.legs.agility + self.feet.agility + self.active_weapon.agility)
+
         self.movement += (
                 self.head.movement + self.torso.movement + self.left_arm.movement + self.right_arm.movement +
                 self.legs.movement + self.feet.movement + self.active_weapon.movement)
+
         self.intelligence += (
                 self.head.intelligence + self.torso.intelligence + self.left_arm.intelligence +
                 self.right_arm.intelligence + self.legs.intelligence + self.feet.intelligence +
                 self.active_weapon.intelligence)
+
         self.critical_chance += (self.head.critical_chance +
-                                 self.torso.critical_chance + self.left_arm.critical_chance + self.right_arm.critical_chance
-                                 + self.legs.critical_chance + self.feet.critical_chance + self.active_weapon.critical_chance)
+                                 self.torso.critical_chance + self.left_arm.critical_chance +
+                                 self.right_arm.critical_chance + self.legs.critical_chance + self.feet.critical_chance
+                                 + self.active_weapon.critical_chance)
         # Removed skills from here, if there will be a glitch - fix
         self.reference_hp = hp
         self.max_hp = self.hp
@@ -209,11 +288,13 @@ class Hero(Creature):
             print("Can't do that")
         # Check if the distance between coordinates not bigger them 1
 
-        elif ((abs(new_location.coordinates[0]) - abs(old_location.coordinates[0])) or (abs(new_location.coordinates[1]) - abs(old_location.coordinates[1]))) > max_distance:
+        elif ((abs(new_location.coordinates[0]) - abs(old_location.coordinates[0])) or (
+                abs(new_location.coordinates[1]) - abs(old_location.coordinates[1]))) > max_distance:
             print("Can't do that")
         else:
             # If passed tests - change the location.
             self.location = new_location
+
     # def changeLocation(self, old_location, new_location):
     #     """By some reason when I add self. parameters to the effect parameter it converts everything to tuple.
     #     To fix later, have no idea what is wrong"""
@@ -255,29 +336,6 @@ class Hero(Creature):
         else:
             self.max_hp = self.reference_hp + (self.head.hp + self.torso.hp + self.left_arm.hp +
                                                self.right_arm.hp + self.legs.hp + self.feet.hp + self.active_weapon.hp)
-
-    @property
-    def skills(self):
-        """Returns all skills as a dict"""
-        return {'sword': self.sword_skill, 'knife': self.knife_skill, 'axe': self.axe_skill,
-                'bow': self.bow_skill, 'fist': self.fist_skill}
-
-    @property
-    def current_characteristics(self):
-        """Return all EFFECTIVE Hero's characteristics as a dict"""
-        return {'name': self.name, 'chr_type': self.chr_type, 'specialization': self.spec, 'level': self.level,
-                'hp': self.hp, 'strength': self.strength, 'agility': self.agility, 'luck': self.luck,
-                'movement': self.movement, 'intelligence': self.intelligence, 'critical_chance': self.critical_chance,
-                'active_skill': self.active_skill, 'Axe skill': self.axe_skill, 'Sword skill': self.sword_skill,
-                'Head armor': self.head_armor, 'Body armor': self.torso_armor, 'Left arm armor': self.left_arm_armor,
-                'Right arm armor': self.right_arm_armor, 'Legs armor': self.legs_armor, 'Feet armor': self.feet_armor,
-                'Weapon damage': self.whats_on_dict['Active weapon'].damage}
-
-    @property
-    def whats_on_dict(self):
-        """Return all Hero's clothes as a dict"""
-        return {'Head': self.head, 'Torso': self.torso, 'Left arm': self.left_arm, 'Right arm': self.right_arm,
-                "Legs": self.legs, 'Feet': self.feet, 'Active weapon': self.active_weapon}
 
     def print_whats_on(self):
         """Prints clothes and weapon on the character """
@@ -336,7 +394,7 @@ class Hero(Creature):
             self.chr_points += 5
             if self.spec.lower() == 'swordsman':
                 self.hp += 30
-                self.current_max_hp
+                self.current_max_hp()
             if self.spec.lower() == 'axeman':
                 self.critical_chance += 5
             print("Congratulations, you have reached {} level, you have {} free "
@@ -463,10 +521,6 @@ class Hero(Creature):
         #     else:
         #         print(f"Nothing has fallen from {self.name}")
         #         return False
-
-    @property
-    def bag_content(self):
-        return self.bag
 
     def printbag_cnt(self):
         print("You have following items in the bag:")
@@ -1075,30 +1129,6 @@ class Hero(Creature):
             else:
                 print(
                     "You trying to hit an imaginary part of {}'s body, maybe it is not a good idea".format(target.name))
-        return hit_choice, active_armor
-
-    @staticmethod
-    def npc_hit(target):
-        """Uses random to choose where to hit a player."""
-        hit_choice = ''
-        active_armor = None
-        random_where_to_hit = random.randint(1, 5)
-        if random_where_to_hit == 1:
-            hit_choice = 'head'
-            active_armor = target.head_armor
-        elif random_where_to_hit == 2:
-            hit_choice = 'torso'
-            active_armor = target.torso_armor
-        elif random_where_to_hit == 3:
-            hit_choice = 'left arm'
-            active_armor = target.left_arm_armor
-        elif random_where_to_hit == 4:
-            hit_choice = 'right arm'
-            active_armor = target.right_arm_armor
-        elif random_where_to_hit == 5:
-            hit_choice = 'legs'
-            active_armor = int((target.legs_armor[0] + target.feet_armor[0])), int((target.legs_armor[1] +
-                                                                                    target.feet_armor[1]))
         return hit_choice, active_armor
 
     def hit_enemy(self, target):

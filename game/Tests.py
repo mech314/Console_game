@@ -10,10 +10,12 @@ traveler = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsm
 
 
 def testLocationChange(player, new_location):
+    """Test the location movement and movement restrictions"""
     print("__________________________")
-    print(player.location.coordinates)
+    print(player.location.locationInfo)
     player.changeLocation(player.location, new_location)
-    print(player.location.coordinates)
+    print(player.location.locationInfo)
+    print(player.hp)
 
 
 
