@@ -1,12 +1,17 @@
 import random
 from abc import ABC, abstractmethod
 from typing import Type
+import pygame
+import os
 
 import armor
 import items
 import weapon
 import Utils
 import Locations
+
+GAME_ROOT_FOLDER = os.path.dirname(__file__)
+IMAGE_FOLDER = os.path.join(GAME_ROOT_FOLDER, "Images")
 
 
 # TODO Comment everything for the god sake!
@@ -42,6 +47,7 @@ class Creature(ABC):
                  active_weapon,
                  active_skill,
                  chr_type,
+                 filename,
                  spec,
                  location):
         self.name = name  # Name of the character
@@ -79,6 +85,7 @@ class Creature(ABC):
         self.legs_armor = self.legs.armor
         self.feet_armor = self.feet.armor
         self.chr_type = chr_type  # NPC of Player
+        self.filename = filename  # Sprite file name
         self.spec = spec  # specialization
         self.location = location  # instance of Location class
 
@@ -155,7 +162,7 @@ class Creature(ABC):
         return hit_choice, active_armor
 
 
-class Hero(Creature):
+class Hero(Creature, pygame.sprite.Sprite):
     """
     Class for a player's hero. Take name, gender, clan, specialization.
     """
@@ -176,11 +183,11 @@ class Hero(Creature):
                  critical_chance: int = 0,
                  bag: list = [],
                  _what_is_on: list = [],
-                 sword_skill: int =0,
-                 knife_skill: int =0,
-                 axe_skill: int =0,
-                 bow_skill: int =0,
-                 fist_skill: int =0,
+                 sword_skill: int = 0,
+                 knife_skill: int = 0,
+                 axe_skill: int = 0,
+                 bow_skill: int = 0,
+                 fist_skill: int = 0,
                  head=items.naked,
                  torso=items.naked,
                  left_arm=items.naked,
@@ -190,8 +197,11 @@ class Hero(Creature):
                  active_weapon=items.fist,
                  active_skill: int = 0,
                  chr_type: str = 'npc',
+                 filename='Player.png',
                  spec: str = None,
-                 location=None):
+                 location=Locations.tile_h[65]):
+
+        pygame.sprite.Sprite.__init__(self)
 
         super().__init__(name,
                          gender,
@@ -223,7 +233,12 @@ class Hero(Creature):
                          active_skill,
                          chr_type,
                          spec,
+                         filename,
                          location)
+
+        self.image = pygame.image.load(os.path.join(IMAGE_FOLDER, filename))
+        self.surf = pygame.Surface(self.image.get_size())
+        self.rect = self.surf.get_rect(center=(self.location.horiz, self.location.vert))
 
         self.loot = None
         """This is definitely redundant but I don't know how to make it better yet. This section will define 
@@ -266,6 +281,24 @@ class Hero(Creature):
         if location is None:
             self.location = Locations.loc_0_0
         self.apply_specialization()  # Adds specialization bonuses at the character creation
+        self.closeLocations = []
+
+    def nearLocations(self):
+
+        if self.location:
+            userX, userY = self.location.adr
+            for tile in Locations.tile_h:
+                if tile.adr[0] - userX == 1:
+                    if tile.adr[1] - userY == 1:
+                        self.closeLocations.append(tile)
+                if tile.adr[1] - userY == 1:
+                    if tile.adr[0] - userX == 1:
+                        self.closeLocations.append(tile)
+
+        return self.closeLocations
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
     def apply_specialization(self):
         if self.spec.lower() == 'swordsman':
@@ -276,24 +309,24 @@ class Hero(Creature):
             self.critical_chance += 5
         self.active_skill = self.skills[self.active_weapon.weapon_type.lower()]
 
-    # Changing location method
-    def changeLocation(self, old_location, new_location):
-        # Max walking distance
-        max_distance = 1
-        # If X coordinate of current location is 0, check if new location's X coordinate not bigger then 1
-        if old_location.coordinates[0] == 0 and abs(new_location.coordinates[0]) > 1:
-            print("Can't do that")
-        # If Y coordinate of current location is 0, check if new location's Y coordinate not bigger then 1
-        elif old_location.coordinates[1] == 0 and abs(new_location.coordinates[1]) > 1:
-            print("Can't do that")
-        # Check if the distance between coordinates not bigger them 1
-
-        elif ((abs(new_location.coordinates[0]) - abs(old_location.coordinates[0])) or (
-                abs(new_location.coordinates[1]) - abs(old_location.coordinates[1]))) > max_distance:
-            print("Can't do that")
-        else:
-            # If passed tests - change the location.
-            self.location = new_location
+    # Changing location method. this method for locations with negative coordinates, todo later.
+    # def changeLocation(self, old_location, new_location):
+    #     # Max walking distance
+    #     max_distance = 1
+    #     # If X coordinate of current location is 0, check if new location's X coordinate not bigger then 1
+    #     if old_location.coordinates[0] == 0 and abs(new_location.coordinates[0]) > 1:
+    #         print("Can't do that")
+    #     # If Y coordinate of current location is 0, check if new location's Y coordinate not bigger then 1
+    #     elif old_location.coordinates[1] == 0 and abs(new_location.coordinates[1]) > 1:
+    #         print("Can't do that")
+    #     # Check if the distance between coordinates not bigger them 1
+    #
+    #     elif ((abs(new_location.coordinates[0]) - abs(old_location.coordinates[0])) or (
+    #             abs(new_location.coordinates[1]) - abs(old_location.coordinates[1]))) > max_distance:
+    #         print("Can't do that")
+    #     else:
+    #         # If passed tests - change the location.
+    #         self.location = new_location
 
     # def changeLocation(self, old_location, new_location):
     #     """By some reason when I add self. parameters to the effect parameter it converts everything to tuple.

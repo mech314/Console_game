@@ -4,15 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a5148ca-2460-4246-8f94-0874efee052d" name="Changes" comment="Added locations and location effects.">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/console_game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/console_game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9a5148ca-2460-4246-8f94-0874efee052d" name="Changes" comment="Refactoring">
+      <change afterPath="$PROJECT_DIR$/game/Images/Background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Empty_tile80px.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Empty_tile80px_hovered.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/New_gray_tile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/New_white_tile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/New_yellow_tile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Player.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Tile.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Tile_54px.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Tile_77px.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/Tile_hovered.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/mesh_background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/mesh_background_GRAY.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/tile_new_gray.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/tile_new_gray2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/tile_new_red.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Images/tile_new_white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/game/Pygame_tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/Locations.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/Locations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/Tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/Tests.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/hrs_profs.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/hrs_profs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game/more testes.py" beforeDir="false" afterPath="$PROJECT_DIR$/game/more testes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +70,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -67,7 +83,29 @@
       <recent name="$PROJECT_DIR$/game/Folder" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.Tests">
+    <configuration name="Pygame_tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="console_game" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/game" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game/Pygame_tests.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="console_game" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -156,35 +194,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="simple_tests" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="console_game" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/game" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/game/simple_tests.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.Tests" />
-        <item itemvalue="Python.armor" />
+        <item itemvalue="Python.Pygame_tests" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.more testes" />
-        <item itemvalue="Python.simple_tests" />
+        <item itemvalue="Python.armor" />
       </list>
     </recent_temporary>
   </component>
@@ -228,7 +244,13 @@
       <workItem from="1693882929290" duration="5625000" />
       <workItem from="1693955575298" duration="40000" />
       <workItem from="1693955621517" duration="259000" />
-      <workItem from="1693957722910" duration="4031000" />
+      <workItem from="1693957722910" duration="4060000" />
+      <workItem from="1693967338365" duration="627000" />
+      <workItem from="1694052043544" duration="232000" />
+      <workItem from="1694055078449" duration="6269000" />
+      <workItem from="1694131376071" duration="8545000" />
+      <workItem from="1694142205572" duration="1106000" />
+      <workItem from="1694384653004" duration="6634000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed the bug with inheretence. Still need to figure out why it doesn't inheret from Abstract class but inherits from super()">
       <option name="closed" value="true" />
@@ -259,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693798951066</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Refactoring">
+      <created>1693963018195</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1693963018195</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,7 +311,8 @@
     <MESSAGE value="Started implementing main file with the game mod. Renamed functions to utils, added some utils for future use." />
     <MESSAGE value="Many bugs fixed, doc strings, game modes" />
     <MESSAGE value="Added locations and location effects." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added locations and location effects." />
+    <MESSAGE value="Refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -291,6 +321,26 @@
           <url>file://$PROJECT_DIR$/game/actions.py</url>
           <line>21</line>
           <option name="timeStamp" value="363" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/game/hrs_profs.py</url>
+          <line>291</line>
+          <option name="timeStamp" value="380" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/game/hrs_profs.py</url>
+          <line>292</line>
+          <option name="timeStamp" value="381" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/game/hrs_profs.py</url>
+          <line>288</line>
+          <option name="timeStamp" value="382" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/game/hrs_profs.py</url>
+          <line>286</line>
+          <option name="timeStamp" value="383" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -304,16 +354,17 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Console_game$simple_tests.coverage" NAME="simple_tests Coverage Results" MODIFIED="1693798864110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$start.coverage" NAME="start Coverage Results" MODIFIED="1693503410931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$items.coverage" NAME="items Coverage Results" MODIFIED="1693505784219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$main.coverage" NAME="main Coverage Results" MODIFIED="1694385007801" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/console_game$weapon.coverage" NAME="weapon Coverage Results" MODIFIED="1674022283756" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/console_game$armor.coverage" NAME="armor Coverage Results" MODIFIED="1674022249813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/Console_game$more_testes.coverage" NAME="more testes Coverage Results" MODIFIED="1693960307639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$more_testes.coverage" NAME="more testes Coverage Results" MODIFIED="1693967908769" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/Console_game$armor.coverage" NAME="armor Coverage Results" MODIFIED="1693961000355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/Console_game$Tests.coverage" NAME="Tests Coverage Results" MODIFIED="1693961690222" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$Tests.coverage" NAME="Tests Coverage Results" MODIFIED="1694404986095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/console_game$tests.coverage" NAME="tests Coverage Results" MODIFIED="1674076031131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/Console_game$start.coverage" NAME="start Coverage Results" MODIFIED="1693503410931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
+    <SUITE FILE_PATH="coverage/Console_game$Pygame_tests.coverage" NAME="Pygame_tests Coverage Results" MODIFIED="1694386185531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/Console_game$tests.coverage" NAME="tests Coverage Results" MODIFIED="1693338364509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/Console_game$items.coverage" NAME="items Coverage Results" MODIFIED="1693505784219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
     <SUITE FILE_PATH="coverage/console_game$Armor_AT.coverage" NAME="Armor_AT Coverage Results" MODIFIED="1674018662162" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
-    <SUITE FILE_PATH="coverage/Console_game$main.coverage" NAME="main Coverage Results" MODIFIED="1693962802779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/game" />
   </component>
 </project>

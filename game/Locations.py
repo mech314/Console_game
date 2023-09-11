@@ -7,7 +7,10 @@
 import random
 from dataclasses import dataclass
 import Effects
+import Pygame_tests
 import hrs_profs
+
+tile_h = Pygame_tests.tileCreator()
 
 
 @dataclass()

@@ -3,10 +3,71 @@ import Utils
 import items
 import hrs_profs
 import Locations
+import pygame
+import sys
+import Pygame_tests
+import os
+
+
 
 # Test character
 traveler = hrs_profs.Hero(name='Mech', gender="Male", clan='Boyz', spec="swordsman", chr_type='player',
                           head=items.helmet1)
+
+
+def locationTester(player):
+    # Pygame setup
+    # Initialize Pygame
+    pygame.init()
+    running = True
+
+    # Build game path
+    GAME_ROOT_FOLDER = os.path.dirname(__file__)
+    IMAGE_FOLDER = os.path.join(GAME_ROOT_FOLDER, "Images")
+
+    # Set frame rate
+    clock = pygame.time.Clock()
+    clock.tick(60)
+
+    # Constants
+    WHITE = [255, 255, 255]
+    GRAY = [80, 80, 80]
+
+    # Load images
+    BACKGROUND = pygame.image.load(os.path.join(IMAGE_FOLDER, "Background.png"))
+    TILE = pygame.image.load(os.path.join(IMAGE_FOLDER, "New_white_tile.png"))
+
+    # Initialize game screen
+    screen = pygame.display.set_mode(BACKGROUND.get_size())
+    for tile in Locations.tile_h:
+        print(tile.horiz, tile.vert, tile.adr[0], tile.adr[1])
+    while running:
+        # poll for events
+        # pygame.QUIT event means the user clicked X to close your window
+        for event in pygame.event.get():
+            mouseX, mouseY = pygame.mouse.get_pos()
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            for item in traveler.nearLocations():
+                item.hoveredOVer(event)
+                item.isPressed(event)
+
+        # Place background
+        screen.blit(BACKGROUND, (0, 0))
+        for item in Locations.tile_h:
+            item.draw(screen)
+        traveler.draw(screen)
+
+        # RENDER YOUR GAME HERE
+
+        # flip() the display to put your work on screen
+        pygame.display.flip()
+
+
+# Create dictionary with tiles
+tile_h = Pygame_tests.tileCreator()
 
 
 def testLocationChange(player, new_location):
@@ -16,7 +77,6 @@ def testLocationChange(player, new_location):
     player.changeLocation(player.location, new_location)
     print(player.location.locationInfo)
     print(player.hp)
-
 
 
 def testWhatIsOn():
@@ -108,5 +168,4 @@ def test():
 
 
 if __name__ == '__main__':
-    testLocationChange(traveler, Locations.loc_1_0)
-    testLocationChange(traveler, Locations.loc_3_0)
+    locationTester(traveler)
