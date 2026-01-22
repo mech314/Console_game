@@ -1,91 +1,90 @@
-# Console game
+# Console Game
 
-Изначальная идея создать консольную игру с возможностью движения, выбора оружия, шмоток, каких то других обьектов. Игра подорузумевает драки с врагами, выполнение квестов итд. Боевка должна быть похожа на боевку бойцовского клуба (гугл). 
+Original idea is to create a console game with movement, weapon selection, gear, and other objects. The game involves fighting enemies, completing quests, etc. Combat should be similar to Fight Club combat (google it).
 
-Есть ряд характеристик персонажа:
-- Имя
-- Пол
-- Клан
-- Уровень
-- Количество опыта
-- Количество очков распределения навыков\характеристик
-- Уровень жизни
-- Удача
-- Сила
-- Ловкость
-- Движение
-- Интелект
-- Шанс критического удара
-- Навыки владения разным типом оружия
-- Специализация (дает бонусы по оружию)
+Character stats:
+- Name
+- Gender
+- Clan
+- Level
+- Experience points
+- Skill/stat distribution points
+- Health level
+- Luck
+- Strength
+- Dexterity
+- Movement
+- Intelligence
+- Critical hit chance
+- Weapon proficiency skills
+- Specialization (gives weapon bonuses)
 
-Оружие и предметы будут добавлять характеристики или отнимать их. Позже появятся предметы в виде артефактов, колец, ожирелий которые будут давать + к характеристикам.
+Weapons and items will add or subtract stats. Later there will be artifacts, rings, amulets that give stat bonuses.
 
-Все характеристики так или иначе будут влиять на качество тех или иных действий. Сила удара, уворот, движение итд.
+All stats will somehow affect the quality of various actions. Strike power, dodge, movement, etc.
 
-Игра будет от одного лица, то есть, есть герой и ты им играешь, прокачиваешь, набираешься опыта и так далее.
+The game is first-person, meaning there's a hero and you play as them, level up, gain experience and so on.
 
-(ЕЩЕ НЕ ГОТОВО) Первая законченная итерации игры должна иметь безпрерывний режим, где игрок может драться с врагами, провышать уровень и характеристики, подбирать лут, переодеваться и менять оружие, пить зелья. Битва с врагами должна быть опциональной. Поднимать навык вледния оружием.
-
-
-## ГЕЙМПЛЕЙ
-
-### Что работает:
-- Создание персонажей
-- Создание специальностей
-- Одевание шмоток и оружия выбирая из рюкзака, вещи убираются из рюкзака (bag) и добавляются в список (_what_is_on)
-- Снятие оружия и шмоток работает, вещи убираются из списка (_what_is_on) и добавляются oбратно в список (bag)
-- Работает бой
-- В бою работает критический урон
-- Работает зарабатывание опыта
-- Работает повышение уровня по набору опыта
-- Работает добавление скиллов при повышении уровня
-- Можно пить зелья здоровья
-- Замена шмоток на персоонаже (если в руках топор, при выборе нового оружия преидущая вещь должна вернутся в рюкзак)
-
-### ДО ПРОМЕЖУТОЧНОЙ ЦЕЛИ СДЕЛАТЬ:
-- Сделать возможность посмотреть что выпало и подобрать (типа работает подобрать работает)
-- Проверить выпадение шмотья, проверить подбирание шмотья.
-
-### Известный БАГ
-- Эффекты от локаций не прибавляются к статам героя, почему то все преобразовывается в тупл а не инт.
-- пока эта фича отключена.
-
-## ИГРОВАЯ МЕХАНИКА:
-
-### Работает:
-- Рандомная генерация врагов с возможностью тонкой настройки генерации
-- Рандомная генерация оружия и брони с возможностью тонкой настройки генерации
-- Рандомная генерация одежды и оружия одетых на рандомных врагах в зависимости от уровня
-- На Врагах все параметры шмоток и оружия добавляются к статам
-- Можно посмотреть что одето на персоонаже фунцией print_whats_on
-- Раандомная генерация содержимого рюкзака врагов
-- Передвижение по локациям
-
-### Сделать:
-- Сделать зелья, не только лечения но и другие
-- Сделать абстрактные методы
-- Сделать приватные атрибуты с помощью __setattr__
-- Сохранять персонажей с помощью pickle or shelve
-
-### Продумать следующие механики
-- Сделать возможность выбирать что делать дальше в любой момент кроме боя
-- Подумать над механикой оружия
-
-### Дальнейшая перспектива развития
-- Износ оружия и вещей, поломка вещей
-- Сделать возможность сбежать из боя (теряя опыт, вещи?)
-- Механика уворота и блокировок удара
-- Артифакты и щиты
-- Сохранение и возобновление игры
+(NOT READY YET) The first completed iteration should have an endless mode where the player can fight enemies, level up stats, pick up loot, change clothes and weapons, drink potions. Fighting enemies should be optional. Level up weapon proficiency.
 
 
-## Более дальнаяя перспектива
-- Карта, движение
-- Сделать онлайн
+## GAMEPLAY
+
+### What works:
+- Character creation
+- Specialization creation
+- Equipping gear and weapons by selecting from backpack, items are removed from bag and added to the equipped list (_what_is_on)
+- Removing weapons and gear works, items are removed from the equipped list (_what_is_on) and added back to the bag
+- Combat works
+- Critical damage works in combat
+- Experience earning works
+- Leveling up by gaining experience works
+- Skill point allocation on level up works
+- Can drink health potions
+- Replacing gear on character (if holding an axe, when selecting new weapon the previous item should return to backpack)
+
+### TO DO BEFORE INTERMEDIATE GOAL:
+- Make it possible to view what dropped and pick it up (pickup kinda works)
+- Test gear drops, test gear pickup.
+
+### KNOWN BUG
+- Location effects don't add to hero stats, for some reason everything converts to tuple instead of int.
+- this feature is currently disabled.
+
+## GAME MECHANICS:
+
+### Works:
+- Random enemy generation with fine-tuned generation settings
+- Random weapon and armor generation with fine-tuned generation settings
+- Random clothing and weapon generation equipped on random enemies based on level
+- On enemies all gear and weapon parameters are added to stats
+- Can view what's equipped on character with print_whats_on function
+- Random generation of enemy backpack contents
+- Movement between locations
+
+### To Do:
+- Make potions, not just healing but others too
+- Make abstract methods
+- Make private attributes using __setattr__
+- Save characters using pickle or shelve
+
+### Think through the following mechanics
+- Make it possible to choose what to do next at any moment except combat
+- Think about weapon mechanics
+
+### Future development perspective
+- Weapon and item durability, item breakage
+- Make it possible to flee from combat (losing experience, items?)
+- Dodge and block mechanics
+- Artifacts and shields
+- Saving and resuming game
+
+
+## More distant perspective
+- Map, movement
+- Make it online
 
 ## Installation
-
 ```bash
 python3 -m venv venv
 source venv/bin/activate
@@ -97,5 +96,8 @@ python3 -m pip install -r requirements.txt
 ```bash
 python3 game/tests.py
 ```
+
 ## Gameplay
+```bash
 python3 game/main.py
+```
